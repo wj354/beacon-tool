@@ -1,0 +1,20 @@
+{
+  "name": "wj354/tool",
+  "description": "beaconPHP tool",
+  "type": "library",
+  "license": "Apache-2.0",
+  "authors": [
+    {
+      "name": "wj354",
+      "email": "26029682@qq.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "tool\\": "/"
+    }
+  }
+}
