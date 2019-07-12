@@ -197,7 +197,11 @@ class MakeFormTemplate
                 $this->out[] = '<div class="yee-row-inline' . ($field['viewHide'] ? ' none' : '') . '" id="row_' . $field['boxId'] . '">';
             }
             if (isset($field['label'][0]) && $field['label'][0] != '!') {
-                $this->out[] = '<label class="inline-label">' . htmlspecialchars($field['label']) . '：</label>';
+                if ($field['viewAsterisk'] == 1) {
+                    $this->out[] = '<label class="inline-label"><em></em>' . htmlspecialchars($field['label']) . '：</label>';
+                } else {
+                    $this->out[] = '<label class="inline-label">' . htmlspecialchars($field['label']) . '：</label>';
+                }
             }
             $this->out[] = '<span style="margin-right: 10px">';
             $this->out[] = '{input field=$form->getField(' . var_export($field['name'], true) . ')}';
@@ -517,7 +521,7 @@ class MakeFormTemplate
     public function makeFile()
     {
         if (isset($this->form['withTpl']) && $this->form['withTpl'] == 1) {
-            $code = '{*Created by Beacon AI Tool2.1. Date:'.date('Y-m-d H:i:s').'*}'.$this->getCode();
+            $code = '{*Created by Beacon AI Tool2.1. Date:' . date('Y-m-d H:i:s') . '*}' . $this->getCode();
             if ($this->form['extMode'] == 1) {
                 $path = Utils::path($this->path, 'plugin');
                 Utils::makeDir($path);
