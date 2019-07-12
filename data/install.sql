@@ -257,5 +257,6 @@ CREATE TABLE `@pf_tool_search` (
   `tbWhere` text,
   `tbWhereType` int(11) DEFAULT NULL,
   `varType` varchar(255) DEFAULT '',
+  `close` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
