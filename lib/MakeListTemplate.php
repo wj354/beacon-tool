@@ -98,7 +98,6 @@ class MakeListTemplate
         } else {
             $this->out[] = '<div class="yee-caption">' . $this->list['caption'] . '</div>';
         }
-
         $this->out[] = '<div class="yee-toolbar">';
         $this->out[] = '<span> 共 <span id="records-count">0</span> 条记录</span>';
         $this->out[] = '<a href="javascript:window.location.reload()" class="refresh-btn"><i class="icofont-refresh"></i>刷新</a>';
@@ -513,9 +512,9 @@ class MakeListTemplate
         if (isset($this->list['withTpl']) && $this->list['withTpl'] == 1) {
             $path = $this->path;
             Utils::makeDir($path);
-            $code = '{*Created by Beacon AI Tool2.1. Date:'.date('Y-m-d H:i:s').'*}'.$this->getCode();
+            $code = '{*Created by Beacon AI Tool2.1. Date:' . date('Y-m-d H:i:s') . '*}' . $this->getCode();
             file_put_contents(Utils::path($path, 'Zero' . $this->keyName . '.tpl'), $code);
-            $code = '{*Created by Beacon AI Tool2.1. Date:'.date('Y-m-d H:i:s').'*}'.$this->getHookCode();
+            $code = '{*Created by Beacon AI Tool2.1. Date:' . date('Y-m-d H:i:s') . '*}' . $this->getHookCode();
             $path = Utils::path($this->path, 'hook');
             Utils::makeDir($path);
             file_put_contents(Utils::path($path, 'Zero' . $this->keyName . '.hook.tpl'), $code);

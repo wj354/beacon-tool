@@ -340,7 +340,7 @@ class MakeController
             if (count($sortItem)) {
                 $this->out[] = '        //自动按列设置排序';
                 $this->out[] = '        $tempSort = $this->param(\'sort:s\');';
-                $this->out[] = '        if (preg_match(\'@^((?:\w+\.)\w+)-(asc|desc)$@\', $tempSort, $match)) {';
+                $this->out[] = '        if (preg_match(\'@^((?:\w+\.)?\w+)-(asc|desc)$@\', $tempSort, $match)) {';
                 $this->out[] = '            if (in_array($match[1], ' . Helper::export($sortItem, 'c') . ')) {';
                 $this->out[] = '                $selector->order($match[1] . \' \' . $match[2]);';
                 $this->out[] = '            }';
