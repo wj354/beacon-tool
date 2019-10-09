@@ -36,7 +36,11 @@ class Form extends BaseController
             $selector = new SqlSelector('@pf_tool_form');
             $name = $this->get('name', '');
             if ($name) {
-                $selector->where("(`key` LIKE CONCAT('%',?,'%') or `title` LIKE CONCAT('%',?,'%'))", [$name, $name]);
+                if (preg_match('#@pf_(\w+)#', $name, $data)) {
+                    $selector->where("`tbName` LIKE CONCAT('%',?,'%')", [$data[1]]);
+                } else {
+                    $selector->where("(`key` LIKE CONCAT('%',?,'%') or `title` LIKE CONCAT('%',?,'%'))", [$name, $name]);
+                }
             }
             if ($appId) {
                 $selector->where("appId=?", $appId);

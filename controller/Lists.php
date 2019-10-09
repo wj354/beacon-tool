@@ -34,7 +34,11 @@ class Lists extends BaseController
             $selector = new SqlSelector('@pf_tool_list');
             $title = $this->get('title', '');
             if ($title) {
-                $selector->where("(`title` LIKE CONCAT('%',?,'%') or `key` LIKE CONCAT('%',?,'%'))", [$title, $title]);
+                if (preg_match('#@pf_(\w+)#', $title, $data)) {
+                    $selector->where("`tbName` LIKE CONCAT('%',?,'%')", [$data[1]]);
+                } else {
+                    $selector->where("(`title` LIKE CONCAT('%',?,'%') or `key` LIKE CONCAT('%',?,'%'))", [$title, $title]);
+                }
             }
             if ($appId) {
                 $selector->where("appId=?", $appId);
