@@ -118,7 +118,7 @@ class SelectDialog extends Form
             return;
         }
         $extend['func'] = trim($extend['func']);
-        if ($type == 2 && !empty($extend['sql'])) {
+        if ($type == 'func' && !empty($extend['func'])) {
             $codeItem = new CodeItem();
             $code = 'function($value=0){ if(is_callable(' . var_export($extend['func'], true) . ')){return ' . $extend['func'] . '($value);} return null;}';
             $codeItem->setCode($code);
