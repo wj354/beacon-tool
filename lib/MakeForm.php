@@ -312,10 +312,11 @@ class MakeForm
         if (intval($field['unique'])) {
             $this->use('beacon\Request');
             $this->use('beacon\DB');
-            $out[] = '    ' . var_export('remote-func', true) . ' => function ($v){';
+            $out[] = '    ' . var_export('valid-func', true) . ' => function ($v){';
             $out[] = '        $id = Request::param(\'id:i\', 0);';
             $out[] = '        $row = DB::getRow(\'select id from `@pf_' . $this->form['tbName'] . '` where `' . $field['name'] . '`=? and id<>?\', [$v, $id]);';
-            $out[] = '        return $row!=null;';
+            $out[] = '        if($row){ return ' . var_export($field['remoteError'], true) . ';}';
+            $out[] = '        return null;';
             $out[] = '     },';
         }
         if (intval($field['remoteUrl'])) {
