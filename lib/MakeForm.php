@@ -3,6 +3,7 @@
 namespace tool\lib;
 
 use beacon\DB;
+use beacon\Request;
 use beacon\Utils;
 
 class MakeForm
@@ -306,7 +307,20 @@ class MakeForm
                     $out[] = '    ' . var_export($key, true) . ' => ' . var_export($value, true) . ',';
                 }
             }
+        }
 
+        if (intval($field['unique'])) {
+            $this->use('beacon\Request');
+            $this->use('beacon\DB');
+            $out[] = '    ' . var_export('remote-func', true) . ' => function ($v){';
+            $out[] = '        $id = Request::param(\'id:i\', 0);';
+            $out[] = '        $row = DB::getRow(\'select id from `@pf_' . $this->form['tbName'] . '` where `' . $field['name'] . '`=? and id<>?\', [$v, $id]);';
+            $out[] = '        return $row!=null;';
+            $out[] = '     },';
+        }
+        if (intval($field['remoteUrl'])) {
+            $out[] = '    ' . var_export('yee-module', true) . ' => \'remote\'';
+            $out[] = '    ' . var_export('data-url', true) . ' =>Route::url(' . var_export($field['remoteUrl'], true) . ')';
         }
         $out[] = '],';
         return $out;

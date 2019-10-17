@@ -101,6 +101,7 @@ class FieldForm extends Form
                 'after-text' => '勾选后直接在底部添加隐藏输入框',
                 'tab-index' => 'base',
             ],
+
             'dbfield' => [
                 'label' => '是否数据库字段 [dbfield]',
                 'type' => 'check',
@@ -287,6 +288,23 @@ class FieldForm extends Form
                 'type' => 'container',
                 'plug-name' => CustomAttr::class,
                 'mode' => 'multiple',
+                'tab-index' => 'extend',
+            ],
+            'unique-line' => [
+                'label' => '设置唯一验证',
+                'type' => 'line',
+                'tab-index' => 'extend',
+            ],
+            'unique' => [
+                'label' => '是否唯一 [unique]', // 字段标题
+                'type' => 'check', // 单选组
+                'default' => 0,
+                'after-text' => '勾选后数据唯一',
+                'tab-index' => 'extend',
+            ],
+            'remoteUrl' => [
+                'label' => '远程验证路径 [remoteUrl]', // 字段标题
+                'type' => 'text', // 单选组
                 'tab-index' => 'extend',
             ],
             'value-line' => [

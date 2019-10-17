@@ -281,6 +281,9 @@ class Lists extends BaseController
             $values['updateTime'] = time();
             $form->update($id, $values);
             MakeController::make($id);
+            if ($row['key'] != $values['key']) {
+                MakeSearch::make($id);
+            }
             $this->success('编辑' . $form->title . '成功');
         }
     }
