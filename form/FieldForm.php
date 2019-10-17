@@ -307,6 +307,11 @@ class FieldForm extends Form
                 'type' => 'text', // 单选组
                 'tab-index' => 'extend',
             ],
+            'remoteError' => [
+                'label' => '远程验证提示消息', // 字段标题
+                'type' => 'text', // 单选组
+                'tab-index' => 'extend',
+            ],
             'value-line' => [
                 'label' => '值处理函数',
                 'type' => 'line',
