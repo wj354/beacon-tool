@@ -243,6 +243,7 @@ class MakeListTemplate
                 }
                 $this->out[] = '</div>';
             }
+
             $this->out[] = '<div class="yee-cell">';
             $this->out[] = '<input class="form-btn blue" value="查询" type="submit"/>';
             $this->out[] = '<input class="form-btn normal" value="重置" type="reset"/><input type="hidden" name="sort">';
@@ -258,7 +259,7 @@ class MakeListTemplate
             }
             if (!empty($code)) {
                 $this->out[] = '</div>';
-                $this->out[] = '<div class="tr nobr" style="display: table-cell;">';
+                $this->out[] = '<div class="tr nobr" style="display: table-cell;' . $this->list['selectStyle'] . '">';
                 $this->out[] = join("\n", $code);
                 $this->out[] = '</div>';
             }

@@ -210,6 +210,7 @@ CREATE TABLE `@pf_tool_list` (
   `listButtons` text,
   `useSelect` tinyint(4) DEFAULT NULL,
   `selectType` varchar(255) DEFAULT NULL,
+  `selectStyle` varchar(255) DEFAULT NULL,
   `selectButtons` text,
   `searchTop`  text,
   `headTemplate` text,

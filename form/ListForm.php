@@ -485,6 +485,13 @@ class ListForm extends Form
                 'tab-index' => 'operate',
             ],
 
+            'selectStyle' => [
+                'label' => '全选域样式',
+                'type' => 'text',
+                'tab-index' => 'operate',
+                'view-merge' => -1,
+            ],
+
             'selectButtons' => [
                 'label' => '全选区域操作',
                 'type' => 'container',
