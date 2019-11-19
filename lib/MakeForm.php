@@ -184,8 +184,8 @@ class MakeForm
         if (!empty($field['boxAttrs'])) {
             $boxAttrs = Helper::convertArray($field['boxAttrs'], []);
             foreach ($boxAttrs as $item) {
-                $name = ucfirst(Utils::attrToCamel($item['name']));
-                $field['box' . $name] = $item['value'];
+                $name = lcfirst(Utils::attrToCamel($item['name']));
+                $field['box-' . $name] = $item['value'];
             }
             unset($field['boxAttrs']);
         }
