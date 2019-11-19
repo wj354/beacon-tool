@@ -184,7 +184,7 @@ class MakeForm
         if (!empty($field['boxAttrs'])) {
             $boxAttrs = Helper::convertArray($field['boxAttrs'], []);
             foreach ($boxAttrs as $item) {
-                $field['box' . Utils::toCamel($item['name'])] = $item['value'];
+                $field['box' . Utils::attrToCamel($item['name'])] = $item['value'];
             }
             unset($field['boxAttrs']);
         }
@@ -192,7 +192,7 @@ class MakeForm
         if (!empty($field['custom'])) {
             $custom = json_decode($field['custom'], true);
             foreach ($custom as $item) {
-                $nKey = lcfirst(Utils::toCamel($item['name']));
+                $nKey = lcfirst(Utils::attrToCamel($item['name']));
                 switch ($item['type']) {
                     case 'int';
                         $field[$nKey] = intval($item['value']);
