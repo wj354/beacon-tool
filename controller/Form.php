@@ -349,6 +349,10 @@ class Form extends BaseController
                                 foreach ($fieldList as $field) {
                                     $this->addDbField($tbName, $field);
                                 }
+                            }else{
+                                if ($oldTitle != $newTitle) {
+                                    DB::execute('ALTER TABLE ' . $tbName . ' COMMENT ?', $newTitle);
+                                }
                             }
                         }
                     } catch (MysqlException $exception) {
