@@ -174,7 +174,8 @@ class Form extends BaseController
                     if (empty($values['tbEngine'])) {
                         $this->error(['tbEngine' => '数据库表引擎没有选择']);
                     }
-                    DB::createTable('@pf_' . $values['tbName'], ['engine' => $values['tbEngine']]);
+                    $newTitle = empty($values['title']) ? '' : $values['title'];
+                    DB::createTable('@pf_' . $values['tbName'], ['engine' => $values['tbEngine'], 'comment' => $newTitle]);
                 } catch (MysqlException $exception) {
                     $this->error(['tbName' => '创建数据库表失败']);
                 }
@@ -257,7 +258,8 @@ class Form extends BaseController
                     if (empty($values['tbEngine'])) {
                         $this->error(['tbEngine' => '数据库表引擎没有选择']);
                     }
-                    DB::createTable('@pf_' . $values['tbName'], ['engine' => $values['tbEngine']]);
+                    $newTitle = (empty($values['title']) ? '' : $values['title']);
+                    DB::createTable('@pf_' . $values['tbName'], ['engine' => $values['tbEngine'], 'comment' => $newTitle]);
                 } catch (MysqlException $exception) {
                     $this->error(['tbName' => '创建数据库表失败']);
                 }
@@ -321,14 +323,19 @@ class Form extends BaseController
                         if (empty($values['tbName'])) {
                             $this->error(['tbName' => '数据库表名没有填写']);
                         }
+                        $oldTitle = $row['title'];
+                        $newTitle = empty($values['title']) ? '' : $values['title'];
 
                         if ($oldName != $tbName) {
                             #存在旧表
                             if (DB::existsTable($oldName)) {
                                 DB::exec('ALTER TABLE ' . $oldName . ' RENAME TO ' . $tbName . ';');
+                                if ($oldTitle != $newTitle) {
+                                    DB::execute('ALTER TABLE ' . $tbName . ' COMMENT ?', $newTitle);
+                                }
                             } else {
                                 #不存在旧表
-                                DB::createTable($tbName, ['engine' => $row['tbEngine']]);
+                                DB::createTable($tbName, ['engine' => $row['tbEngine'], 'comment' => $newTitle]);
                                 $fieldList = DB::getList('select * from @pf_tool_field where formId=? order by sort asc', $id);
                                 foreach ($fieldList as $field) {
                                     $this->addDbField($tbName, $field);
@@ -337,10 +344,14 @@ class Form extends BaseController
                         } else {
                             #新表不存在
                             if (!DB::existsTable($tbName)) {
-                                DB::createTable($tbName, ['engine' => $row['tbEngine']]);
+                                DB::createTable($tbName, ['engine' => $row['tbEngine'], 'comment' => $newTitle]);
                                 $fieldList = DB::getList('select * from @pf_tool_field where formId=? order by sort asc', $id);
                                 foreach ($fieldList as $field) {
                                     $this->addDbField($tbName, $field);
+                                }
+                            }else{
+                                if ($oldTitle != $newTitle) {
+                                    DB::execute('ALTER TABLE ' . $tbName . ' COMMENT ?', $newTitle);
                                 }
                             }
                         }
