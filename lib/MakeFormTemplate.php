@@ -426,7 +426,7 @@ class MakeFormTemplate
         $this->out[] = '{$body|raw}';
         $this->out[] = "</div>";
         $this->out[] = '<div style="display: block;">';
-        $this->out[] = '<a href="javascript:;" name="add" class="yee-btn"><i class="icofont-plus-circle"></i>新增行</a>';
+        $this->out[] = '{if !$field->offEdit}<a href="javascript:;" name="add" class="yee-btn"><i class="icofont-plus-circle"></i>新增行</a>{/if}';
         $this->out[] = '{if $field->tips}<span class="field-tips">{$field->tips}</span>{/if} <span id="{$field->boxId}-validation"></span>';
         $this->out[] = '</div>';
         $this->out[] = '</div>';
@@ -442,9 +442,11 @@ class MakeFormTemplate
         if ($this->form['plugStyle'] == 0) {
             $this->out[] = '<div class="yee-container-title">';
             $this->out[] = '<label class="inline-label" style="text-align: left;">&nbsp;&nbsp;  第 <span name="index" class="red2" style="font-size: 18px;"></span>项&nbsp;&nbsp;&nbsp;</label>';
+            $this->out[] ='{if !$field->offEdit}';
             $this->out[] = '{if $field->viewRemoveBtn}<a href="javascript:;" class="yee-btn" name="remove"><i class="icofont-minus-circle"></i>移除</a>{/if}';
             $this->out[] = '{if $field->viewInsertBtn}<a href="javascript:;" name="insert" class="yee-btn"><i class="icofont-puzzle"></i>插入</a>{/if}';
             $this->out[] = '{if $field->viewSortBtn}<a href="javascript:;" name="upsort" class="yee-btn"><i class="icofont-long-arrow-up"></i>上移</a><a href="javascript:;" name="dnsort" class="yee-btn"><i class="icofont-long-arrow-down"></i>下移</a>{/if}';
+            $this->out[] ='{/if}';
             $this->out[] = '</div>';
             $this->out[] = '<div class="yee-container-body">';
             if ($this->form['makeStatic']) {
@@ -481,11 +483,11 @@ class MakeFormTemplate
                 $this->out[] = '</div>';
                 $this->out[] = '{/foreach}';
             }
-            $this->out[] = '<div class="yee-row-inline" style="margin-right: 10px">';
+            $this->out[] = '{if !$field->offEdit}<div class="yee-row-inline" style="margin-right: 10px">';
             $this->out[] = '{if $field->viewRemoveBtn}<a href="javascript:;" class="yee-btn" name="remove"><i class="icofont-minus-circle"></i>移除</a>{/if}';
             $this->out[] = '{if $field->viewInsertBtn}<a href="javascript:;" name="insert" class="yee-btn"><i class="icofont-puzzle"></i>插入</a>{/if}';
             $this->out[] = '{if $field->viewSortBtn}<a href="javascript:;" name="upsort" class="yee-btn"><i class="icofont-long-arrow-up"></i>上移</a><a href="javascript:;" name="dnsort" class="yee-btn"><i class="icofont-long-arrow-down"></i>下移</a>{/if}';
-            $this->out[] = '</div>';
+            $this->out[] = '</div>{/if}';
         }
         //紧凑模式
         if ($this->form['plugStyle'] == 2) {
@@ -502,15 +504,14 @@ class MakeFormTemplate
                 $this->out[] = '</div>';
                 $this->out[] = '{/foreach}';
             }
-            $this->out[] = '<div class="yee-row-inline" style="margin-right: 10px">';
+            $this->out[] = '{if !$field->offEdit}<div class="yee-row-inline" style="margin-right: 10px">';
             $this->out[] = '{if $field->viewRemoveBtn}<a href="javascript:;" class="yee-btn" name="remove"><i class="icofont-minus-circle"></i>移除</a>{/if}';
             $this->out[] = '{if $field->viewInsertBtn}<a href="javascript:;" name="insert" class="yee-btn"><i class="icofont-puzzle"></i>插入</a>{/if}';
             $this->out[] = '{if $field->viewSortBtn}<a href="javascript:;" name="upsort" class="yee-btn"><i class="icofont-long-arrow-up"></i>上移</a><a href="javascript:;" name="dnsort" class="yee-btn"><i class="icofont-long-arrow-down"></i>下移</a>{/if}';
-            $this->out[] = '</div>';
+            $this->out[] = '</div>{/if}';
         }
         $this->out[] = '</div>';
         $this->out[] = "{/hook}";
-
     }
 
     public function getCode()
