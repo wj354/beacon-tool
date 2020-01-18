@@ -405,6 +405,9 @@ class MakeListTemplate
                 $table[] = ' data-right-fixed="' . $this->list['rightFixed'] . '"';
             }
         }
+        if (!empty($this->list['listRewrite']) && $this->list['listRewrite'] == 1) {
+            $table[] = ' data-rewrite="true"';
+        }
         $table[] = '>';
         $this->out[] = join('', $table);
         $this->out[] = '<thead>';

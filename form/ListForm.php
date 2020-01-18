@@ -152,7 +152,12 @@ class ListForm extends Form
                 'after-text' => '勾选拖动可调整列宽',
                 'tab-index' => 'base',
             ],
-
+            'listRewrite' => [
+                'label' => '改写地址栏',
+                'type' => 'check',
+                'after-text' => '勾选后改写地址栏，刷新可以直接定位页面',
+                'tab-index' => 'base',
+            ],
             'fixed' => [
                 'label' => '可固定列',
                 'type' => 'check',
