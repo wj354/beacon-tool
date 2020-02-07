@@ -127,7 +127,7 @@ class MakeFormTemplate
 
         $this->out[] = "{block name='form-header'}";
         if ($this->form['viewNotBack']) {
-            $this->out[] = '<a class="yee-back" href="javascript:;"><i class="icofont-ruler-pencil"></i></a>';
+            $this->out[] = '<a class="yee-setting" href="javascript:;"><i class="icofont-ruler-pencil"></i></a>';
         } else {
             $this->out[] = '<a class="yee-back" href="javascript:history.back();"><i class="icofont-reply"></i></a>';
         }
