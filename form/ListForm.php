@@ -40,9 +40,14 @@ class ListForm extends Form
                     $options = [];
                     $rows = DB::getList('select * from @pf_tool_form where extMode<>1 order by id desc');
                     foreach ($rows as $rs) {
+                        $app = DB::getRow('select name from @pf_tool_app where id=?', $rs['appId']);
                         $item = [];
                         $item[] = isset($rs['id']) ? $rs['id'] : '';
-                        $item[] = isset($rs['title']) ? $rs['title'] : '';
+                        if ($app) {
+                            $item[] = $app['name'] . ' : ' . (isset($rs['title']) ? $rs['title'] : '');
+                        } else {
+                            $item[] = isset($rs['title']) ? $rs['title'] : '';
+                        }
                         $item[] = isset($rs['key']) ? $rs['key'] : '';
                         $options[] = $item;
                     }

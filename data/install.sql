@@ -183,6 +183,7 @@ CREATE TABLE `@pf_tool_list` (
   `orgFields` text,
   `listResize` tinyint(1) DEFAULT NULL,
   `usePageList` tinyint(1) DEFAULT NULL,
+  `listRewrite` tinyint(1) DEFAULT NULL,
   `pageSize` int(11) DEFAULT NULL,
   `baseController` varchar(255) DEFAULT NULL,
   `useCustomTemplate` tinyint(1) DEFAULT NULL,
