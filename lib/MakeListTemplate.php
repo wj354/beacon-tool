@@ -284,7 +284,8 @@ class MakeListTemplate
             } else {
                 $tdCode[] = '<td align="center" :html="rs.' . $keyName . '"></td>';
             }
-            $this->hook[] = "{hook fn='{$keyName}' rs=null}" . '<input type="checkbox" name="choice" value="{$rs.id}">{/hook}';
+            $selectValue = empty($this->list['selectValue']) ? '{$rs.id}' : $this->list['selectValue'];
+            $this->hook[] = "{hook fn='{$keyName}' rs=null}" . '<input type="checkbox" name="choice" value="' . $selectValue . '">{/hook}';
         }
         $index++;
         $keyName = '_' . $index;
