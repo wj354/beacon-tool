@@ -55,7 +55,6 @@ class ListForm extends Form
                 },
                 'tab-index' => 'base',
             ],
-
             'key' => [
                 'label' => '列表标识符',
                 'data-val-rule' => ['r' => true, 'regex' => '^[A-Z][A-Za-z0-9]+$'],
@@ -77,14 +76,12 @@ class ListForm extends Form
                 },
                 'tab-index' => 'base',
             ],
-
             'title' => [
                 'label' => '列表名称',
                 'data-val-rule' => ['r' => true],
                 'data-val-message' => ['r' => '请输入表单名称'],
                 'tab-index' => 'base',
             ],
-
             'appId' => [
                 'label' => '所属项目', //标题
                 'type' => 'select-dialog', //下拉框
@@ -113,8 +110,6 @@ class ListForm extends Form
                     return intval($appId);
                 }
             ],
-
-
             'fields' => [
                 'label' => '字段信息 ',
                 'plug-name' => ListField::class,
@@ -122,14 +117,12 @@ class ListForm extends Form
                 'mode' => 'multiple',
                 'tab-index' => 'base',
             ],
-
             'useTwoLine' => [
                 'label' => '使用两行',
                 'type' => 'check',
                 'after-text' => '勾选使用两行,会将最后一列拆到下一行',
                 'tab-index' => 'base',
             ],
-
             'orgFields' => [
                 'label' => '其他未修饰字段',
                 'type' => 'textarea',
@@ -179,7 +172,6 @@ class ListForm extends Form
                     ],
                 ],
             ],
-
             'leftFixed' => [
                 'label' => '左固定列数',
                 'type' => 'integer',
@@ -486,6 +478,14 @@ class ListForm extends Form
                 'type' => 'check',
                 'after-text' => '勾选支持全选',
                 'tab-index' => 'operate',
+            ],
+
+            'selectValue' => [
+                'label' => '全选项值',
+                'type' => 'text',
+                'tab-index' => 'operate',
+                'default' => '{$rs.id}',
+                'view-merge' => -1,
             ],
 
             'selectType' => [
