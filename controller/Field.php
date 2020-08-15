@@ -18,23 +18,25 @@ use beacon\Utils;
 use tool\form\FieldForm;
 use tool\lib\Helper;
 use tool\lib\MakeForm;
+use tool\lib\ToolDb;
 
 class Field extends BaseController
 {
     public $formId = 0;
+    public $appId = 0;
 
     public function initialize()
     {
         parent::initialize();
-        $appId = $this->get('appId:s', '');
-        if ($appId === '') {
-            $appId = DB::getOne('select id from @pf_tool_app order by isDefault desc,id desc limit 0,1');
-            if ($appId == null) {
+        $this->appId = $this->get('appId:s', '');
+        if ($this->appId === '') {
+            $this->appId = DB::getOne('select id from @pf_tool_app order by isDefault desc,id desc limit 0,1');
+            if ($this->appId == null) {
                 $appId = 0;
             }
         }
-        $appId = intval($appId);
-        $this->assign('appId', $appId);
+        $this->appId = intval($appId);
+        $this->assign('appId', $this->appId);
     }
 
     private function loadFormId()
@@ -44,7 +46,6 @@ class Field extends BaseController
             $this->error('缺少参数', ['back' => Route::url('~/Form')]);
         }
         $this->assign('formId', $this->formId);
-
     }
 
     public function indexAction()
@@ -118,10 +119,12 @@ class Field extends BaseController
     {
         $this->loadFormId();
         $form = new FieldForm('add');
-        $fRow = DB::getRow('select tbName,extMode,tbCreate,viewUseTab,viewTabs from @pf_tool_form where id=?', $this->formId);
+        $fRow = DB::getRow('select tbName,extMode,tbCreate,viewUseTab,viewTabs,appId from @pf_tool_form where id=?', $this->formId);
         if ($fRow == null) {
             $this->error('添加失败,表单不存在');
         }
+        $this->appId = intval($fRow['appId']);
+
         if ($fRow['viewUseTab']) {
             if (!empty($fRow['viewTabs']) && Utils::isJson($fRow['viewTabs'])) {
                 $temp = json_decode($fRow['viewTabs'], 1);
@@ -166,11 +169,12 @@ class Field extends BaseController
             }
             $tbName = '@pf_' . $fRow['tbName'];
             try {
-                DB::beginTransaction();
+                $db = ToolDb::getDb($this->appId);
+                $db->beginTransaction();
                 if ($fRow['tbCreate'] == 1 && ($fRow['extMode'] == 0 || $fRow['extMode'] == 2)) {
                     if ($values['dbtype'] != 'none' && $values['dbfield'] == 1) {
-                        if (DB::existsField($tbName, $values['name'])) {
-                            DB::rollBack();
+                        if ($db->existsField($tbName, $values['name'])) {
+                            $db->rollBack();
                             $this->error(['name' => '创建字段失败,字段名已经存在']);
                         }
                         $def = null;
@@ -183,7 +187,7 @@ class Field extends BaseController
                                 $def = $values['db_def2'];
                             }
                         }
-                        DB::addField($tbName, $values['name'], [
+                        $db->addField($tbName, $values['name'], [
                             'type' => $values['dbtype'],
                             'len' => $values['dblen'],
                             'scale' => $values['dbpoint'],
@@ -191,7 +195,6 @@ class Field extends BaseController
                             'comment' => empty($values['dbcomment']) ? $values['label'] : $values['dbcomment'],
                         ]);
                     }
-
                     if (!empty($values['names'])) {
                         foreach ($values['names'] as $item) {
                             $option = [
@@ -216,13 +219,13 @@ class Field extends BaseController
                                 $option['len'] = 250;
                                 $option['def'] = '';
                             }
-                            DB::addField($tbName, $item['field'], $option);
+                            $db->addField($tbName, $item['field'], $option);
                         }
                     }
                 }
-                DB::commit();
+                $db->commit();
             } catch (MysqlException $exception) {
-                DB::rollBack();
+                $db->rollBack();
                 $this->error('创建字段失败');
             }
             DB::insert('@pf_tool_field', $values);
@@ -235,10 +238,11 @@ class Field extends BaseController
     {
         $this->loadFormId();
         $form = new FieldForm('edit');
-        $fRow = DB::getRow('select tbName,extMode,tbCreate,viewUseTab,viewTabs from @pf_tool_form where id=?', $this->formId);
+        $fRow = DB::getRow('select tbName,extMode,tbCreate,viewUseTab,viewTabs,appId from @pf_tool_form where id=?', $this->formId);
         if ($fRow == null) {
             $this->error('编辑失败,表单不存在');
         }
+        $this->appId = intval($fRow['appId']);
         if ($fRow['viewUseTab']) {
             if (!empty($fRow['viewTabs']) && Utils::isJson($fRow['viewTabs'])) {
                 $temp = json_decode($fRow['viewTabs'], 1);
@@ -249,12 +253,10 @@ class Field extends BaseController
                 $form->addField('tabIndex', ['label' => '选择所属Tab [tab-index]', 'type' => 'select', 'options' => $options, 'tips' => '选择所属TAB标签', 'tab-index' => 'base'], 'sort');
             }
         }
-
         $row = DB::getRow('select * from @pf_tool_field where id=?', $id);
         if ($row == null) {
             $this->error('不存在的数据');
         }
-
         if ($this->isGet()) {
             $type = $row['type'];
             $this->setPlugForm($type, $form);
@@ -262,7 +264,6 @@ class Field extends BaseController
             $this->displayForm($form);
             return;
         }
-
         if ($this->isPost()) {
             $type = $this->post('type', '');
             $this->setPlugForm($type, $form);
@@ -282,13 +283,14 @@ class Field extends BaseController
             }
             $tbName = '@pf_' . $fRow['tbName'];
             try {
-                DB::beginTransaction();
+                $db = ToolDb::getDb($this->appId);
+                $db->beginTransaction();
                 //如果创建表
                 if ($fRow['tbCreate'] == 1 && ($fRow['extMode'] == 0 || $fRow['extMode'] == 2)) {
                     if ($values['dbtype'] != 'null' && $values['dbfield'] == 1) {
                         if ($row['name'] != $values['name']) {
-                            if (DB::existsField($tbName, $values['name'])) {
-                                DB::rollBack();
+                            if ($db->existsField($tbName, $values['name'])) {
+                                $db->rollBack();
                                 $this->error(['name' => '创建字段失败,字段名已经存在']);
                             }
                         }
@@ -302,7 +304,7 @@ class Field extends BaseController
                                 $def = $values['db_def2'];
                             }
                         }
-                        DB::updateField($tbName, $row['name'], $values['name'], [
+                        $db->updateField($tbName, $row['name'], $values['name'], [
                             'type' => $values['dbtype'],
                             'len' => $values['dblen'],
                             'scale' => $values['dbpoint'],
@@ -334,13 +336,13 @@ class Field extends BaseController
                                 $option['len'] = 250;
                                 $option['def'] = '';
                             }
-                            DB::modifyField($tbName, $item['field'], $option);
+                            $db->modifyField($tbName, $item['field'], $option);
                         }
                     }
                 }
-                DB::commit();
+                $db->commit();
             } catch (MysqlException $exception) {
-                DB::rollBack();
+                $db->rollBack();
                 $this->error('修改字段失败');
             }
             DB::update('@pf_tool_field', $values, $id);
@@ -388,10 +390,11 @@ class Field extends BaseController
 
     public function paste(int $id = 0)
     {
-        $fRow = DB::getRow('select tbName,extMode,tbCreate from @pf_tool_form where id=?', $this->formId);
+        $fRow = DB::getRow('select tbName,extMode,tbCreate,appId from @pf_tool_form where id=?', $this->formId);
         if ($fRow == null) {
             $this->error('添加失败,表单不存在');
         }
+        $this->appId = intval($fRow['appId']);
         $values = DB::getRow('select * from @pf_tool_field where id=?', $id);
         if ($values == null) {
             $this->error('不存在的数据');
@@ -409,12 +412,13 @@ class Field extends BaseController
         }
         $tbName = '@pf_' . $fRow['tbName'];
         try {
-            DB::beginTransaction();
+            $db = ToolDb::getDb($this->appId);
+            $db->beginTransaction();
             if ($fRow['tbCreate'] == 1 && ($fRow['extMode'] == 0 || $fRow['extMode'] == 2)) {
                 if ($values['dbtype'] != 'null' && $values['dbfield'] == 1) {
                     $idx = 1;
                     $name = $values['name'];
-                    while (DB::existsField($tbName, $values['name'])) {
+                    while ($db->existsField($tbName, $values['name'])) {
                         $values['name'] = $name . $idx;
                         $idx++;
                     }
@@ -428,8 +432,7 @@ class Field extends BaseController
                             $def = $values['db_def2'];
                         }
                     }
-
-                    DB::addField($tbName, $values['name'], [
+                    $db->addField($tbName, $values['name'], [
                         'type' => $values['dbtype'],
                         'len' => $values['dblen'],
                         'scale' => $values['dbpoint'],
@@ -441,7 +444,7 @@ class Field extends BaseController
                     foreach ($values['names'] as &$item) {
                         $idx = 1;
                         $name = $item['field'];
-                        while (DB::existsField($tbName, $item['field'])) {
+                        while ($db->existsField($tbName, $item['field'])) {
                             $item['field'] = $name . $idx;
                             $idx++;
                         }
@@ -455,7 +458,6 @@ class Field extends BaseController
                                 $def = $values['db_def2'];
                             }
                         }
-
                         $option = [
                             'type' => $values['dbtype'],
                             'len' => 11,
@@ -463,7 +465,6 @@ class Field extends BaseController
                             'def' => $def,
                             'comment' => empty($values['dbcomment']) ? $values['label'] : $values['dbcomment'],
                         ];
-
                         if (!isset($item['type'])) {
                             $item['type'] = 'bool';
                         }
@@ -480,14 +481,14 @@ class Field extends BaseController
                             $option['len'] = 250;
                             $option['def'] = '';
                         }
-                        DB::addField($tbName, $item['field'], $option);
+                        $db->addField($tbName, $item['field'], $option);
                     }
                     $values['extend']['names'] = json_encode($values['names'], JSON_UNESCAPED_UNICODE);
                 }
             }
-            DB::commit();
+            $db->commit();
         } catch (MysqlException $exception) {
-            DB::rollBack();
+            $db->rollBack();
             $this->error('字段拷贝失败');
         }
         MakeForm::make($this->formId);
@@ -518,21 +519,23 @@ class Field extends BaseController
         }
         $row = DB::getRow('select * from @pf_tool_field where id=?', $id);
         $this->formId = $row['formId'];
-        $fRow = DB::getRow('select tbName,extMode,tbCreate from @pf_tool_form where id=?', $row['formId']);
+        $fRow = DB::getRow('select tbName,extMode,tbCreate,appId from @pf_tool_form where id=?', $row['formId']);
         //删除字段
         if ($fRow != null && $fRow['tbCreate'] == 1 && ($fRow['extMode'] == 0 || $fRow['extMode'] == 2)) {
+            $this->appId = intval($fRow['appId']);
+            $db = ToolDb::getDb($this->appId);
             $tbName = '@pf_' . $fRow['tbName'];
             if ($row['names']) {
                 $row['names'] = json_decode($row['names'], true);
                 foreach ($row['names'] as $item) {
                     $field = isset($item['field']) ? $item['field'] : '';
-                    if (!empty($field) && DB::existsField($tbName, $field)) {
-                        DB::dropField($tbName, $field);
+                    if (!empty($field) && $db->existsField($tbName, $field)) {
+                        $db->dropField($tbName, $field);
                     }
                 }
             }
-            if (DB::existsField($tbName, $row['name'])) {
-                DB::dropField($tbName, $row['name']);
+            if ($db->existsField($tbName, $row['name'])) {
+                $db->dropField($tbName, $row['name']);
             }
         }
         DB::delete('@pf_tool_field', $id);

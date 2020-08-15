@@ -16,22 +16,30 @@ use beacon\Utils;
 use tool\form\FormForm;
 use tool\lib\Helper;
 use tool\lib\MakeForm;
+use tool\lib\ToolDb;
 
 class Form extends BaseController
 {
 
+    public $appId = 0;
+
+    public function initialize()
+    {
+        parent::initialize();
+        $this->appId = $this->get('appId:s', '');
+        if ($this->appId === '') {
+            $appId = DB::getOne('select id from @pf_tool_app order by isDefault desc,id desc limit 0,1');
+            if ($appId == null) {
+                $this->appId = 0;
+            } else {
+                $this->appId = $appId;
+            }
+        }
+        $this->appId = intval($this->appId);
+    }
 
     public function indexAction()
     {
-        $appId = $this->get('appId:s', '');
-        if ($appId === '') {
-            $appId = DB::getOne('select id from @pf_tool_app order by isDefault desc,id desc limit 0,1');
-            if ($appId == null) {
-                $appId = 0;
-            }
-        }
-        $appId = intval($appId);
-        $this->assign('appId', $appId);
         if ($this->isAjax()) {
             $selector = new SqlSelector('@pf_tool_form');
             $name = $this->get('name', '');
@@ -42,8 +50,8 @@ class Form extends BaseController
                     $selector->where("(`key` LIKE CONCAT('%',?,'%') or `title` LIKE CONCAT('%',?,'%'))", [$name, $name]);
                 }
             }
-            if ($appId) {
-                $selector->where("appId=?", $appId);
+            if ($this->appId) {
+                $selector->where("appId=?", $this->appId);
             }
             $sort = $this->get('sort:s', '');
             switch ($sort) {
@@ -81,7 +89,7 @@ class Form extends BaseController
             $this->success('获取数据成功', $data);
         }
         $appList = DB::getList('select * from @pf_tool_app');
-        $this->assign('appId', $appId);
+        $this->assign('appId', $this->appId);
         $this->assign('applist', $appList);
         $this->display('Form');
     }
@@ -151,12 +159,13 @@ class Form extends BaseController
             if (!$form->validation($error)) {
                 $this->error($error);
             }
-            $app = DB::getRow('select `namespace` from @pf_tool_app where id=?', $values['appId']);
+            $app = DB::getRow('select id,`namespace` from @pf_tool_app where id=?', $values['appId']);
             if ($app) {
                 $values['namespace'] = $app['namespace'];
             } else {
                 $this->error(['proId' => '不存在的项目']);
             }
+            $this->appId = intval($app['id']);
             //扩展模式不需要创建表
             if ($values['extMode'] == 1) {
                 $values['tbCreate'] = false;
@@ -165,6 +174,7 @@ class Form extends BaseController
                 $values['tbCreate'] = false;
                 $values['tbName'] = $form->getField('tbNameEx')->value;
             }
+            $db = ToolDb::getDb($this->appId);
             //创建表
             if ($values['tbCreate']) {
                 try {
@@ -175,7 +185,7 @@ class Form extends BaseController
                         $this->error(['tbEngine' => '数据库表引擎没有选择']);
                     }
                     $newTitle = empty($values['title']) ? '' : $values['title'];
-                    DB::createTable('@pf_' . $values['tbName'], ['engine' => $values['tbEngine'], 'comment' => $newTitle]);
+                    $db->createTable('@pf_' . $values['tbName'], ['engine' => $values['tbEngine'], 'comment' => $newTitle]);
                 } catch (MysqlException $exception) {
                     $this->error(['tbName' => '创建数据库表失败']);
                 }
@@ -196,7 +206,7 @@ class Form extends BaseController
                         unset($field[$name]);
                     }
                 }
-                $this->importField($id, $field);
+                $this->importField($id, $field, $this->appId);
             }
             MakeForm::make($id);
             $path = Utils::path(ROOT_DIR, 'runtime/temp', $import);
@@ -234,12 +244,13 @@ class Form extends BaseController
             if (!$form->validation($error)) {
                 $this->error($error);
             }
-            $app = DB::getRow('select `namespace` from @pf_tool_app where id=?', $values['appId']);
+            $app = DB::getRow('select id,`namespace` from @pf_tool_app where id=?', $values['appId']);
             if ($app) {
                 $values['namespace'] = $app['namespace'];
             } else {
                 $this->error(['proId' => '不存在的项目']);
             }
+            $this->appId = intval($row['appId']);
             //扩展模式不需要创建表
             if ($values['extMode'] == 1) {
                 $values['tbCreate'] = false;
@@ -258,8 +269,9 @@ class Form extends BaseController
                     if (empty($values['tbEngine'])) {
                         $this->error(['tbEngine' => '数据库表引擎没有选择']);
                     }
+                    $db = ToolDb::getDb($this->appId);
                     $newTitle = (empty($values['title']) ? '' : $values['title']);
-                    DB::createTable('@pf_' . $values['tbName'], ['engine' => $values['tbEngine'], 'comment' => $newTitle]);
+                    $db->createTable('@pf_' . $values['tbName'], ['engine' => $values['tbEngine'], 'comment' => $newTitle]);
                 } catch (MysqlException $exception) {
                     $this->error(['tbName' => '创建数据库表失败']);
                 }
@@ -270,7 +282,7 @@ class Form extends BaseController
             if ($copyId != 0) {
                 $fieldList = DB::getList('select id from @pf_tool_field where formId=? order by sort asc', $copyId);
                 foreach ($fieldList as $field) {
-                    $this->copyField($id, $field['id']);
+                    $this->copyField($id, $field['id'], $this->appId);
                 }
             }
             MakeForm::make($id);
@@ -289,6 +301,8 @@ class Form extends BaseController
         if (!$row) {
             $this->error('表单信息不存在');
         }
+        $this->appId = intval($row['appId']);
+
         $form = new FormForm('edit');
         if ($this->isGet()) {
             $row['tbNameEx'] = $row['tbName'];
@@ -301,12 +315,14 @@ class Form extends BaseController
             if (!$form->validation($error)) {
                 $this->error($error);
             }
-            $app = DB::getRow('select `namespace` from @pf_tool_app where id=?', $values['appId']);
+            $app = DB::getRow('select id,`namespace` from @pf_tool_app where id=?', $values['appId']);
             if ($app) {
                 $values['namespace'] = $app['namespace'];
             } else {
                 $this->error(['proId' => '不存在的项目']);
             }
+            $this->appId = intval($row['id']);
+            $db = ToolDb::getDb($this->appId);
             $values['updateTime'] = time();
             if ($row['extMode'] != 1) {
                 if ($row['extMode'] == 4) {
@@ -328,30 +344,30 @@ class Form extends BaseController
 
                         if ($oldName != $tbName) {
                             #存在旧表
-                            if (DB::existsTable($oldName)) {
-                                DB::exec('ALTER TABLE ' . $oldName . ' RENAME TO ' . $tbName . ';');
+                            if ($db->existsTable($oldName)) {
+                                $db->exec('ALTER TABLE ' . $oldName . ' RENAME TO ' . $tbName . ';');
                                 if ($oldTitle != $newTitle) {
-                                    DB::execute('ALTER TABLE ' . $tbName . ' COMMENT ?', $newTitle);
+                                    $db->execute('ALTER TABLE ' . $tbName . ' COMMENT ?', $newTitle);
                                 }
                             } else {
                                 #不存在旧表
-                                DB::createTable($tbName, ['engine' => $row['tbEngine'], 'comment' => $newTitle]);
+                                $db->createTable($tbName, ['engine' => $row['tbEngine'], 'comment' => $newTitle]);
                                 $fieldList = DB::getList('select * from @pf_tool_field where formId=? order by sort asc', $id);
                                 foreach ($fieldList as $field) {
-                                    $this->addDbField($tbName, $field);
+                                    $this->addDbField($tbName, $field, $this->appId);
                                 }
                             }
                         } else {
                             #新表不存在
-                            if (!DB::existsTable($tbName)) {
-                                DB::createTable($tbName, ['engine' => $row['tbEngine'], 'comment' => $newTitle]);
+                            if (!$db->existsTable($tbName)) {
+                                $db->createTable($tbName, ['engine' => $row['tbEngine'], 'comment' => $newTitle]);
                                 $fieldList = DB::getList('select * from @pf_tool_field where formId=? order by sort asc', $id);
                                 foreach ($fieldList as $field) {
-                                    $this->addDbField($tbName, $field);
+                                    $this->addDbField($tbName, $field, $this->appId);
                                 }
-                            }else{
+                            } else {
                                 if ($oldTitle != $newTitle) {
-                                    DB::execute('ALTER TABLE ' . $tbName . ' COMMENT ?', $newTitle);
+                                    $db->execute('ALTER TABLE ' . $tbName . ' COMMENT ?', $newTitle);
                                 }
                             }
                         }
@@ -376,9 +392,11 @@ class Form extends BaseController
             $this->error('表单不存在');
         }
         if ($row['extMode'] == 0 || $row['extMode'] == 2) {
+            $appId = intval($row['appId']);
             $oldName = '@pf_' . $row['tbName'];
-            if (DB::existsTable($oldName)) {
-                DB::exec('ALTER TABLE ' . $oldName . ' RENAME TO `__' . $oldName . '`;');
+            $db = ToolDb::getDb($appId);
+            if ($db->existsTable($oldName)) {
+                $db->exec('ALTER TABLE ' . $oldName . ' RENAME TO `__' . $oldName . '`;');
             }
         }
         DB::delete('@pf_tool_form', $id);
@@ -386,22 +404,23 @@ class Form extends BaseController
         $this->success('删除表单成功');
     }
 
-    private function addDbField($tbName, array &$values)
+    private function addDbField($tbName, array &$values, int $appId)
     {
         if ($values['names']) {
             $values['names'] = Helper::convertArray($values['names']);
             $values['extend'] = Helper::convertArray($values['extend'], []);
         }
         try {
-            DB::beginTransaction();
+            $db = ToolDb::getDb($appId);
+            $db->beginTransaction();
             if ($values['dbtype'] != 'null' && $values['dbfield'] == 1) {
                 $idx = 1;
                 $name = $values['name'];
-                while (DB::existsField($tbName, $values['name'])) {
+                while ($db->existsField($tbName, $values['name'])) {
                     $values['name'] = $name . $idx;
                     $idx++;
                 }
-                DB::addField($tbName, $values['name'], [
+                $db->addField($tbName, $values['name'], [
                     'type' => $values['dbtype'],
                     'len' => $values['dblen'],
                     'scale' => $values['dbpoint'],
@@ -412,7 +431,7 @@ class Form extends BaseController
                 foreach ($values['names'] as &$item) {
                     $idx = 1;
                     $name = $item['field'];
-                    while (DB::existsField($tbName, $item['field'])) {
+                    while ($db->existsField($tbName, $item['field'])) {
                         $item['field'] = $name . $idx;
                         $idx++;
                     }
@@ -435,20 +454,20 @@ class Form extends BaseController
                         $option['type'] = 'varchar';
                         $option['len'] = 250;
                     }
-                    DB::addField($tbName, $item['field'], $option);
+                    $db->addField($tbName, $item['field'], $option);
                 }
                 $values['extend']['names'] = json_encode($values['names'], JSON_UNESCAPED_UNICODE);
             }
-            DB::commit();
+            $db->commit();
         } catch (\Exception $exception) {
-            DB::rollBack();
+            $db->rollBack();
             return;
         }
     }
 
-    public function copyField(int $formId, int $id)
+    public function copyField(int $formId, int $id, int $appId)
     {
-        $form = DB::getRow('select tbName,extMode,tbCreate,viewUseTab,viewTabs from @pf_tool_form where id=?', $formId);
+        $form = DB::getRow('select tbName,extMode,tbCreate,viewUseTab,viewTabs,appId from @pf_tool_form where id=?', $formId);
         if ($form == null) {
             return;
         }
@@ -461,13 +480,13 @@ class Form extends BaseController
         $values['formId'] = $formId;
         $tbName = '@pf_' . $form['tbName'];
         if ($form['tbCreate'] == 1 && $form['extMode'] != 4) {
-            $this->addDbField($tbName, $values);
+            $this->addDbField($tbName, $values, $appId);
         }
         DB::insert('@pf_tool_field', $values);
     }
 
     //导入节点
-    public function importField(int $formId, $values)
+    public function importField(int $formId, $values, $appId)
     {
         $form = DB::getRow('select tbName,extMode,tbCreate,viewUseTab,viewTabs from @pf_tool_form where id=?', $formId);
         if ($form == null) {
@@ -481,7 +500,7 @@ class Form extends BaseController
         $values['formId'] = $formId;
         $tbName = '@pf_' . $form['tbName'];
         if ($form['tbCreate'] == 1 && $form['extMode'] != 4) {
-            $this->addDbField($tbName, $values);
+            $this->addDbField($tbName, $values, $appId);
         }
         DB::insert('@pf_tool_field', $values);
     }

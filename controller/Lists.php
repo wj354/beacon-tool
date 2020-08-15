@@ -16,6 +16,7 @@ use beacon\SqlSelector;
 use tool\form\ListForm;
 use tool\lib\MakeController;
 use tool\lib\MakeSearch;
+use tool\lib\ToolDb;
 
 class Lists extends BaseController
 {
@@ -291,17 +292,19 @@ class Lists extends BaseController
     //获取字段
     public function getFieldAction(int $formId = 0)
     {
-        $fRow = DB::getRow('select tbName from @pf_tool_form where id=?', $formId);
+        $fRow = DB::getRow('select tbName,appId from @pf_tool_form where id=?', $formId);
         if ($fRow == null) {
             $this->success('ok', []);
         }
+        $appId = intval($fRow['appId']);
         $fields = DB::getList('select `name`,`label` from @pf_tool_field where formId=?', $formId);
         $temp = [];
         foreach ($fields as $field) {
             $temp[$field['name']] = $field['label'];
         }
+        $db = ToolDb::getDb($appId);
         $options = [];
-        $list = DB::getFields('@pf_' . $fRow['tbName']);
+        $list = $db->getFields('@pf_' . $fRow['tbName']);
         foreach ($list as $item) {
             $field = $item['Field'];
             if (isset($temp[$field])) {
@@ -343,16 +346,18 @@ class Lists extends BaseController
                 $selectMap[$item] = 1;
             }
         }
-        $fRow = DB::getRow('select tbName from @pf_tool_form where id=?', $formId);
+        $fRow = DB::getRow('select appId,tbName from @pf_tool_form where id=?', $formId);
         if ($fRow == null) {
             $this->error('不存在模型');
         }
+        $appId = intval($fRow['appId']);
         $fields = DB::getList('select `name`,`label` from @pf_tool_field where formId=?', $formId);
         $temp = [];
         foreach ($fields as $field) {
             $temp[$field['name']] = $field['label'];
         }
-        $list = DB::getFields('@pf_' . $fRow['tbName']);
+        $db = ToolDb::getDb($appId);
+        $list = $db->getFields('@pf_' . $fRow['tbName']);
         foreach ($list as &$item) {
             $field = $item['Field'];
             if (isset($selectMap[$field])) {
