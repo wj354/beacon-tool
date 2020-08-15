@@ -58,13 +58,22 @@ INSERT INTO `@pf_sys_menu` VALUES ('12', '列表模型', '1', '7', '0', '^/tool/
 -- ----------------------------
 DROP TABLE IF EXISTS `@pf_tool_app`;
 CREATE TABLE `@pf_tool_app` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
-  `namespace` varchar(255) DEFAULT NULL,
-  `module` varchar(255) DEFAULT NULL,
-  `isDefault` tinyint(1) DEFAULT '0',
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `name` varchar(255) DEFAULT NULL,
+    `namespace` varchar(255) DEFAULT NULL,
+    `module` varchar(255) DEFAULT NULL,
+    `isDefault` tinyint(1) DEFAULT '0',
+    `dirName` varchar(255) DEFAULT NULL,
+    `db_host` varchar(255) DEFAULT NULL,
+    `db_port` int(11) DEFAULT NULL,
+    `db_name` varchar(255) DEFAULT NULL,
+    `db_user` varchar(255) DEFAULT NULL,
+    `db_pwd` varchar(255) DEFAULT NULL,
+    `db_prefix` varchar(255) DEFAULT NULL,
+    `db_charset` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
 
 -- ----------------------------
 -- Records of @pf_tool_app
