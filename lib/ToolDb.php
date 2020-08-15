@@ -6,6 +6,7 @@ namespace tool\lib;
 
 use beacon\Config;
 use beacon\Mysql;
+use beacon\DB;
 
 class ToolDb
 {

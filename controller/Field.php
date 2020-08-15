@@ -35,7 +35,7 @@ class Field extends BaseController
                 $appId = 0;
             }
         }
-        $this->appId = intval($appId);
+        $this->appId = intval($this->appId);
         $this->assign('appId', $this->appId);
     }
 

@@ -8,6 +8,7 @@ use beacon\Utils;
 
 class MakeForm
 {
+    private $appId = 0;
     private $form = null;
     private $fields = null;
     private $namespace = null;
@@ -28,6 +29,7 @@ class MakeForm
         if ($this->form == null) {
             throw new \Exception('生成错误');
         }
+        $this->appId = intval($this->form['appId']);
         if (isset($this->form['withForm']) && $this->form['withForm'] == 1) {
             $this->fields = DB::getList('select * from @pf_tool_field where formId=? order by sort asc', $formId);
             if (empty($namespace)) {
@@ -396,7 +398,14 @@ class MakeForm
     public function makeFile()
     {
         if (isset($this->form['withForm']) && $this->form['withForm'] == 1) {
-            $path = Utils::path(ROOT_DIR, $this->namespace);
+            $rootDir = ROOT_DIR;
+            $app = DB::getRow('select dirName from @pf_tool_app where id=?', $this->appId);
+            if ($app && !empty($app['dirName'])) {
+                if (is_dir($app['dirName'])) {
+                    $rootDir = $app['dirName'];
+                }
+            }
+            $path = Utils::path($rootDir, $this->namespace);
             Utils::makeDir($path);
             $code = $this->getCode();
             file_put_contents(Utils::path($path, $this->className . '.php'), $code);

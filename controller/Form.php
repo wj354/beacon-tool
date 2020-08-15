@@ -40,6 +40,7 @@ class Form extends BaseController
 
     public function indexAction()
     {
+        $this->assign('appId', $this->appId);
         if ($this->isAjax()) {
             $selector = new SqlSelector('@pf_tool_form');
             $name = $this->get('name', '');
@@ -89,7 +90,6 @@ class Form extends BaseController
             $this->success('获取数据成功', $data);
         }
         $appList = DB::getList('select * from @pf_tool_app');
-        $this->assign('appId', $this->appId);
         $this->assign('applist', $appList);
         $this->display('Form');
     }

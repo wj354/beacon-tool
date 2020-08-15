@@ -26,7 +26,15 @@ class MakeListTemplate
         if ($this->list == null) {
             throw new \Exception('生成错误');
         }
-        $this->path = Utils::path(ROOT_DIR, $this->list['namespace'], 'zero/view');
+        $appId = intval($this->list['appId']);
+        $rootDir = ROOT_DIR;
+        $app = DB::getRow('select dirName from @pf_tool_app where id=?', $appId);
+        if ($app && !empty($app['dirName'])) {
+            if (is_dir($app['dirName'])) {
+                $rootDir = $app['dirName'];
+            }
+        }
+        $this->path = Utils::path($rootDir, $this->list['namespace'], 'zero/view');
         $this->keyName = $this->list['key'];
         if (isset($this->list['withTpl']) && $this->list['withTpl'] == 1) {
             $this->createTemplate();

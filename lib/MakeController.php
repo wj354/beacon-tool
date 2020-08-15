@@ -15,6 +15,7 @@ use beacon\Utils;
 
 class MakeController
 {
+    private $appId = 0;
     private $list = null;
     private $form = null;
     private $namespace = null;
@@ -34,6 +35,7 @@ class MakeController
         if ($this->list == null) {
             throw new \Exception('生成错误');
         }
+        $this->appId = $this->list['appId'];
         if (isset($this->list['withCtl']) && $this->list['withCtl'] == 1) {
             if (empty($namespace)) {
                 $this->appSpace = trim($this->list['namespace'], '\\');
@@ -335,7 +337,7 @@ class MakeController
                     $sortItem[] = $field['orderName'];
                 }
             }
-           // Logger::log('sortItem', $sortItem);
+            // Logger::log('sortItem', $sortItem);
             //排序
             if (count($sortItem)) {
                 $this->out[] = '        //自动按列设置排序';
@@ -475,7 +477,14 @@ class MakeController
     public function makeFile()
     {
         if (isset($this->list['withCtl']) && $this->list['withCtl'] == 1) {
-            $path = Utils::path(ROOT_DIR, $this->namespace);
+            $rootDir = ROOT_DIR;
+            $app = DB::getRow('select dirName from @pf_tool_app where id=?', $this->appId);
+            if ($app && !empty($app['dirName'])) {
+                if (is_dir($app['dirName'])) {
+                    $rootDir = $app['dirName'];
+                }
+            }
+            $path = Utils::path($rootDir, $this->namespace);
             Utils::makeDir($path);
             $code = $this->getCode();
             file_put_contents(Utils::path($path, $this->className . '.php'), $code);
