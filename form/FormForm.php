@@ -302,8 +302,8 @@ class FormForm extends \beacon\Form
             ],
             'makeStatic' => [
                 'label' => '静态生成',
-                'type' => 'check',
-                'after-text' => '尽可能的生成静态模板',
+                'type' => 'select',
+                'options' => [['value' => 0, 'text' => '不生成静态'], ['value' => 1, 'text' => '尽可能生成静态'], ['value' => 2, 'text' => '部分生成静态']],
                 'tab-index' => 'base',
                 'default' => 1,
             ],

@@ -193,6 +193,9 @@ class MakeFormTemplate
         if (!empty($field['prev'])) {
             $this->createFieldInline($field['prev']);
         }
+        if ($this->form['makeStatic'] == 2) {
+            $this->out[] = '{if !$form->getField(' . var_export($field['name'], true) . ')->close}';
+        }
         if ($field['type'] == 'button') {
             $this->out[] = '{input field=$form->getField(' . var_export($field['name'], true) . ')}';
             if (!empty($field['tips'])) {
@@ -219,6 +222,9 @@ class MakeFormTemplate
             $this->out[] = '</span>';
             $this->out[] = '</div>';
         }
+        if ($this->form['makeStatic'] == 2) {
+            $this->out[] = '{/if}';
+        }
         if (!empty($field['next'])) {
             $this->createFieldInline($field['next']);
         }
@@ -239,6 +245,9 @@ class MakeFormTemplate
             }
             $this->out[] = '</div>';
             return;
+        }
+        if ($this->form['makeStatic'] == 2) {
+            $this->out[] = '{if !$form->getField(' . var_export($field['name'], true) . ')->close}';
         }
         if ($this->form['extMode'] == 1) {
             $this->out[] = '<div class="yee-row' . ($field['viewHide'] ? ' none' : '') . '" id="row_{$form->getField(' . var_export($field['name'], true) . ')->boxId}">';
@@ -274,6 +283,9 @@ class MakeFormTemplate
         }
         $this->out[] = '</div>';
         $this->out[] = '</div>';
+        if ($this->form['makeStatic'] == 2) {
+            $this->out[] = '{/if}';
+        }
     }
 
     private function createPanelField($tab = null)
@@ -450,11 +462,11 @@ class MakeFormTemplate
         if ($this->form['plugStyle'] == 0) {
             $this->out[] = '<div class="yee-container-title">';
             $this->out[] = '<label class="inline-label" style="text-align: left;">&nbsp;&nbsp;  第 <span name="index" class="red2" style="font-size: 18px;"></span>项&nbsp;&nbsp;&nbsp;</label>';
-            $this->out[] ='{if !$field->offEdit}';
+            $this->out[] = '{if !$field->offEdit}';
             $this->out[] = '{if $field->viewRemoveBtn}<a href="javascript:;" class="yee-btn" name="remove"><i class="icofont-minus-circle"></i>移除</a>{/if}';
             $this->out[] = '{if $field->viewInsertBtn}<a href="javascript:;" name="insert" class="yee-btn"><i class="icofont-puzzle"></i>插入</a>{/if}';
             $this->out[] = '{if $field->viewSortBtn}<a href="javascript:;" name="upsort" class="yee-btn"><i class="icofont-long-arrow-up"></i>上移</a><a href="javascript:;" name="dnsort" class="yee-btn"><i class="icofont-long-arrow-down"></i>下移</a>{/if}';
-            $this->out[] ='{/if}';
+            $this->out[] = '{/if}';
             $this->out[] = '</div>';
             $this->out[] = '<div class="yee-container-body">';
             if ($this->form['makeStatic']) {
