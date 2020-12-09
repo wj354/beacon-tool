@@ -250,7 +250,7 @@ class Form extends BaseController
             } else {
                 $this->error(['proId' => '不存在的项目']);
             }
-            $this->appId = intval($row['appId']);
+            $this->appId = intval($app['id']);
             //扩展模式不需要创建表
             if ($values['extMode'] == 1) {
                 $values['tbCreate'] = false;
@@ -321,7 +321,8 @@ class Form extends BaseController
             } else {
                 $this->error(['proId' => '不存在的项目']);
             }
-            $this->appId = intval($row['id']);
+            $this->appId = intval($app['id']);
+
             $db = ToolDb::getDb($this->appId);
             $values['updateTime'] = time();
             if ($row['extMode'] != 1) {
