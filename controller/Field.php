@@ -170,11 +170,11 @@ class Field extends BaseController
             $tbName = '@pf_' . $fRow['tbName'];
             try {
                 $db = ToolDb::getDb($this->appId);
-                $db->beginTransaction();
+                //$db->beginTransaction();
                 if ($fRow['tbCreate'] == 1 && ($fRow['extMode'] == 0 || $fRow['extMode'] == 2)) {
                     if ($values['dbtype'] != 'none' && $values['dbfield'] == 1) {
                         if ($db->existsField($tbName, $values['name'])) {
-                            $db->rollBack();
+                           // $db->rollBack();
                             $this->error(['name' => '创建字段失败,字段名已经存在']);
                         }
                         $def = null;
@@ -223,9 +223,9 @@ class Field extends BaseController
                         }
                     }
                 }
-                $db->commit();
+               // $db->commit();
             } catch (MysqlException $exception) {
-                $db->rollBack();
+               // $db->rollBack();
                 $this->error('创建字段失败');
             }
             DB::insert('@pf_tool_field', $values);
@@ -284,13 +284,13 @@ class Field extends BaseController
             $tbName = '@pf_' . $fRow['tbName'];
             try {
                 $db = ToolDb::getDb($this->appId);
-                $db->beginTransaction();
+                //$db->beginTransaction();
                 //如果创建表
                 if ($fRow['tbCreate'] == 1 && ($fRow['extMode'] == 0 || $fRow['extMode'] == 2)) {
                     if ($values['dbtype'] != 'null' && $values['dbfield'] == 1) {
                         if ($row['name'] != $values['name']) {
                             if ($db->existsField($tbName, $values['name'])) {
-                                $db->rollBack();
+                               // $db->rollBack();
                                 $this->error(['name' => '创建字段失败,字段名已经存在']);
                             }
                         }
@@ -340,9 +340,9 @@ class Field extends BaseController
                         }
                     }
                 }
-                $db->commit();
+               // $db->commit();
             } catch (MysqlException $exception) {
-                $db->rollBack();
+              //  $db->rollBack();
                 $this->error('修改字段失败');
             }
             DB::update('@pf_tool_field', $values, $id);
@@ -413,7 +413,7 @@ class Field extends BaseController
         $tbName = '@pf_' . $fRow['tbName'];
         try {
             $db = ToolDb::getDb($this->appId);
-            $db->beginTransaction();
+            //$db->beginTransaction();
             if ($fRow['tbCreate'] == 1 && ($fRow['extMode'] == 0 || $fRow['extMode'] == 2)) {
                 if ($values['dbtype'] != 'null' && $values['dbfield'] == 1) {
                     $idx = 1;
@@ -486,9 +486,9 @@ class Field extends BaseController
                     $values['extend']['names'] = json_encode($values['names'], JSON_UNESCAPED_UNICODE);
                 }
             }
-            $db->commit();
+           // $db->commit();
         } catch (MysqlException $exception) {
-            $db->rollBack();
+           // $db->rollBack();
             $this->error('字段拷贝失败');
         }
         MakeForm::make($this->formId);

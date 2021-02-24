@@ -413,7 +413,7 @@ class Form extends BaseController
         }
         try {
             $db = ToolDb::getDb($appId);
-            $db->beginTransaction();
+           // $db->beginTransaction();
             if ($values['dbtype'] != 'null' && $values['dbfield'] == 1) {
                 $idx = 1;
                 $name = $values['name'];
@@ -459,9 +459,9 @@ class Form extends BaseController
                 }
                 $values['extend']['names'] = json_encode($values['names'], JSON_UNESCAPED_UNICODE);
             }
-            $db->commit();
+           // $db->commit();
         } catch (\Exception $exception) {
-            $db->rollBack();
+           // $db->rollBack();
             return;
         }
     }
