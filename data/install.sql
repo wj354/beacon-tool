@@ -78,7 +78,7 @@ CREATE TABLE `@pf_tool_app` (
 -- ----------------------------
 -- Records of @pf_tool_app
 -- ----------------------------
-INSERT INTO `@pf_tool_app` VALUES ('1', '系统后台', 'app\\admin', 'admin', '1');
+INSERT INTO `@pf_tool_app` VALUES ('1', '系统后台', 'app\\admin', 'admin', '1','','',3306,'','','','','');
 
 -- ----------------------------
 -- Table structure for @pf_tool_field
