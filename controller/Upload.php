@@ -1,22 +1,19 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: wj008
- * Date: 2019/1/12
- * Time: 22:28
- */
+
 
 namespace tool\controller;
 
 
-use beacon\Logger;
-use beacon\Utils;
+use beacon\core\Method;
+use beacon\core\Request;
+use beacon\core\Util;
 
-class Upload extends BaseController
+class Upload extends Base
 {
-    public function indexAction()
+    #[Method(act: 'index', method: Method::GET | Method::POST)]
+    public function index()
     {
-        $this->setContentType('json');
+        Request::setContentType('json');
         if (!isset($_FILES['filedata'])) {
             $this->error('上传失败');
         }
@@ -32,8 +29,8 @@ class Upload extends BaseController
             $this->error('文件类型不符，只能上传 form 或者 list');
         }
         $newFile = time() . '.' . $info['extension'];
-        $path = Utils::path(ROOT_DIR, 'runtime/temp', $newFile);
-        Utils::makeDir(dirname($path));
+        $path = Util::path(ROOT_DIR, 'runtime/temp', $newFile);
+        Util::makeDir(dirname($path));
         if (!(move_uploaded_file($file["tmp_name"], $path) && file_exists($path))) {
             $this->error('上传失败');
         }
