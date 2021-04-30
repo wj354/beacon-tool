@@ -67,6 +67,7 @@ class UpFile
     public function export(): array
     {
         return [
+            'url' => $this->url,
             'mode' => $this->mode,
             'extensions' => $this->extensions,
             'size' => $this->size,

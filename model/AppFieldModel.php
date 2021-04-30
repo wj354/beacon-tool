@@ -358,28 +358,48 @@ class AppFieldModel
             'Single' => ['text' => '单行容器 Single', 'data-types' => ['text', 'json']],
             'Transfer' => ['text' => '穿梭框 Transfer', 'data-types' => ['int(11)', 'tinyint(4)', 'varchar(200)', 'float(18,2)', 'decimal(18,2)', 'double(18,2)', 'text', 'longtext', 'json']],
         ];
-
-        $path = Util::path(ROOT_DIR, 'tool/support');
-        if (is_dir($path)) {
-            $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path, \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::SELF_FIRST);
-            /**@var \SplFileInfo $fileInfo */
-            foreach ($iterator as $fileInfo) {
-                if ($fileInfo->isFile() && $fileInfo->getExtension() == 'php') {
-                    $name = $fileInfo->getBasename('.php');
-                    if (isset($data[$name])) {
+        $paths = [];
+        $paths[] = Util::path(TOOL_DIR, 'support');
+        //扫描wj008目录,插件会装到这里
+        $tempPath = Util::path(TOOL_DIR, '../../', 'wj008');
+        if (is_dir($tempPath)) {
+            $directory = new \RecursiveDirectoryIterator($tempPath, \RecursiveDirectoryIterator::SKIP_DOTS);
+            foreach ($directory as $dir) {
+                if ($dir->isDir()) {
+                    $baseName = $dir->getBasename();
+                    if ($baseName == 'beacon' || $baseName == 'sdopx'|| $baseName == 'install') {
                         continue;
                     }
-                    try {
-                        $class = App::getNamespace() . '\\support\\' . $name;
-                        $refClass = new \ReflectionClass($class);
-                        $temp = $refClass->getAttributes(Support::class);
-                        if (isset($temp[0])) {
-                            /**@var Support $supper */
-                            $supper = $temp[0]->newInstance();
-                            $data[$name] = ['text' => $supper->name, 'data-types' => $supper->types];
+                    $temp = Util::path($dir->getPathname(), 'tool/support');
+                    if (is_dir($temp)) {
+                        $paths[] = $temp;
+                    }
+                }
+            }
+        }
+        foreach ($paths as $path) {
+            if (is_dir($path)) {
+                $directory = new \RecursiveDirectoryIterator($path, \RecursiveDirectoryIterator::SKIP_DOTS);
+                $iterator = new \RecursiveIteratorIterator($directory, \RecursiveIteratorIterator::SELF_FIRST);
+                /**@var \SplFileInfo $fileInfo */
+                foreach ($iterator as $fileInfo) {
+                    if ($fileInfo->isFile() && $fileInfo->getExtension() == 'php') {
+                        $name = $fileInfo->getBasename('.php');
+                        if (isset($data[$name])) {
+                            continue;
                         }
-                    } catch (\ReflectionException) {
-                        continue;
+                        try {
+                            $class = 'tool\\support\\' . $name;
+                            $refClass = new \ReflectionClass($class);
+                            $temp = $refClass->getAttributes(Support::class);
+                            if (isset($temp[0])) {
+                                /**@var Support $supper */
+                                $supper = $temp[0]->newInstance();
+                                $data[$name] = ['text' => $supper->name, 'data-types' => $supper->types];
+                            }
+                        } catch (\ReflectionException) {
+                            continue;
+                        }
                     }
                 }
             }

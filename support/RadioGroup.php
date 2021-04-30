@@ -10,7 +10,7 @@ use beacon\widget\Container;
 use beacon\widget\Text;
 use beacon\widget\Textarea;
 
-#[Form(title: '多选框设置', template: 'form/field_support.tpl')]
+#[\Attribute] #[Form(title: '多选框设置', template: 'form/field_support.tpl')]
 class RadioGroup
 {
 

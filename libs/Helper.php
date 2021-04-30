@@ -11,7 +11,6 @@ use beacon\core\Util;
 class Helper
 {
 
-
     /**
      * 获取插件类名
      * @param string $name
@@ -19,8 +18,6 @@ class Helper
      */
     public static function getSupportClassName(string $name): string
     {
-
-        //$class = App::getNamespace() . '\\support\\' . $name;
         $class = 'tool\\support\\' . $name;
         if (!class_exists($class)) {
             return '';

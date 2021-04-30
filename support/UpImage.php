@@ -20,8 +20,8 @@ class UpImage
     #[RadioGroup(
         label: '按钮风格',
         options: [
-        ['file', '单图'],
-        ['fileGroup', '多图'],
+        ['image', '单图'],
+        ['imgGroup', '多图'],
     ],
         dynamic: [
             [
@@ -70,6 +70,7 @@ class UpImage
     public function export(): array
     {
         return [
+            'url' => $this->url,
             'mode' => $this->mode,
             'extensions' => $this->extensions,
             'fieldName' => $this->fieldName,
