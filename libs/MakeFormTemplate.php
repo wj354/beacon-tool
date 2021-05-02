@@ -63,7 +63,7 @@ class MakeFormTemplate
             }
         } else {
             if (empty($this->form['baseLayout'])) {
-                $this->out[] = '{extends file=\'layout/layoutForm.tpl\'}';
+                $this->out[] = '{extends file=\'layout/form.tpl\'}';
             } else {
                 $this->out[] = '{extends file=\'' . $this->form['baseLayout'] . '\'}';
             }

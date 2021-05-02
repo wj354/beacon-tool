@@ -47,7 +47,7 @@ class MakeListTemplate
     private function createTemplate()
     {
         if (empty($this->list['baseLayout'])) {
-            $this->out[] = '{extends file=\'layout/layoutList.tpl\'}';
+            $this->out[] = '{extends file=\'layout/list.tpl\'}';
         } else {
             $this->out[] = '{extends file=\'' . $this->list['baseLayout'] . '\'}';
         }

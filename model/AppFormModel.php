@@ -210,10 +210,10 @@ class AppFormModel
 
     #[Text(
         label: '皮肤文件Layout',
-        prompt: '父页面皮肤文件，如果为空 默认使用系统皮肤文件 layout/layoutForm.tpl',
+        prompt: '父页面皮肤文件，如果为空 默认使用系统皮肤文件 layout/form.tpl',
         tabIndex: 'base'
     )]
-    public string $baseLayout = 'layout/layoutForm.tpl';
+    public string $baseLayout = 'layout/form.tpl';
 
     #[Check(
         label: '生成模板',

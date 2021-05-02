@@ -181,7 +181,7 @@ class AppListModel
 
     #[Text(
         label: '皮肤文件Layout',
-        prompt: '父页面皮肤文件，如果为空 默认使用系统皮肤文件 layout/layoutList.tpl',
+        prompt: '父页面皮肤文件，如果为空 默认使用系统皮肤文件 layout/list.tpl',
         tabIndex: 'base',
     )]
     public string $baseLayout = '';
