@@ -11,7 +11,7 @@
 </head>
 <body>
 <div class="main-layout">
-    <div class="main-title">Beacon Tool 4.0 安装</div>
+    <div class="main-title">Beacon Tool 3.x 安装</div>
     <form method="post" yee-module="validate ajax">
         <div class="form-area">
             <div class="form-left">
