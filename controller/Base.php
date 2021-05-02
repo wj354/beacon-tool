@@ -24,7 +24,7 @@ class Base extends Controller
         }
         $adminId = Request::getSession('adminId:i', 0);
         if (!$adminId) {
-            //$this->redirect('^/admin');
+            $this->redirect('^/admin');
         }
     }
 
