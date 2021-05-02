@@ -1,25 +1,4 @@
-/*
- Navicat Premium Data Transfer
 
- Source Server         : mysql
- Source Server Type    : MySQL
- Source Server Version : 50729
- Source Host           : localhost:3306
- Source Schema         : ccjcw
-
- Target Server Type    : MySQL
- Target Server Version : 50729
- File Encoding         : 65001
-
- Date: 30/04/2021 20:14:37
-*/
-
-SET NAMES utf8mb4;
-SET FOREIGN_KEY_CHECKS = 0;
-
--- ----------------------------
--- Table structure for @pf_tool_app
--- ----------------------------
 DROP TABLE IF EXISTS `@pf_tool_app`;
 CREATE TABLE `@pf_tool_app` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -36,18 +15,9 @@ CREATE TABLE `@pf_tool_app` (
   `db_prefix` varchar(255) DEFAULT NULL,
   `db_charset` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='TOOL应用';
-
--- ----------------------------
--- Records of @pf_tool_app
--- ----------------------------
-BEGIN;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=@@charset ROW_FORMAT=DYNAMIC COMMENT='TOOL应用';
 INSERT INTO `@pf_tool_app` VALUES (1, '系统后台', 'app\\admin', 'admin', 1, '', '', 0, '', '', '', '', '');
-COMMIT;
 
--- ----------------------------
--- Table structure for @pf_tool_field
--- ----------------------------
 DROP TABLE IF EXISTS `@pf_tool_field`;
 CREATE TABLE `@pf_tool_field` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -91,17 +61,8 @@ CREATE TABLE `@pf_tool_field` (
   `star` tinyint(4) DEFAULT NULL,
   `validFunc` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='TOOL字段数据';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=@@charset ROW_FORMAT=DYNAMIC COMMENT='TOOL字段数据';
 
--- ----------------------------
--- Records of @pf_tool_field
--- ----------------------------
-BEGIN;
-COMMIT;
-
--- ----------------------------
--- Table structure for @pf_tool_form
--- ----------------------------
 DROP TABLE IF EXISTS `@pf_tool_form`;
 CREATE TABLE `@pf_tool_form` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -138,17 +99,8 @@ CREATE TABLE `@pf_tool_form` (
   `withTpl` tinyint(1) DEFAULT NULL,
   `withForm` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='TOOL表单数据';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=@@charset ROW_FORMAT=DYNAMIC COMMENT='TOOL表单数据';
 
--- ----------------------------
--- Records of @pf_tool_form
--- ----------------------------
-BEGIN;
-COMMIT;
-
--- ----------------------------
--- Table structure for @pf_tool_list
--- ----------------------------
 DROP TABLE IF EXISTS `@pf_tool_list`;
 CREATE TABLE `@pf_tool_list` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -212,17 +164,8 @@ CREATE TABLE `@pf_tool_list` (
   `selectStyle` varchar(255) DEFAULT NULL,
   `selectValue` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='TOOL列表数据';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=@@charset ROW_FORMAT=DYNAMIC COMMENT='TOOL列表数据';
 
--- ----------------------------
--- Records of @pf_tool_list
--- ----------------------------
-BEGIN;
-COMMIT;
-
--- ----------------------------
--- Table structure for @pf_tool_search
--- ----------------------------
 DROP TABLE IF EXISTS `@pf_tool_search`;
 CREATE TABLE `@pf_tool_search` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -248,12 +191,4 @@ CREATE TABLE `@pf_tool_search` (
   `varType` varchar(255) DEFAULT '',
   `close` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='TOOL搜索数据';
-
--- ----------------------------
--- Records of @pf_tool_search
--- ----------------------------
-BEGIN;
-COMMIT;
-
-SET FOREIGN_KEY_CHECKS = 1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=@@charset ROW_FORMAT=DYNAMIC COMMENT='TOOL搜索数据';

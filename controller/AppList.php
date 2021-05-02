@@ -13,6 +13,7 @@ use beacon\core\Request;
 use beacon\core\Util;
 use tool\libs\ToolDB;
 use tool\model\AppListModel;
+use tool\libs\MakeSearch;
 
 /**
  * Class AppField
@@ -220,7 +221,7 @@ class AppList extends AppBase
                 unlink($path);
             }
         }
-        //MakeSearch::make($listId);
+        MakeSearch::make($listId);
         $this->success('添加' . $form->title . '成功');
     }
 
@@ -242,6 +243,7 @@ class AppList extends AppBase
         $this->fixInput($input);
         $input['updateTime'] = time();
         DB::update('@pf_tool_list', $input, $id);
+        MakeSearch::make($id);
         $this->success('编辑' . $form->title . '成功');
     }
 

@@ -286,15 +286,10 @@ class MakeListTemplate
         $tdCode = [];
         $index = 0;
         $keyName = '_' . $index;
-        $renderMode = empty($this->list['renderMode']) ? 'yee' : $this->list['renderMode'];
         //选择项
         if ($this->list['useSelect']) {
             $thCode[] = '<th width="40"><input type="checkbox"></th>';
-            if ($renderMode == 'vue') {
-                $tdCode[] = '<td align="center" v-html="rs.' . $keyName . '"></td>';
-            } else {
-                $tdCode[] = '<td align="center" :html="rs.' . $keyName . '"></td>';
-            }
+            $tdCode[] = '<td align="center" v-html="rs.' . $keyName . '"></td>';
             $selectValue = empty($this->list['selectValue']) ? '{$rs.id}' : $this->list['selectValue'];
             $this->hook[] = "{hook fn='{$keyName}' rs=null}" . '<input type="checkbox" name="choice" value="' . $selectValue . '">{/hook}';
         }
@@ -337,11 +332,7 @@ class MakeListTemplate
             if ($this->list['useTwoLine'] && $idx + 1 == $len) {
                 $tdAttr[] = 'colspan="100"';
             }
-            if ($renderMode == 'vue') {
-                $tdAttr[] = 'v-html="rs.' . $keyName . '"';
-            } else {
-                $tdAttr[] = ':html="rs.' . $keyName . '"';
-            }
+            $tdAttr[] = 'v-html="rs.' . $keyName . '"';
             $thAttr = join(' ', $thAttr);
             $tdAttr = join(' ', $tdAttr);
             $thCode[] = '<th ' . $thAttr . '>' . (isset($field['title']) ? $field['title'] : '') . '</th>';
@@ -385,11 +376,7 @@ class MakeListTemplate
                     $keyName = $field['thOpName'];
                 }
             }
-            if ($renderMode == 'vue') {
-                $tdAttr[] = 'v-html="rs.' . $keyName . '"';
-            } else {
-                $tdAttr[] = ':html="rs.' . $keyName . '"';
-            }
+            $tdAttr[] = 'v-html="rs.' . $keyName . '"';
             $thAttr = join(' ', $thAttr);
             $tdAttr = join(' ', $tdAttr);
             $thCode[] = '<th ' . $thAttr . '>' . (isset($field['thTitle']) ? $field['thTitle'] : '') . '</th>';
@@ -427,41 +414,22 @@ class MakeListTemplate
         $this->out[] = join("\n", $thCode);
         $this->out[] = '</tr>';
         $this->out[] = '</thead>';
-        if ($renderMode == 'vue') {
-            $this->out[] = '<tbody yee-template="vue">';
-            if ($this->list['useTwoLine']) {
-                $this->out[] = '<tr v-for="rs in list"><td colspan="100" style="padding: 0;"><table class="yee-inner-table" cellspacing="0" cellpadding="0" border="0">';
-                $this->out[] = '<tr class="first-line">';
-                $this->out[] = join("\n", $tdCode);
-                $this->out[] = '</tr>';
-                $this->out[] = '<tr class="second-line">';
-                $this->out[] = $sedCode;
-                $this->out[] = '</tr>';
-                $this->out[] = '</table></td></tr>';
-            } else {
-                $this->out[] = '<tr  v-for="rs in list">';
-                $this->out[] = join("\n", $tdCode);
-                $this->out[] = '</tr>';
-            }
-            $this->out[] = '<tr v-if="list.length==0"><td colspan="100"> 没有任何数据信息....</td></tr>';
+        $this->out[] = '<tbody yee-template="vue">';
+        if ($this->list['useTwoLine']) {
+            $this->out[] = '<tr v-for="rs in list"><td colspan="100" style="padding: 0;"><table class="yee-inner-table" cellspacing="0" cellpadding="0" border="0">';
+            $this->out[] = '<tr class="first-line">';
+            $this->out[] = join("\n", $tdCode);
+            $this->out[] = '</tr>';
+            $this->out[] = '<tr class="second-line">';
+            $this->out[] = $sedCode;
+            $this->out[] = '</tr>';
+            $this->out[] = '</table></td></tr>';
         } else {
-            $this->out[] = '<tbody yee-template>';
-            if ($this->list['useTwoLine']) {
-                $this->out[] = '<tr yee-each="list" yee-item="rs"><td colspan="100" style="padding: 0;"><table class="yee-inner-table" cellspacing="0" cellpadding="0" border="0">';
-                $this->out[] = '<tr class="first-line">';
-                $this->out[] = join("\n", $tdCode);
-                $this->out[] = '</tr>';
-                $this->out[] = '<tr class="second-line">';
-                $this->out[] = $sedCode;
-                $this->out[] = '</tr>';
-                $this->out[] = '</table></td></tr>';
-            } else {
-                $this->out[] = '<tr yee-each="list" yee-item="rs">';
-                $this->out[] = join("\n", $tdCode);
-                $this->out[] = '</tr>';
-            }
-            $this->out[] = '<tr yee-if="list.length==0"><td colspan="100"> 没有任何数据信息....</td></tr>';
+            $this->out[] = '<tr  v-for="rs in list">';
+            $this->out[] = join("\n", $tdCode);
+            $this->out[] = '</tr>';
         }
+        $this->out[] = '<tr v-if="list.length==0"><td colspan="100"> 没有任何数据信息....</td></tr>';
         $this->out[] = '</tbody>';
         $this->out[] = '</table>';
         $this->out[] = "{/block}";
@@ -470,22 +438,14 @@ class MakeListTemplate
     public function createPageBar()
     {
 
-        $renderMode = empty($this->list['renderMode']) ? 'yee' : $this->list['renderMode'];
         if ($this->list['usePageList']) {
             $this->out[] = '';
             $this->out[] = "{block name='list-pagebar'}";
             $this->out[] = '<div yee-module="pagebar" data-bind="#list" class="yee-pagebar">';
-            if ($renderMode == 'vue') {
-                $this->out[] = '    <div yee-template="vue">';
-                $this->out[] = '        <div class="pagebar" v-html="barCode"></div>';
-                $this->out[] = '        <div class="pagebar-info">共有信息：<span v-text="recordsCount"></span> 页次：<span v-text="page"></span>/<span v-text="pageCount"></span> 每页<span v-text="pageSize"></span></div>';
-                $this->out[] = '    </div>';
-            } else {
-                $this->out[] = '    <div yee-template>';
-                $this->out[] = '        <div class="pagebar" :html="barCode"></div>';
-                $this->out[] = '        <div class="pagebar-info">共有信息：<span :text="recordsCount"></span> 页次：<span :text="page"></span>/<span :text="pageCount"></span> 每页<span :text="pageSize"></span></div>';
-                $this->out[] = '    </div>';
-            }
+            $this->out[] = '    <div yee-template="vue">';
+            $this->out[] = '        <div class="pagebar" v-html="barCode"></div>';
+            $this->out[] = '        <div class="pagebar-info">共有信息：<span v-text="recordsCount"></span> 页次：<span v-text="page"></span>/<span v-text="pageCount"></span> 每页<span v-text="pageSize"></span></div>';
+            $this->out[] = '    </div>';
             $this->out[] = '</div>';
             $this->out[] = '{/block}';
         }

@@ -424,7 +424,7 @@ class MakeFormTemplate
         $this->out[] = '                    {$form->fetchHideBox()|raw}';
         $this->out[] = '                    <input type="submit" class="form-btn red" value="提交">';
         if (in_array(1, $this->form['viewBtns'])) {
-            $this->out[] = '                    <input type="hidden" name="__BACK__" value="{$this->getReferrer()}">';
+            $this->out[] = '                    <input type="hidden" name="__BACK__" value="{$this->referrer()}">';
             $this->out[] = '                    <a href="javascript:history.back();" class="form-btn back">返回</a>';
         }
         if (in_array(2, $this->form['viewBtns'])) {

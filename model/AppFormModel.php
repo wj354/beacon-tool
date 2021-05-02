@@ -250,9 +250,8 @@ class AppFormModel
     )]
     public int $withForm = 1;
 
-    #[Select(
+    #[RadioGroup(
         label: '静态生成',
-        offEdit: true,
         star: true,
         options: [['value' => 0, 'text' => '不生成静态'], ['value' => 1, 'text' => '尽可能生成静态'], ['value' => 2, 'text' => '部分生成静态']],
         tabIndex: 'base'

@@ -432,6 +432,6 @@ class MakeSearch
     {
         $maker = new static($listId);
         $maker->makeFile();
-        MakeListTemplate::make($listId);
+        MakeController::make($listId);
     }
 }
