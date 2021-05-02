@@ -11,6 +11,7 @@ use beacon\core\Method;
 use beacon\core\Util;
 use beacon\core\Form;
 use beacon\core\Mysql;
+use beacon\core\DBException;
 use tool\model\InstallModel;
 
 
@@ -147,18 +148,23 @@ class Install extends Controller
         if ($this->isPost()) {
             $values = $this->completeForm($form);
             try {
+                $insFile = Util::path(TOOL_DIR, '.installed');
+                if (file_exists($insFile)) {
+                    $this->error('工具已经安装，不可重复安装项目');
+                }
                 //检查创建数据库
+                $cfgFile = Util::path(ROOT_DIR, '/config/db.config.php');
                 $db = new Mysql($values['db_host'], $values['db_port'], '', $values['db_user'], $values['db_pwd'], $values['db_prefix']);
                 $db->exec('CREATE DATABASE if not exists `' . $values['db_name'] . '` DEFAULT CHARSET ' . $values['db_charset'] . ' COLLATE ' . $values['db_charset'] . '_general_ci');
                 $code = '<?php return ' . var_export($values, TRUE) . ';';
-                $file = Util::path(ROOT_DIR, '/config/db.config.php');
                 #写入配置文件
-                file_put_contents($file, $code);
-                $this->execFile('data/tool.sql', $values['db_charset']);
-                $this->execFile('data/web.sql', $values['db_charset']);
-                $file = Util::path(TOOL_DIR, '.installed');
-                file_put_contents($file, TOOL_VERSION);
-            } catch (MysqlException $exception) {
+                if (!file_exists($cfgFile)) {
+                    file_put_contents($cfgFile, $code);
+                    $this->execFile('data/tool.sql', $values['db_charset']);
+                    $this->execFile('data/web.sql', $values['db_charset']);
+                }
+                file_put_contents($insFile, TOOL_VERSION);
+            } catch (DBException $exception) {
                 $this->error('保存失败：' . $exception->getMessage());
             } catch (\Exception $exception) {
                 $this->error('保存失败：' . $exception->getMessage());
