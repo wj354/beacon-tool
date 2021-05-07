@@ -238,14 +238,14 @@ class MakeController
             $zeroConfig['template'] = $this->list['template'];
             $zeroConfig['hookTemplate'] = $this->list['templateHook'];
             if (empty($zeroConfig['template'])) {
-                $zeroConfig['template'] = 'list/' . Util::camelToAttr($className) . '.tpl';
+                $zeroConfig['template'] = 'list/' . Util::toUnder($className) . '.tpl';
             }
             if (empty($zeroConfig['hookTemplate'])) {
-                $zeroConfig['templateHook'] = 'hook/' . Util::camelToAttr($className) . '.hook.tpl';
+                $zeroConfig['templateHook'] = 'hook/' . Util::toUnder($className) . '.hook.tpl';
             }
         } else {
-            $zeroConfig['template'] = 'list/' . Util::camelToAttr($className) . '.tpl';
-            $zeroConfig['hookTemplate'] = 'hook/' . Util::camelToAttr($className) . '.hook.tpl';
+            $zeroConfig['template'] = 'list/' . Util::toUnder($className) . '.tpl';
+            $zeroConfig['hookTemplate'] = 'hook/' . Util::toUnder($className) . '.hook.tpl';
         }
         //加载函数代码
         $this->out[] = '';

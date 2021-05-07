@@ -581,11 +581,11 @@ class MakeFormTemplate
             if ($this->form['extMode'] == 1) {
                 $path = Util::path($this->path, 'plugin');
                 Util::makeDir($path);
-                file_put_contents(Util::path($path, Util::camelToAttr($this->keyName) . '.plugin.tpl'), $code);
+                file_put_contents(Util::path($path, Util::toUnder($this->keyName) . '.plugin.tpl'), $code);
             } else {
                 $path = Util::path($this->path, 'form');
                 Util::makeDir($path);
-                file_put_contents(Util::path($path, Util::camelToAttr($this->keyName) . '.form.tpl'), $code);
+                file_put_contents(Util::path($path, Util::toUnder($this->keyName) . '.form.tpl'), $code);
             }
         }
     }

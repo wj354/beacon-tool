@@ -51,11 +51,11 @@ class MakeModel
         if ($this->form['extMode'] == 1) {
             $this->namespace = $this->namespace . '\\zero\\plugin';
             $className = $this->form['key'] . 'Plugin';
-            $this->template = 'plugin/' . Util::camelToAttr($this->form['key']) . '.plugin.tpl';
+            $this->template = 'plugin/' . Util::toUnder($this->form['key']) . '.plugin.tpl';
         } else {
             $this->namespace = $this->namespace . '\\zero\\model';
             $className = $this->form['key'] . 'Model';
-            $this->template = 'form/' . Util::camelToAttr($this->form['key']) . '.form.tpl';
+            $this->template = 'form/' . Util::toUnder($this->form['key']) . '.form.tpl';
         }
         $this->className = $className;
         $this->form['template'] = trim($this->form['template']);
