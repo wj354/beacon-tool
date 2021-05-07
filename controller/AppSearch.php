@@ -13,7 +13,7 @@ use beacon\core\Method;
 use beacon\core\View;
 use beacon\widget\Single;
 use sdopx\SdopxException;
-use tool\lib\MakeSearch;
+use tool\libs\MakeSearch;
 use tool\libs\Helper;
 use tool\model\AppSearchModel;
 
