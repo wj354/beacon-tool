@@ -15,7 +15,6 @@ use beacon\widget\Single;
 use sdopx\SdopxException;
 use tool\lib\MakeSearch;
 use tool\libs\Helper;
-use tool\model\AppFieldModel;
 use tool\model\AppSearchModel;
 
 /**
@@ -64,6 +63,12 @@ class AppSearch extends AppBase
     {
         if (!$this->isAjax()) {
             $this->appId = intval($this->list['appId']);
+            $appRow = DB::getRow('select `module` from @pf_tool_app where id=?', $this->appId);
+            if ($appRow) {
+                $this->list['testUrl'] = App::url('^/' . $appRow['module'] . '/' . $this->list['key']);
+            } else {
+                $this->list['testUrl'] = '#';
+            }
             $this->assign('listRow', $this->list);
             $this->display('list/app_search.tpl');
             return;
@@ -145,6 +150,7 @@ class AppSearch extends AppBase
         $this->fixInput($input);
         $input['listId'] = $this->listId;
         DB::insert('@pf_tool_search', $input);
+        MakeSearch::make($this->listId);
         $this->success('添加' . $form->title . '成功');
     }
 
@@ -171,6 +177,7 @@ class AppSearch extends AppBase
         $this->fixInput($input);
         $input['listId'] = $this->listId;
         DB::update('@pf_tool_search', $input, $id);
+        MakeSearch::make($this->listId);
         $this->success('编辑' . $form->title . '成功');
     }
 
@@ -203,7 +210,7 @@ class AppSearch extends AppBase
         foreach ($fields as $id) {
             $this->paste($id);
         }
-        // MakeSearch::make($this->listId);
+        MakeSearch::make($this->listId);
         $this->success('字段拷贝成功');
     }
 
@@ -337,7 +344,7 @@ class AppSearch extends AppBase
             }
             DB::insert('@pf_tool_search', $input);
         }
-        //MakeSearch::make($this->listId);
+        MakeSearch::make($this->listId);
         $this->success('拷贝成功');
     }
 
@@ -355,7 +362,7 @@ class AppSearch extends AppBase
         }
         $this->_listId = intval($row['listId']);
         DB::update('@pf_tool_search', ['sort' => $sort], $id);
-        //MakeSearch::make($this->listId);
+        MakeSearch::make($this->listId);
         $this->success('更新排序成功');
     }
 
@@ -384,7 +391,7 @@ class AppSearch extends AppBase
             $this->error('参数有误');
         }
         $this->remove($id);
-        //MakeSearch::make($this->listId);
+        MakeSearch::make($this->listId);
         $this->success('删除字段成功');
     }
 
@@ -398,7 +405,7 @@ class AppSearch extends AppBase
         foreach ($choice as $id) {
             $this->remove($id);
         }
-        //MakeSearch::make($this->listId);
+        MakeSearch::make($this->listId);
         $this->success('删除选中字段成功');
     }
 

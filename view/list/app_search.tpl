@@ -45,7 +45,7 @@
                        class="yee-btn select-all red2" style="margin-right: 20px"><i class="icofont-bin"></i>删除所选</a>
                     <a id="add-btn" href="{url ctl='AppList' act='index'}" class="yee-btn blue">返回列表</a>
                     <a href="{url ctl='AppList' act='code' id=$this->listId}" class="yee-btn" target="_blank"><i class="icofont-code"></i>代码</a>
-                    {*<a href="{$listRow.testUrl}" class="yee-btn green" target="_blank"><i class="icofont-paint"></i>测试</a>*}
+                    <a href="{$listRow.testUrl}" class="yee-btn green" target="_blank"><i class="icofont-paint"></i>预览</a>
                 </div>
             </form>
         </div>

@@ -11,6 +11,7 @@ use beacon\core\Form;
 use beacon\core\Method;
 use beacon\core\Request;
 use beacon\core\Util;
+use beacon\core\App;
 use tool\libs\ToolDB;
 use tool\model\AppListModel;
 use tool\libs\MakeSearch;
@@ -70,6 +71,13 @@ class AppList extends AppBase
         $data = $selector->pageData();
         foreach ($data['list'] as &$datum) {
             $datum['formKey'] = $this->getFormKey($datum['formId']);
+            $appId = $datum['appId'];
+            $appRow = DB::getRow('select `module` from @pf_tool_app where id=?', $appId);
+            if ($appRow) {
+                $datum['testUrl'] = App::url('^/' . $appRow['module'] . '/' . $datum['key']);
+            } else {
+                $datum['testUrl'] = '#';
+            }
         }
         $data['list'] = $this->hookData($data['list'], 'hook/app_list.tpl');
         $this->success('获取数据成功', $data);

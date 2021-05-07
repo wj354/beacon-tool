@@ -14,7 +14,7 @@
 {hook fn='_operate' rs=null}
     <a href="{url act='edit' id=$rs.id appId=$this->appId}" class="yee-btn blue-bd"><i class="icofont-edit"></i>编辑</a>
     <a href="{url ctl='AppSearch' listId=$rs.id appId=$this->appId}" class="yee-btn org2-bd"><i class="icofont-list"></i>搜索字段</a>
-    {*<a href="{$rs.testUrl}" class="yee-btn green-bd" target="_blank"><i class="icofont-paint"></i>测试</a>*}
+    <a href="{$rs.testUrl}" class="yee-btn green-bd" target="_blank"><i class="icofont-paint"></i>预览</a>
     <a href="{url act='add' copyId=$rs.id appId=$this->appId}" class="yee-btn"><i class="icofont-ui-add"></i>克隆</a>
     <a href="{url act='export' listId=$rs.id}" target="_blank" class="yee-btn">导出</a>
     <a href="{url act='del' id=$rs.id}" yee-module="confirm ajax" data-confirm@msg="确定要删除该项目了吗？" class="yee-btn red-bd reload"><i class="icofont-bin"></i>删除</a>
