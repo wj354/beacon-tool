@@ -357,6 +357,12 @@ class AppList extends AppBase
         $this->display('form/list.operate.tpl');
     }
 
+    #[Method(act: 'icon', method: Method::GET)]
+    public function icon()
+    {
+        $this->display('form/list.icon.tpl');
+    }
+
     #[Method(act: 'import', method: Method::GET | Method::POST)]
     public function import()
     {

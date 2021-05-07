@@ -126,6 +126,37 @@ $(function () {
         }
     });
 
+
+    $('#topButtons a[name="insert-operate"]').on('success', function (ev, data) {
+        var obj = Yee.instance('#topButtons', 'container');
+        if (obj) {
+            var item = obj.insertItem(this);
+            if (item) {
+                item.find(':input[name*="[code]"]').val(data);
+            }
+        }
+    });
+    $('#selectButtons a[name="insert-operate"]').on('success', function (ev, data) {
+        var obj = Yee.instance('#selectButtons', 'container');
+        if (obj) {
+            var item = obj.insertItem(this);
+            if (item) {
+                item.find(':input[name*="[code]"]').val(data);
+            }
+        }
+    });
+
+    $('#listButtons a[name="insert-operate"]').on('success', function (ev, data) {
+        var obj = Yee.instance('#listButtons', 'container');
+        if (obj) {
+            var item = obj.insertItem(this);
+            if (item) {
+                item.find(':input[name*="[code]"]').val(data);
+            }
+        }
+    });
+
+
     $('#row_actions').on('click', ':checkbox', function (ev) {
         $('#row_actions').find(':checkbox:checked').each(function (_, el) {
             var value = $(el).val() || '';
