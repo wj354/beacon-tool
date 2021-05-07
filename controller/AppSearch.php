@@ -63,13 +63,14 @@ class AppSearch extends AppBase
     {
         if (!$this->isAjax()) {
             $this->appId = intval($this->list['appId']);
+            $listRow = $this->list;
             $appRow = DB::getRow('select `module` from @pf_tool_app where id=?', $this->appId);
             if ($appRow) {
-                $this->list['testUrl'] = App::url('^/' . $appRow['module'] . '/' . $this->list['key']);
+                $listRow['testUrl'] = App::url('^/' . $appRow['module'] . '/' . $listRow['key']);
             } else {
-                $this->list['testUrl'] = '#';
+                $listRow['testUrl'] = '#';
             }
-            $this->assign('listRow', $this->list);
+            $this->assign('listRow', $listRow);
             $this->display('list/app_search.tpl');
             return;
         }
