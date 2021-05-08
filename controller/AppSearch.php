@@ -200,7 +200,7 @@ class AppSearch extends AppBase
     }
 
     #[Method(act: 'paste', method: Method::GET | Method::POST)]
-    public function paste($type = '', array $fields = [])
+    public function pasteAct($type = '', array $fields = [])
     {
         if ($type !== 'search') {
             $this->error('字段拷贝失败');
@@ -214,6 +214,27 @@ class AppSearch extends AppBase
         MakeSearch::make($this->listId);
         $this->success('字段拷贝成功');
     }
+
+    public function paste(int $id = 0)
+    {
+        $values = DB::getRow('select * from @pf_tool_search where id=?', $id);
+        if ($values == null) {
+            $this->error('不存在的数据');
+        }
+        unset($values['id']);
+        $values['sort'] = intval(DB::getMax('@pf_tool_search', 'sort', 'listId=?', $this->listId)) + 10;
+        $values['listId'] = $this->listId;
+        if ($values['names']) {
+            $values['names'] = json_decode($values['names'], true);
+            if ($values['extend']) {
+                $values['extend'] = json_decode($values['extend'], true);
+            } else {
+                $values['extend'] = [];
+            }
+        }
+        DB::insert('@pf_tool_search', $values);
+    }
+
 
     /**
      * @param string $type
@@ -325,12 +346,15 @@ class AppSearch extends AppBase
             } else {
                 $input['tbWhere'] = "`{$input['name']}` = ?";
             }
+            if ($input['type'] == 'Linkage') {
+                $input['tbWhere'] = '';
+            }
             $input['tbWhereType'] = 2;
             $input['varType'] = 'string';
             $input['sort'] = intval(DB::getMax('@pf_tool_search', 'sort', 'listId=?', $this->listId)) + 10;
             $input['listId'] = $this->listId;
-            if ($input['type'] == 'check') {
-                $input['type'] = 'select';
+            if ($input['type'] == 'Check') {
+                $input['type'] = 'Select';
                 $extend = Helper::convertArray($input['extend']);
                 $extend['headerText'] = '全部';
                 $input['after'] = '';
@@ -343,6 +367,7 @@ class AppSearch extends AppBase
                 }
                 $input['extend'] = $extend;
             }
+
             DB::insert('@pf_tool_search', $input);
         }
         MakeSearch::make($this->listId);

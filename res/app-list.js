@@ -2,6 +2,15 @@ $(function () {
     var cacheFields = [];
     var cacheTbName = '';
 
+    var getDbType = function (field) {
+        for (var i = 0; i < cacheFields.length; i++) {
+            if (cacheFields[i].value == field) {
+                return cacheFields[i].type;
+            }
+        }
+        return '';
+    }
+
     var changeForm = function () {
         var that = $('#formId');
         var formId = $('#formId').val();
@@ -79,7 +88,19 @@ $(function () {
                 valBox.val(oldVal + '{if $rs.allow}<span class="green">正常</span>{else}<span class="gray">禁用</span>{/if}');
             } else if (val == 'lock') {
                 valBox.val(oldVal + '{if $rs.lock}<span class="gray">锁定</span>{else}<span class="green">正常</span>{/if}');
+            } else if (val == 'sort') {
+                widthBox.val('120');
+                valBox.val(oldVal + '{sort id=$rs.id value=$rs.sort}');
+            } else if (/time$/i.test(val)) {
+                widthBox.val('180');
+                valBox.val(oldVal + '{$rs.' + val + '}');
             } else {
+                var type = getDbType(val);
+                if (type == 'varchar') {
+                    widthBox.val('150');
+                } else if (type == 'text') {
+                    widthBox.val('250');
+                }
                 valBox.val(oldVal + '{$rs.' + val + '}');
             }
             var fixedVal = thFixed.val() || '';

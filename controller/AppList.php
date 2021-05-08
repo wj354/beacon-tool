@@ -297,11 +297,12 @@ class AppList extends AppBase
             } else {
                 $comment = !empty($item['Comment']) ? $item['Comment'] : $field;
             }
-            $options[] = [$field, $comment . ' | ' . $field];
+            $type = $item['Type'];
+            $type = strtolower(preg_replace('@^(\w+)\(.*\)@', '$1', $type));
+            $options[] = ['value' => $field, 'text' => $comment . ' | ' . $field, 'type' => $type];
         }
         $this->success('ok', ['tbName' => '@pf_' . $fRow['tbName'], 'options' => $options]);
     }
-
     /**
      * @param int $formId
      * @throws DBException
