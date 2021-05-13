@@ -349,7 +349,7 @@ class AppFieldModel
             'UpImage' => ['text' => '图片上传 UpImage', 'data-types' => ['varchar(300)', 'text', 'json']],
             'XhEditor' => ['text' => 'Xh编辑器 XhEditor', 'data-types' => ['text', 'longtext']],
             'Tinymce' => ['text' => 'tiny编辑器 Tinymce', 'data-types' => ['text', 'longtext']],
-            'SelectDialog' => ['text' => '选择对话框 SelectDialog', 'data-types' => ['int(11)', 'varchar(200)'], 'data-default' => 'int'],
+            'SelectDialog' => ['text' => '选择对话框 SelectDialog', 'data-types' => ['int(11)', 'varchar(200)','json'], 'data-default' => 'int'],
             'MultiDialog' => ['text' => '多选对话框 MultiDialog', 'data-types' => ['text', 'varchar(200)', 'json']],
             'Line' => ['text' => '分割行 Line', 'data-types' => ['none']],
             'Label' => ['text' => '标签 Label', 'data-types' => ['none']],

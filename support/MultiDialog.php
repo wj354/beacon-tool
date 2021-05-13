@@ -4,6 +4,7 @@
 namespace tool\support;
 
 
+use beacon\core\Field;
 use beacon\core\Form;
 use beacon\widget\Integer;
 use beacon\widget\Select;
@@ -50,6 +51,14 @@ class MultiDialog
         ]
     )]
     public string $itemType = '';
+
+    #[Select(label: '填值模式',
+        options: [
+            [1, '每项含值和文本'],
+            [2, '每项仅含值，不含文本'],
+        ]
+    )]
+    public int $mode = 1;
 
     #[Select(label: '选项值类型',
         options: [
@@ -114,6 +123,7 @@ class MultiDialog
             'height' => $this->height,
             'carry' => $this->carry,
             'itemType' => $this->itemType,
+            'mode' => $this->mode,
             'btnText' => $this->btnText,
             'clearBtn' => $this->clearBtn,
         ];
