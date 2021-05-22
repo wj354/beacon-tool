@@ -11,7 +11,7 @@ namespace tool;
 define('TOOL_PATH', __DIR__);
 
 use beacon\DB;
-use beacon\MysqlException;
+use beacon\DBException;
 use beacon\Route;
 use beacon\Utils;
 
@@ -74,7 +74,7 @@ class Tool
             if (file_exists($db_config)) {
                 try {
                     self::$isInstall = DB::existsTable('@pf_tool_app');
-                } catch (MysqlException $e) {
+                } catch (DBException $e) {
                 }
             }
             if (!self::$isInstall) {

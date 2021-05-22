@@ -10,7 +10,7 @@ namespace tool\controller;
 
 
 use beacon\DB;
-use beacon\MysqlException;
+use beacon\DBException;
 use beacon\Request;
 use beacon\Route;
 use beacon\SqlSelector;
@@ -224,7 +224,7 @@ class Field extends BaseController
                     }
                 }
                // $db->commit();
-            } catch (MysqlException $exception) {
+            } catch (DBException $exception) {
                // $db->rollBack();
                 $this->error('创建字段失败');
             }
@@ -341,7 +341,7 @@ class Field extends BaseController
                     }
                 }
                // $db->commit();
-            } catch (MysqlException $exception) {
+            } catch (DBException $exception) {
               //  $db->rollBack();
                 $this->error('修改字段失败');
             }
@@ -487,7 +487,7 @@ class Field extends BaseController
                 }
             }
            // $db->commit();
-        } catch (MysqlException $exception) {
+        } catch (DBException $exception) {
            // $db->rollBack();
             $this->error('字段拷贝失败');
         }

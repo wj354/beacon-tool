@@ -12,7 +12,7 @@ namespace tool\install;
 use beacon\Config;
 use beacon\Controller;
 use beacon\Mysql;
-use beacon\MysqlException;
+use beacon\DBException;
 use beacon\Utils;
 use tool\form\InstallForm;
 use tool\Tool;
@@ -117,7 +117,7 @@ class Install extends Controller
                 $file = Utils::path(ROOT_DIR, '/config/db.config.php');
                 file_put_contents($file, $code);
                 Tool::install();
-            } catch (MysqlException $exception) {
+            } catch (DBException $exception) {
                 $this->error('保存失败：' . $exception->getMessage());
             } catch (\Exception $exception) {
                 $this->error('保存失败：' . $exception->getMessage());

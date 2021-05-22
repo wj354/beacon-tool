@@ -98,7 +98,7 @@ class Search extends BaseController
     /**
      * 添加字段
      * @param int $copyId
-     * @throws \beacon\MysqlException
+     * @throws \beacon\DBException
      */
     public function addAction(int $copyId = 0)
     {
@@ -138,7 +138,7 @@ class Search extends BaseController
     /**
      * 编辑字段
      * @param int $id
-     * @throws \beacon\MysqlException
+     * @throws \beacon\DBException
      */
     public function editAction(int $id = 0)
     {

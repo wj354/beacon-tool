@@ -10,7 +10,7 @@ namespace tool\controller;
 
 
 use beacon\DB;
-use beacon\MysqlException;
+use beacon\DBException;
 use beacon\SqlSelector;
 use beacon\Utils;
 use tool\form\FormForm;
@@ -186,7 +186,7 @@ class Form extends BaseController
                     }
                     $newTitle = empty($values['title']) ? '' : $values['title'];
                     $db->createTable('@pf_' . $values['tbName'], ['engine' => $values['tbEngine'], 'comment' => $newTitle]);
-                } catch (MysqlException $exception) {
+                } catch (DBException $exception) {
                     $this->error(['tbName' => '创建数据库表失败']);
                 }
             }
@@ -220,7 +220,7 @@ class Form extends BaseController
     /**
      * 添加表单
      * @param int $copyId
-     * @throws MysqlException
+     * @throws DBException
      */
     public function addAction(int $copyId = 0)
     {
@@ -272,7 +272,7 @@ class Form extends BaseController
                     $db = ToolDb::getDb($this->appId);
                     $newTitle = (empty($values['title']) ? '' : $values['title']);
                     $db->createTable('@pf_' . $values['tbName'], ['engine' => $values['tbEngine'], 'comment' => $newTitle]);
-                } catch (MysqlException $exception) {
+                } catch (DBException $exception) {
                     $this->error(['tbName' => '创建数据库表失败']);
                 }
             }
@@ -293,7 +293,7 @@ class Form extends BaseController
     /**
      * 编辑表单
      * @param int $id
-     * @throws MysqlException
+     * @throws DBException
      */
     public function editAction(int $id = 0)
     {
@@ -372,7 +372,7 @@ class Form extends BaseController
                                 }
                             }
                         }
-                    } catch (MysqlException $exception) {
+                    } catch (DBException $exception) {
                         $this->error(['tbName' => '创建数据库表失败']);
                     }
                 }
