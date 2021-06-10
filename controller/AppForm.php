@@ -4,6 +4,7 @@
 namespace tool\controller;
 
 
+use beacon\core\Logger;
 use tool\libs\Helper;
 use tool\libs\MakeModel;
 use tool\libs\ToolDB;
@@ -109,6 +110,7 @@ class AppForm extends AppBase
                 $newTitle = (empty($input['title']) ? '' : $input['title']);
                 $db->createTable('@pf_' . $input['tbName'], ['engine' => $input['tbEngine'], 'comment' => $newTitle]);
             } catch (DBException $exception) {
+                Logger::error($exception->getMessage(), $exception->getTraceAsString());
                 $this->error(['tbName' => '创建数据库表失败']);
             }
         }
@@ -367,7 +369,7 @@ class AppForm extends AppBase
             $input['extend'] = Helper::convertArray($input['extend']);
         }
         $db = ToolDB::db($appId);
-        if ($input['dbtype'] != 'null' && $input['dbfield'] == 1) {
+        if ($input['dbType'] != 'null' && $input['dbField'] == 1) {
             $idx = 1;
             $name = $input['name'];
             while ($db->existsField($tbName, $input['name'])) {
@@ -375,10 +377,10 @@ class AppForm extends AppBase
                 $idx++;
             }
             $db->addField($tbName, $input['name'], [
-                'type' => $input['dbtype'],
-                'len' => $input['dblen'],
-                'scale' => $input['dbpoint'],
-                'comment' => empty($input['dbcomment']) ? $input['label'] : $input['dbcomment'],
+                'type' => $input['dbType'],
+                'len' => $input['dbLen'],
+                'scale' => $input['dbPoint'],
+                'comment' => empty($input['dbComment']) ? $input['label'] : $input['dbComment'],
             ]);
         }
         if (!empty($input['names'])) {
@@ -390,10 +392,10 @@ class AppForm extends AppBase
                     $idx++;
                 }
                 $option = [
-                    'type' => $input['dbtype'],
+                    'type' => $input['dbType'],
                     'len' => 11,
                     'scale' => 0,
-                    'comment' => empty($input['dbcomment']) ? $input['label'] : $input['dbcomment'],
+                    'comment' => empty($input['dbComment']) ? $input['label'] : $input['dbComment'],
                 ];
                 if (!isset($item['type'])) {
                     $item['type'] = 'bool';
