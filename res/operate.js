@@ -81,7 +81,7 @@ $(function () {
             }
             if (module.indexOf('confirm') > -1) {
                 if (confirm) {
-                    out.push(' data-confirm@msg="' + confirm + '"');
+                    out.push(' data-confirm="' + confirm + '"');
                 }
             }
             if (module.indexOf('select-dialog') > -1) {

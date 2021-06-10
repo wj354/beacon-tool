@@ -45,7 +45,7 @@
     <div class="yee-row">
         <label class="row-label" style="width:70px">CSS类:</label>
         <div class="row-cell">
-            <input class="form-inp mf navy" id="class" value="yee-btn"/> &nbsp; ICON:<input id="icon" class="form-inp mf navy"  yee-module="select-dialog" type="hidden" data-width="860" data-url="{url act='icon'}"/>
+            <input class="form-inp mf navy" id="class" value="yee-btn"/> &nbsp; ICON:<input id="icon" class="form-inp mf navy"  yee-module="select-dialog" type="hidden" data-width="860" data-url="{url act='icon'}" data-mode="2"/>
         </div>
     </div>
     <div class="yee-row">
