@@ -156,7 +156,7 @@ class MakeController
         if (!empty($this->list['tbJoin'])) {
             $temps = [];
             foreach ($this->list['tbJoin'] as $item) {
-                $temps[] = "{$item['join']} `{$item['tbName']}` {$item['alias']} on {$item['on']}";
+                $temps[] = "{$item['join']} `{$item['name']}` {$item['alias']} on {$item['on']}";
             }
             $zero['tbJoin'] = $temps;
         }

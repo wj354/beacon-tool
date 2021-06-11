@@ -2,8 +2,9 @@
 {hook fn='item' field=null form=null index='@@index@@'}
     <!-- 键名 -->
     <div class="row-cell">
-        <label class="inline-label" style="color: #888"><em></em>附加表：</label><span>{input field=$form->getField('name')}</span>
-        <label class="inline-label" style="color: #888;margin-left: 5px;"><em></em>JOIN：</label><span>{input field=$form->getField('join')}</span>
+        <label class="inline-label" style="color: #888"><em></em></label><span>{input field=$form->getField('name')}</span>
+        <label class="inline-label" style="color: #888"><em></em></label><span>{input field=$form->getField('alias')}</span>
+        <label class="inline-label" style="color: #888;margin-left: 5px;"><em></em></label><span>{input field=$form->getField('join')}</span>
         <label class="inline-label" style="color: #888;margin-left: 5px;"><em></em>ON：</label><span>{input field=$form->getField('on')}</span>
         <div class="yee-row-inline" style="margin-right: 10px">
             <a href="javascript:;" name="remove" class="yee-btn"><i class="icofont-minus-circle"></i>移除</a>
