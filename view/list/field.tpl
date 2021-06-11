@@ -36,8 +36,8 @@
                 </div>
                 <div class="yee-cell fr">
                     <a id="copy-btn" href="javascript:;" class="yee-btn"><i class="icofont-copy"></i>拷贝</a>
-                    <a id="paste-btn" data-url="{url act='paste'}" href="javascript:;" class="yee-btn"><i class="icofont-copy-invert"></i>黏贴</a>
-                    <a id="add-del" href="{url act='deleteChoice'}"
+                    <a id="paste-btn" data-url="{url act='paste' appId=$this->appId formId=$this->formId}" href="javascript:;" class="yee-btn"><i class="icofont-copy-invert"></i>黏贴</a>
+                    <a id="add-del" href="{url act='deleteChoice' appId=$this->appId formId=$this->formId}"
                        yee-module="confirm ajax choice"
                        on-success="$('#list').emit('reload');"
                        data-confirm@msg="确定要删除所选条目了吗？"

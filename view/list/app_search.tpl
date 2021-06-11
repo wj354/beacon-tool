@@ -40,8 +40,8 @@
                        on-success="$('#list').emit('reload');"
                     ><i class="icofont icofont-copy-alt"></i>从表单模型拷贝</a>
                     <a id="copy-btn" href="javascript:;" data-type="search" class="yee-btn"><i class="icofont-copy"></i>拷贝</a>
-                    <a id="paste-btn" data-url="{url act='paste'}" data-type="search" href="javascript:;" class="yee-btn"><i class="icofont-copy-invert"></i>黏贴</a>
-                    <a id="add-del" href="{url act='deleteChoice'}" yee-module="confirm ajax choice" on-success="$('#list').emit('reload');" data-confirm@msg="确定要删除所选条目了吗？"
+                    <a id="paste-btn" data-url="{url act='paste' listId=$this->listId}" data-type="search" href="javascript:;" class="yee-btn"><i class="icofont-copy-invert"></i>黏贴</a>
+                    <a id="add-del" href="{url act='deleteChoice' listId=$this->listId}" yee-module="confirm ajax choice" on-success="$('#list').emit('reload');" data-confirm@msg="确定要删除所选条目了吗？"
                        class="yee-btn select-all red2" style="margin-right: 20px"><i class="icofont-bin"></i>删除所选</a>
                     <a id="add-btn" href="{url ctl='AppList' act='index'}" class="yee-btn blue">返回列表</a>
                     <a href="{url ctl='AppList' act='code' id=$this->listId}" class="yee-btn" target="_blank"><i class="icofont-code"></i>代码</a>
