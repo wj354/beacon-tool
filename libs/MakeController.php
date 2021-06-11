@@ -156,9 +156,9 @@ class MakeController
         if (!empty($this->list['tbJoin'])) {
             $temps = [];
             foreach ($this->list['tbJoin'] as $item) {
-                $temps[] = "{$item['join']} `{$item['name']}` {$item['alias']} on {$item['on']}";
+                $temps[] = $item; // "{$item['join']} `{$item['name']}` {$item['alias']} on {$item['on']}";
             }
-            $zero['tbJoin'] = $temps;
+            $zero['tbJoin'] = $this->list['tbJoin'];
         }
         if (!empty($this->list['tbOrder'])) {
             $zero['tbOrder'] = $this->list['tbOrder'];
@@ -188,9 +188,23 @@ class MakeController
         $tbJoin = $zero['tbJoin'] ?? [];
         if (count($tbJoin) > 0) {
             foreach ($zero['tbJoin'] as $item) {
-                $item = trim($item);
-                if (!empty($item)) {
-                    $this->out[] = '        $selector->join(' . var_export($item, true) . ');';
+                $item['join'] = trim($item['join']);
+                switch ($item['join']) {
+                    case 'inner':
+                        $this->out[] = '        $selector->innerJoin(' . var_export("`{$item['name']}` {$item['alias']}", true) . ')->joinOn(' . var_export($item['on'], true) . ');';
+                        break;
+                    case 'outer':
+                        $this->out[] = '        $selector->outerJoin(' . var_export("`{$item['name']}` {$item['alias']}", true) . ')->joinOn(' . var_export($item['on'], true) . ');';
+                        break;
+                    case 'left':
+                        $this->out[] = '        $selector->leftJoin(' . var_export("`{$item['name']}` {$item['alias']}", true) . ')->joinOn(' . var_export($item['on'], true) . ');';
+                        break;
+                    case 'right':
+                        $this->out[] = '        $selector->rightJoin(' . var_export("`{$item['name']}` {$item['alias']}", true) . ')->joinOn(' . var_export($item['on'], true) . ');';
+                        break;
+                    case 'full':
+                        $this->out[] = '        $selector->fullJoin(' . var_export("`{$item['name']}` {$item['alias']}", true) . ')->joinOn(' . var_export($item['on'], true) . ');';
+                        break;
                 }
             }
         }

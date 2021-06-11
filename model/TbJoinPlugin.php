@@ -16,19 +16,19 @@ class TbJoinPlugin
     #[Text(
         label: '附加表',
         validRule: ['r' => '附加表不能为空'],
-        attrs: ['style' => 'width:120px;','placeholder' => '附加表']
+        attrs: ['style' => 'width:120px;', 'placeholder' => '附加表']
     )]
     public string $name = '';
     #[Text(
         label: '别名',
         //  validRule: ['r' => '别名不能为空'],
-        attrs: ['style' => 'width:30px;','placeholder' => '别名']
+        attrs: ['style' => 'width:30px;', 'placeholder' => '别名']
     )]
     public string $alias = '';
 
     #[Select(
         label: 'JOIN',
-        options: [['inner join', 'inner join | 交集'], ['left join', 'left join | 左集合'], ['right join', 'right join | 右集合']]
+        options: [['inner', 'inner join | 交集'], ['outer', 'inner join | 并集'], ['left', 'left join | 左集合'], ['right', 'right join | 右集合'], ['full', 'full join | 全集']]
     )]
     public string $join = '';
     #[TextArea(
