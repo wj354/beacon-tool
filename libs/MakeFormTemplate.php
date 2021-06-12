@@ -307,7 +307,12 @@ class MakeFormTemplate
 
     private function createFieldRow($field)
     {
-
+        if (!empty($field['validRule'])) {
+            $validRule = Helper::convertArray($field['validRule'], []);
+            if (!empty($validRule['required']) && $field['validDisabled'] != 1) {
+                $field['star'] = 1;
+            }
+        }
         $name = var_export($field['name'], true);
         //容器
         if ($field['type'] == 'Container' || $field['type'] == 'Single') {
