@@ -25,7 +25,7 @@
     <div class="yee-row" id="row_{$field->boxId}">
         <label class="row-label" style="line-height: 40px">{if $field->star}<em></em>{/if}{$field->label}：</label>
         <div class="row-cell">
-            <div style="display: block;">{$body|raw}</div>
+            <div style="display: block;">{$body}</div>
             <div style="display: block;">
                 <a href="javascript:;" name="add" class="yee-btn"><i class="icofont-plus-circle"></i>新增行</a>
                 <span id="{$field->boxId}-validation"></span>

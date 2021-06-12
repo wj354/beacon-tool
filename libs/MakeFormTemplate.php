@@ -476,7 +476,7 @@ class MakeFormTemplate
             $this->out[] = '<label class="row-label">{if $field->star}<em></em>{/if}{$field->label}：</label>';
             $this->out[] = '<div class="row-cell">';
         }
-        $this->out[] = '<div style="display: block;">{$body|raw}</div>';
+        $this->out[] = '<div style="display: block;">{$body}</div>';
         $this->out[] = '<div style="display: block;">';
         $this->out[] = '{if !$field->offEdit}<a href="javascript:;" name="add" class="yee-btn"><i class="icofont-plus-circle"></i>新增行</a>{/if}';
         $this->out[] = '{if $field->prompt}<span class="yee-field-prompt">{$field->prompt}</span>{/if} <span id="{$field->boxId}-validation"></span>';

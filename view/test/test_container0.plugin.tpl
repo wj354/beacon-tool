@@ -4,7 +4,7 @@
     <div class="yee-row" id="row_{$field->boxId}">
         <label class="row-label">{if $field->star}<em></em>{/if}{$field->label}：</label>
         <div class="row-cell">
-            <div style="display: block;">{$body|raw}</div>
+            <div style="display: block;">{$body}</div>
             <div style="display: block;">
                 {if !$field->offEdit}<a href="javascript:;" name="add" class="yee-btn"><i class="icofont-plus-circle"></i>新增行</a>{/if}
                 {if $field->prompt}<span class="yee-field-prompt">{$field->prompt}</span>{/if} <span id="{$field->boxId}-validation"></span>

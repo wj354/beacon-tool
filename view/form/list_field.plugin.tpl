@@ -53,7 +53,7 @@
     <div class="yee-row" id="row_{$field->boxId}">
         <label class="row-label" style="line-height: 40px">{if $field->star}<em></em>{/if}{$field->label}：</label>
         <div class="row-cell">
-            <div style="display: block;">{$body|raw}</div>
+            <div style="display: block;">{$body}</div>
             <div style="display: block;">
                 <a href="javascript:;" name="add" class="yee-btn"><i class="icofont-plus-circle"></i>新增行</a>
                 <label style="line-height: 20px;  height: 20px; display: inline-block; padding: 2px 7px; border: 0.5px solid #c1c1c1; border-radius: 4px; margin-left: 10px; color: #777; opacity: 0.9;">
