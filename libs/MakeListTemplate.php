@@ -258,7 +258,7 @@ class MakeListTemplate
             $this->out[] = '<div class="yee-cell">';
             $this->out[] = '<input class="form-btn blue" value="查询" type="submit"/>';
             $this->out[] = '<input class="form-btn normal" value="重置" type="reset"/><input type="hidden" name="sort">';
-            $this->out[] = '{$search->fetchHideBox()|raw}';
+            $this->out[] = '{$search->fetchHideBox()}';
             if (count($fields2) > 0) {
                 $this->out[] = '<a class="senior-btn" onclick="$(\'.yee-list-search\').toggleClass(\'senior\')">高级搜索<i></i></a>';
             }

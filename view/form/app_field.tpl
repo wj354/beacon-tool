@@ -40,7 +40,7 @@
             <div class="yee-submit">
                 <label class="submit-label"></label>
                 <div class="submit-cell">
-                    {$form->fetchHideBox()|raw}
+                    {$form->fetchHideBox()}
                     <input type="submit" class="form-btn red" value="提交">
                     {if $form->isAdd()}{literal}
                         <input type="submit" onclick="$(':input[name=\'__BACK__\']').val(window.location.href)" class="form-btn org" value="继续添加">

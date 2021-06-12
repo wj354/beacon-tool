@@ -426,7 +426,7 @@ class MakeFormTemplate
         $this->out[] = '            <div class="yee-submit">';
         $this->out[] = '                <label class="submit-label"></label>';
         $this->out[] = '                <div class="submit-cell">';
-        $this->out[] = '                    {$form->fetchHideBox()|raw}';
+        $this->out[] = '                    {$form->fetchHideBox()}';
         $this->out[] = '                    <input type="submit" class="form-btn red" value="提交">';
         if (in_array(1, $this->form['viewBtns'])) {
             $this->out[] = '                    <input type="hidden" name="__BACK__" value="{$this->referrer()}">';
