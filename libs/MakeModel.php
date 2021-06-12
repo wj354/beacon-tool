@@ -97,7 +97,7 @@ class MakeModel
         if (!Util::isJson($default)) {
             return;
         }
-        $data = json_decode($default, true);
+        $data = Helper::convertArray($default, []);
         $type = intval($data['type']);
         switch ($type) {
             case 1:
@@ -244,7 +244,9 @@ class MakeModel
         $field['validDisabled'] = boolval($field['validDisabled']);
         $field['star'] = boolval($field['star']);
         $field['viewMerge'] = intval($field['viewMerge']);
-
+        if (!empty($field['validRule']['required']) && $field['validDisabled'] != true) {
+            $field['star'] = true;
+        }
         //处理扩展字段
         if (!empty($field['extend'])) {
             $extend = Helper::convertArray($field['extend'], []);

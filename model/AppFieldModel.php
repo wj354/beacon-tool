@@ -278,6 +278,13 @@ class AppFieldModel
     #[Container(label: '动态呈现控制 [dynamic]', tabIndex: 'extend', itemClass: DynamicPlugin::class)]
     public array $dynamic = [];
 
+    #[Check(
+        label: '是否标星',
+        prompt: '在Label前标红*',
+        after: '勾选标星',
+        tabIndex: 'valid'
+    )]
+    public bool $star = false;
 
     #[Textarea(label: '验证配置', tabIndex: 'valid', attrs: ['yee-module' => 'valid-rule'])]
     public string $validRule = '';
@@ -299,13 +306,6 @@ class AppFieldModel
     )]
     public bool $validDisabled = false;
 
-    #[Check(
-        label: '是否标星',
-        prompt: '在Label前标红*',
-        after: '勾选标星',
-        tabIndex: 'base'
-    )]
-    public bool $star = false;
 
     #[Text(
         label: '验证数值的函数',
@@ -349,7 +349,7 @@ class AppFieldModel
             'UpImage' => ['text' => '图片上传 UpImage', 'data-types' => ['varchar(300)', 'text', 'json']],
             'XhEditor' => ['text' => 'Xh编辑器 XhEditor', 'data-types' => ['text', 'longtext']],
             'Tinymce' => ['text' => 'tiny编辑器 Tinymce', 'data-types' => ['text', 'longtext']],
-            'SelectDialog' => ['text' => '选择对话框 SelectDialog', 'data-types' => ['int(11)', 'varchar(200)','json'], 'data-default' => 'int'],
+            'SelectDialog' => ['text' => '选择对话框 SelectDialog', 'data-types' => ['int(11)', 'varchar(200)', 'json'], 'data-default' => 'int'],
             'MultiDialog' => ['text' => '多选对话框 MultiDialog', 'data-types' => ['text', 'varchar(200)', 'json']],
             'Line' => ['text' => '分割行 Line', 'data-types' => ['none']],
             'Label' => ['text' => '标签 Label', 'data-types' => ['none']],
@@ -367,7 +367,7 @@ class AppFieldModel
             foreach ($directory as $dir) {
                 if ($dir->isDir()) {
                     $baseName = $dir->getBasename();
-                    if ($baseName == 'beacon' || $baseName == 'sdopx'|| $baseName == 'install') {
+                    if ($baseName == 'beacon' || $baseName == 'sdopx' || $baseName == 'install') {
                         continue;
                     }
                     $temp = Util::path($dir->getPathname(), 'tool/support');
