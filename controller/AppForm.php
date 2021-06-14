@@ -170,6 +170,7 @@ class AppForm extends AppBase
             $this->displayForm($form);
             return;
         }
+        $form->getField('extMode')->setValue(intval($row['extMode']));
         $input = $this->completeForm($form);
         $app = DB::getRow('select id,`namespace` from @pf_tool_app where id=?', $input['appId']);
         if ($app) {
