@@ -57,6 +57,12 @@ class Container
     )]
     public int $initSize = 0;
 
+    #[Select(
+        label: '渲染类型',
+        options: [['value'=>'div','text'=>'div'],['value'=>'table','text'=>'table']],
+    )]
+    public string $mode = 'div';
+
 
     /**
      * @return array
@@ -85,6 +91,7 @@ class Container
             'minSize' => $this->minSize,
             'maxSize' => $this->maxSize,
             'initSize' => $this->initSize,
+            'mode' => $this->mode,
         ];
     }
 }
