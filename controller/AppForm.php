@@ -370,7 +370,8 @@ class AppForm extends AppBase
             $input['extend'] = Helper::convertArray($input['extend']);
         }
         $db = ToolDB::db($appId);
-        if ($input['dbType'] != 'null' && $input['dbField'] == 1) {
+        $dbType = strtolower($input['dbType']);
+        if ($dbType != 'null' && $dbType != 'none' && $input['dbField'] == 1) {
             $idx = 1;
             $name = $input['name'];
             while ($db->existsField($tbName, $input['name'])) {
