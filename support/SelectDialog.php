@@ -8,6 +8,7 @@ use beacon\core\Form;
 use beacon\widget\Integer;
 use beacon\widget\Select;
 use beacon\widget\Text;
+use beacon\widget\Check;
 use beacon\widget\Textarea;
 
 #[Form(title: '单选对话框设置', template: 'form/field_support.tpl')]
@@ -89,12 +90,12 @@ class SelectDialog
     )]
     public string $btnText = '';
 
-    #[Text(
+    #[Check(
         label: '清除按钮',
         after: '勾选显示清除按钮',
         viewMerge: -1
     )]
-    public int $clearBtn = 0;
+    public bool $clearBtn = false;
 
     public function export(): array
     {
