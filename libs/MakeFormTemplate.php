@@ -39,14 +39,12 @@ class MakeFormTemplate
         }
         $this->path = Util::path($rootDir, $this->form['namespace'], 'zero/view');
         $this->keyName = $this->form['key'];
-
         $viewBtns = Helper::convertArray($this->form['viewBtns']);
         $temp = [];
         foreach ($viewBtns as $btn) {
             $temp[] = intval($btn);
         }
         $this->form['viewBtns'] = $temp;
-
         $this->createTemplate();
     }
 
