@@ -466,34 +466,48 @@ class MakeFormTemplate
     //批量插件
     private function createPluginMultiple()
     {
+        $plugStyle = intval($this->form['plugStyle']);
         $this->out[] = '{*用于创建多行插件容器集合的hook函数模板 lastIndex 最后行的索引，body 已有item的模板渲染数据，source 用于js动态创建的模板数据base64  *}';
 
         $this->out[] = "{hook fn='wrap' field=null  body=null}";
+
         if ($this->form['useWrap']) {
             $this->out[] = '<div class="yee-row" id="row_{$field->boxId}">';
             $this->out[] = '<label class="row-label">{if $field->star}<em></em>{/if}{$field->label}：</label>';
             $this->out[] = '<div class="row-cell">';
         }
-        $this->out[] = '<div style="display: block;">{$body}</div>';
-        $this->out[] = '<div style="display: block;">';
-        $this->out[] = '{if !$field->offEdit}<a href="javascript:;" name="add" class="yee-btn"><i class="icofont-plus-circle"></i>新增行</a>{/if}';
-        $this->out[] = '{if $field->prompt}<span class="yee-field-prompt">{$field->prompt}</span>{/if} <span id="{$field->boxId}-validation"></span>';
-        $this->out[] = '</div>';
+        if ($plugStyle == 3) {
+            $this->out[] = '<table class="yee-show-table" style="margin-top:0px;max-width: 1000px;">';
+            $this->out[] = '<thead><tr>';
+            $this->out[] = '<th width="5%" align="center">序号</th>';
+            $this->out[] = '<div style="display: block;">{$body}</div>';
+            foreach ($this->getViewFields() as $field) {
+                $this->out[] = '<th align="center">' . $field['name'] . '</th>';
+            }
+            $this->out[] = '</tr></thead>';
+            $this->out[] = '{$body}';
+            $this->out[] = '</table>';
+            $this->out[] = '<div style="display: block;">';
+            $this->out[] = '{if !$field->offEdit}<a href="javascript:;" name="add" class="yee-btn"><i class="icofont-plus-circle"></i>新增行</a>{/if}';
+            $this->out[] = '{if $field->prompt}<span class="yee-field-prompt">{$field->prompt}</span>{/if} <span id="{$field->boxId}-validation"></span>';
+            $this->out[] = '</div>';
+        } else {
+            $this->out[] = '<div style="display: block;">{$body}</div>';
+            $this->out[] = '<div style="display: block;">';
+            $this->out[] = '{if !$field->offEdit}<a href="javascript:;" name="add" class="yee-btn"><i class="icofont-plus-circle"></i>新增行</a>{/if}';
+            $this->out[] = '{if $field->prompt}<span class="yee-field-prompt">{$field->prompt}</span>{/if} <span id="{$field->boxId}-validation"></span>';
+            $this->out[] = '</div>';
+        }
         if ($this->form['useWrap']) {
             $this->out[] = "</div>";
             $this->out[] = "</div>";
         }
         $this->out[] = "{/hook}";
-
-        $plugStyle = intval($this->form['plugStyle']);
-
         $this->out[] = '{*用于创建多行插件容器中每行的数据hook函数模板 form 插件的表单 index 每项的索引*}';
         $this->out[] = "{hook fn='item' field=null form=null index='@@index@@'}";
-
-        $this->out[] = '<div class="container-item">';
         if ($plugStyle == 0) {
-
             //默认模式
+            $this->out[] = '<div class="container-item">';
             $this->out[] = '<div class="yee-container-title">';
             $this->out[] = '<label class="inline-label" style="text-align: left;">&nbsp;&nbsp;  第 <span name="index" class="red2" style="font-size: 18px;"></span>项&nbsp;&nbsp;&nbsp;</label>';
             $this->out[] = '{if !$field->offEdit}';
@@ -511,10 +525,9 @@ class MakeFormTemplate
                 $this->out[] = "{/foreach}";
             }
             $this->out[] = '</div>';
-
-
+            $this->out[] = '</div>';
         } elseif ($plugStyle == 1) {
-
+            $this->out[] = '<div class="container-item">';
             if ($this->form['makeStatic']) {
                 foreach ($this->getViewFields() as $field) {
                     $this->out[] = '<div class="yee-row-inline" id="row_{$form->getField(' . var_export($field['name'], true) . ')->boxId}">';
@@ -542,7 +555,10 @@ class MakeFormTemplate
             $this->out[] = '{if $field->insertBtn}<a href="javascript:;" name="insert" class="yee-btn"><i class="icofont-puzzle"></i>插入</a>{/if}';
             $this->out[] = '{if $field->sortBtn}<a href="javascript:;" name="upsort" class="yee-btn"><i class="icofont-long-arrow-up"></i>上移</a><a href="javascript:;" name="dnsort" class="yee-btn"><i class="icofont-long-arrow-down"></i>下移</a>{/if}';
             $this->out[] = '</div>{/if}';
+            $this->out[] = '</div>';
+
         } else if ($plugStyle == 2) {
+            $this->out[] = '<div class="container-item">';
             if ($this->form['makeStatic']) {
                 foreach ($this->getViewFields() as $field) {
                     $this->out[] = '<div class="yee-row-inline" id="row_{$form->getField(' . var_export($field['name'], true) . ')->boxId}">';
@@ -565,9 +581,20 @@ class MakeFormTemplate
             $this->out[] = '{if $field->insertBtn}<a href="javascript:;" name="insert" class="yee-btn"><i class="icofont-puzzle"></i>插入</a>{/if}';
             $this->out[] = '{if $field->sortBtn}<a href="javascript:;" name="upsort" class="yee-btn"><i class="icofont-long-arrow-up"></i>上移</a><a href="javascript:;" name="dnsort" class="yee-btn"><i class="icofont-long-arrow-down"></i>下移</a>{/if}';
             $this->out[] = '</div>{/if}';
+            $this->out[] = '</div>';
+        } else if ($plugStyle == 3) {
+            $this->out[] = '<td align="center"><span name="index"></span></td>';
+            foreach ($this->getViewFields() as $field) {
+                $this->out[] = '<td><div style="width: auto;display: flex">{input field=$form->getField(' . var_export($field['name'], true) . ')}</div></td>';
+            }
+            $this->out[] = '<td align="left">';
+            $this->out[] = '{if !$field->offEdit}';
+            $this->out[] = '{if $field->removeBtn}<a href="javascript:;" class="yee-btn" name="remove"><i class="icofont-minus-circle"></i>移除</a>{/if}';
+            $this->out[] = '{if $field->insertBtn}<a href="javascript:;" name="insert" class="yee-btn"><i class="icofont-puzzle"></i>插入</a>{/if}';
+            $this->out[] = '{if $field->sortBtn}<a href="javascript:;" name="upsort" class="yee-btn"><i class="icofont-long-arrow-up"></i>上移</a><a href="javascript:;" name="dnsort" class="yee-btn"><i class="icofont-long-arrow-down"></i>下移</a>{/if}';
+            $this->out[] = '{/if}';
+            $this->out[] = '</td>';
         }
-
-        $this->out[] = '</div>';
         $this->out[] = "{/hook}";
     }
 
