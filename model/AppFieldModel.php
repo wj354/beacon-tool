@@ -430,7 +430,7 @@ class AppFieldModel
      * @return array
      * @throws DBException
      */
-    public static function nameValidFunc(string $value)
+    public static function nameValidFunc(string $value):array
     {
         $id = Request::param('id:i', 0);
         $formId = Request::param('formId:i', 0);

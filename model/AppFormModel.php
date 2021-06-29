@@ -73,6 +73,7 @@ class AppFormModel
         ['value' => 0, 'text' => '普通模式', 'tips' => '，表单形式使用'],
         ['value' => 1, 'text' => '容器插件', 'tips' => '，即该表单仅作为容器插件使用'],
         ['value' => 4, 'text' => '继承表模式', 'tips' => '，使用继承的表'],
+        ['value' => 3, 'text' => '字典类型', 'tips' => '，字典类型使用'],
         //   ['value' => 2, 'text' => '分类层级', 'tips' => '，比如分类结构'],
     ],
         dynamic: [

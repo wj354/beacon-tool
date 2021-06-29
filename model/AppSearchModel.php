@@ -16,6 +16,7 @@ use beacon\widget\Select;
 use beacon\widget\Single;
 use beacon\widget\Text;
 use beacon\widget\Textarea;
+use beacon\core\DBException;
 
 #[Form(title: '搜索字段管理', table: '@pf_tool_search', template: 'form/app_search.tpl')]
 class AppSearchModel
@@ -202,7 +203,9 @@ class AppSearchModel
     )]
     public ?int $listId = null;
 
-
+    /**
+     * @return array
+     */
     public static function typeOptions(): array
     {
         $data = [
@@ -226,5 +229,19 @@ class AppSearchModel
             $opt['value'] = $key;
         }
         return array_values($data);
+    }
+
+    /**
+     * @return int
+     * @throws DBException
+     */
+    public static function sortDefaultFunc(): int
+    {
+        $listId = Request::get('listId:i', 0);
+        $num = DB::getMax('@pf_tool_search', 'sort', 'listId=?', $listId);
+        if (empty($num)) {
+            return 10;
+        }
+        return intval($num) + 10;
     }
 }

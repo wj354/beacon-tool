@@ -59,7 +59,6 @@ class AppForm extends AppBase
     public function add(int $copyId = 0, string $import = '')
     {
         $form = Form::create(AppFormModel::class, 'add');
-
         if ($this->isGet()) {
             if ($copyId) {
                 $row = DB::getRow('select * from @pf_tool_form where id=?', $copyId);
@@ -77,8 +76,6 @@ class AppForm extends AppBase
             $this->displayForm($form);
             return;
         }
-
-        //post
         $input = $this->completeForm($form);
         $app = DB::getRow('select id,`namespace` from @pf_tool_app where id=?', $input['appId']);
         if ($app) {
@@ -114,15 +111,13 @@ class AppForm extends AppBase
                 $this->error(['tbName' => '创建数据库表失败']);
             }
         }
-
         $input['updateTime'] = time();
         DB::insert('@pf_tool_form', $input);
-        $id = DB::lastInsertId();
-
+        $formId = DB::lastInsertId();
         if ($copyId != 0) {
             $fieldList = DB::getList('select id from @pf_tool_field where formId=? order by sort asc', $copyId);
             foreach ($fieldList as $field) {
-                $this->copyField($id, $field['id'], $this->appId);
+                $this->copyField($formId, $field['id'], $this->appId);
             }
         } else if (!empty($import)) {
             $data = $this->getImport($import);
@@ -133,24 +128,148 @@ class AppForm extends AppBase
                 $fieldMap[$item['Field']] = true;
             }
             unset($fieldMap['id']);
-
             foreach ($fieldList as $field) {
                 foreach ($field as $name => $value) {
                     if (!isset($fieldMap[$name])) {
                         unset($field[$name]);
                     }
                 }
-                $this->importField($id, $field, $this->appId);
+                $this->importField($formId, $field, $this->appId);
             }
             $path = Util::path(ROOT_DIR, 'runtime/temp', $import);
             if (file_exists($path)) {
                 unlink($path);
             }
+        } else if ($input['extMode'] == 3) {
+            $fieldList = [
+                [
+                    'name' => 'name',
+                    'tabIndex' => NULL,
+                    'label' => '类型名称',
+                    'boxName' => '',
+                    'type' => 'Text',
+                    'hidden' => '0',
+                    'dbField' => '1',
+                    'dbType' => 'varchar',
+                    'dbLen' => '200',
+                    'dbPoint' => NULL,
+                    'dbComment' => '',
+                    'dbDefType' => 'empty',
+                    'dbDefValue' => '',
+                    'dbUnique' => '0',
+                    'before' => '',
+                    'after' => '',
+                    'sort' => '10',
+                    'default' => '{"type":1,"value":""}',
+                    'viewMerge' => '0',
+                    'close' => '0',
+                    'viewClose' => '0',
+                    'offEdit' => '0',
+                    'extend' => '[]',
+                    'attrClass' => '',
+                    'attrStyle' => '',
+                    'attrPlaceholder' => '',
+                    'attrs' => '[]',
+                    'prompt' => '',
+                    'dynamic' => '[]',
+                    'names' => '[]',
+                    'validRule' => '{"required":["类别名称不可为空"]}',
+                    'validGroup' => '[]',
+                    'validDefault' => '',
+                    'validCorrect' => '',
+                    'validDisplay' => '',
+                    'validDisabled' => '0',
+                    'star' => '0',
+                    'validFunc' => '',
+                ],
+                [
+                    'name' => 'sort',
+                    'tabIndex' => NULL,
+                    'label' => '排序权重',
+                    'boxName' => '',
+                    'type' => 'Integer',
+                    'hidden' => '0',
+                    'dbField' => '1',
+                    'dbType' => 'int',
+                    'dbLen' => '11',
+                    'dbPoint' => NULL,
+                    'dbComment' => '',
+                    'dbDefType' => 'value',
+                    'dbDefValue' => '0',
+                    'dbUnique' => '0',
+                    'before' => '',
+                    'after' => '',
+                    'sort' => '20',
+                    'default' => '{"type":4,"inner":"maxSort"}',
+                    'viewMerge' => '0',
+                    'close' => '0',
+                    'viewClose' => '0',
+                    'offEdit' => '0',
+                    'extend' => '[]',
+                    'attrClass' => '',
+                    'attrStyle' => '',
+                    'attrPlaceholder' => '',
+                    'attrs' => '[]',
+                    'prompt' => '',
+                    'dynamic' => '[]',
+                    'names' => '[]',
+                    'validRule' => '',
+                    'validGroup' => '[]',
+                    'validDefault' => '',
+                    'validCorrect' => '',
+                    'validDisplay' => '',
+                    'validDisabled' => '0',
+                    'star' => '0',
+                    'validFunc' => '',
+                ],
+                [
+                    'name' => 'allow',
+                    'tabIndex' => NULL,
+                    'label' => '审核状态',
+                    'boxName' => '',
+                    'type' => 'Check',
+                    'hidden' => '0',
+                    'dbField' => '1',
+                    'dbType' => 'tinyint',
+                    'dbLen' => '1',
+                    'dbPoint' => NULL,
+                    'dbComment' => '',
+                    'dbDefType' => 'value',
+                    'dbDefValue' => '0',
+                    'dbUnique' => '0',
+                    'before' => '',
+                    'after' => '勾选审核启用',
+                    'sort' => '30',
+                    'default' => '{"type":1,"value":"1"}',
+                    'viewMerge' => '0',
+                    'close' => '0',
+                    'viewClose' => '0',
+                    'offEdit' => '0',
+                    'extend' => '[]',
+                    'attrClass' => '',
+                    'attrStyle' => '',
+                    'attrPlaceholder' => '',
+                    'attrs' => '[]',
+                    'prompt' => '',
+                    'dynamic' => '[]',
+                    'names' => '[]',
+                    'validRule' => '',
+                    'validGroup' => '[]',
+                    'validDefault' => '',
+                    'validCorrect' => '',
+                    'validDisplay' => '',
+                    'validDisabled' => '0',
+                    'star' => '0',
+                    'validFunc' => '',
+                ],
+            ];
+            foreach ($fieldList as $field) {
+                $this->importField($formId, $field, $this->appId);
+            }
         }
-        MakeModel::make($id);
+        MakeModel::make($formId);
         $this->success('添加' . $form->title . '成功');
     }
-
 
     /**
      * @param int $id
@@ -185,18 +304,15 @@ class AppForm extends AppBase
         $input['extMode'] = $row['extMode'];
         $input['tbCreate'] = $row['tbCreate'];
         $input['tbEngine'] = empty($row['tbEngine']) ? 'InnoDB' : $row['tbEngine'];
-
         if ($input['extMode'] == 4) {
             $input['tbCreate'] = 0;
             $input['tbName'] = $input['tbNameEx'];
         }
         unset($input['tbNameEx']);
-
         $tbName = '@pf_' . $input['tbName'];
         $oldName = '@pf_' . $row['tbName'];
         $oldTitle = $row['title'];
         $newTitle = empty($input['title']) ? '' : $input['title'];
-
         if ($input['tbCreate'] == 1) {
             try {
                 //如果新表不存在
@@ -269,7 +385,6 @@ class AppForm extends AppBase
         $this->error($msg);
     }
 
-
     /**
      * 导入表单
      */
@@ -310,7 +425,6 @@ class AppForm extends AppBase
         echo $out;
         exit;
     }
-
 
     /**
      * @param string $file
@@ -470,6 +584,4 @@ class AppForm extends AppBase
         }
         DB::insert('@pf_tool_field', $values);
     }
-
-
 }
