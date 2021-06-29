@@ -468,9 +468,7 @@ class MakeFormTemplate
     {
         $plugStyle = intval($this->form['plugStyle']);
         $this->out[] = '{*用于创建多行插件容器集合的hook函数模板 lastIndex 最后行的索引，body 已有item的模板渲染数据，source 用于js动态创建的模板数据base64  *}';
-
         $this->out[] = "{hook fn='wrap' field=null  body=null}";
-
         if ($this->form['useWrap']) {
             $this->out[] = '<div class="yee-row" id="row_{$field->boxId}">';
             $this->out[] = '<label class="row-label">{if $field->star}<em></em>{/if}{$field->label}：</label>';
@@ -484,20 +482,16 @@ class MakeFormTemplate
             foreach ($this->getViewFields() as $field) {
                 $this->out[] = '<th align="center">' . $field['name'] . '</th>';
             }
-            $this->out[] = '</tr></thead>';
+            $this->out[] = '<th width="180" align="center">操作</th></tr></thead>';
             $this->out[] = '{$body}';
             $this->out[] = '</table>';
-            $this->out[] = '<div style="display: block;">';
-            $this->out[] = '{if !$field->offEdit}<a href="javascript:;" name="add" class="yee-btn"><i class="icofont-plus-circle"></i>新增行</a>{/if}';
-            $this->out[] = '{if $field->prompt}<span class="yee-field-prompt">{$field->prompt}</span>{/if} <span id="{$field->boxId}-validation"></span>';
-            $this->out[] = '</div>';
         } else {
             $this->out[] = '<div style="display: block;">{$body}</div>';
-            $this->out[] = '<div style="display: block;">';
-            $this->out[] = '{if !$field->offEdit}<a href="javascript:;" name="add" class="yee-btn"><i class="icofont-plus-circle"></i>新增行</a>{/if}';
-            $this->out[] = '{if $field->prompt}<span class="yee-field-prompt">{$field->prompt}</span>{/if} <span id="{$field->boxId}-validation"></span>';
-            $this->out[] = '</div>';
         }
+        $this->out[] = '<div style="display: block;">';
+        $this->out[] = '{if !$field->offEdit}<a href="javascript:;" name="add" class="yee-btn"><i class="icofont-plus-circle"></i>新增行</a>{/if}';
+        $this->out[] = '{if $field->prompt}<span class="yee-field-prompt">{$field->prompt}</span>{/if} <span id="{$field->boxId}-validation"></span>';
+        $this->out[] = '</div>';
         if ($this->form['useWrap']) {
             $this->out[] = "</div>";
             $this->out[] = "</div>";
