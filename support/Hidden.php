@@ -12,7 +12,7 @@ class Hidden
 {
     #[Select(label: '值类型', options: [
         ['string', 'string'],
-        ['integer', 'integer'],
+        ['int', 'int'],
         ['float', 'float'],
         ['array', 'array'],
         ['bool', 'bool'],
