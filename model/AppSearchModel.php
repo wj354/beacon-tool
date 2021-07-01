@@ -17,6 +17,8 @@ use beacon\widget\Single;
 use beacon\widget\Text;
 use beacon\widget\Textarea;
 use beacon\core\DBException;
+use beacon\core\DB;
+use beacon\core\Request;
 
 #[Form(title: '搜索字段管理', table: '@pf_tool_search', template: 'form/app_search.tpl')]
 class AppSearchModel
