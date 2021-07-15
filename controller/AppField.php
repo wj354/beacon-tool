@@ -222,7 +222,7 @@ class AppField extends AppBase
         $this->fixInput($input);
         DB::insert('@pf_tool_field', $input);
         //创建数据表字段
-        if ($this->form['tbCreate'] == 1 && ($this->form['extMode'] == 0 || $this->form['extMode'] == 2)) {
+        if ($this->form['tbCreate'] == 1 && ($this->form['extMode'] == 0 || $this->form['extMode'] == 2 || $this->form['extMode'] == 3)) {
             $tbName = '@pf_' . $this->form['tbName'];
             $db = ToolDB::db($this->appId);
             if ($input['dbType'] != 'none' && $input['dbField'] == true) {
@@ -271,7 +271,7 @@ class AppField extends AppBase
         $this->fixInput($input);
         DB::update('@pf_tool_field', $input, $id);
 
-        if ($this->form['tbCreate'] == 1 && ($this->form['extMode'] == 0 || $this->form['extMode'] == 2)) {
+        if ($this->form['tbCreate'] == 1 && ($this->form['extMode'] == 0 || $this->form['extMode'] == 2 || $this->form['extMode'] == 3)) {
             $tbName = '@pf_' . $this->form['tbName'];
             $db = ToolDB::db($this->appId);
             if ($input['dbType'] != 'none' && $input['dbField'] == true) {
@@ -311,7 +311,7 @@ class AppField extends AppBase
         }
         $row = DB::getRow('select * from @pf_tool_field where id=?', $id);
         //删除字段
-        if ($this->form['tbCreate'] == 1 && ($this->form['extMode'] == 0 || $this->form['extMode'] == 2)) {
+        if ($this->form['tbCreate'] == 1 && ($this->form['extMode'] == 0 || $this->form['extMode'] == 2 || $this->form['extMode'] == 3)) {
             $this->appId = intval($this->form['appId']);
             $db = ToolDB::db($this->appId);
             $tbName = '@pf_' . $this->form['tbName'];
@@ -441,7 +441,7 @@ class AppField extends AppBase
         $input['extend'] = Helper::convertArray($input['extend']);
         $input['names'] = Helper::convertArray($input['names']);
         $tbName = '@pf_' . $this->form['tbName'];
-        if ($this->form['tbCreate'] == 1 && ($this->form['extMode'] == 0 || $this->form['extMode'] == 2)) {
+        if ($this->form['tbCreate'] == 1 && ($this->form['extMode'] == 0 || $this->form['extMode'] == 2 || $this->form['extMode'] == 3)) {
             $db = ToolDB::db($this->appId);
             if ($input['dbType'] != 'null' && $input['dbField'] == 1) {
                 $idx = 1;
