@@ -42,7 +42,7 @@ Yee.define('code-editor', 'textarea', function (element) {
     let qStyle = getStyle(qel[0]);
     //console.log( 'qStyle',qStyle.height,qStyle.width);
     let update = function () {
-        //console.log( 'qStyle',qStyle.height,qStyle.width);
+        console.log( 'update',qStyle.height,qStyle.width);
         layout[0].style.height = qStyle.height;
         layout[0].style.width = qStyle.width;
     }
@@ -54,7 +54,7 @@ Yee.define('code-editor', 'textarea', function (element) {
         const resizeObserver = new ResizeObserver(update);
         resizeObserver.observe(qel[0]);
     } else {
-        setInterval(update, 20);
+        setInterval(update, 50);
     }
     function rander(){
         let val = qel[0].value;
@@ -67,13 +67,8 @@ Yee.define('code-editor', 'textarea', function (element) {
         editor.html(val);
         Prism.highlightElement(editor[0]);
     }
-    var timer=  setInterval(function (){
-        if(!qel.is(':hidden')){
-            rander();
-            update();
-        }
-    }, 20);
-
+    rander();
+    update();
     qel.on("keydown change input", null, function (e) {
         if (e.keyCode == 9 || e.which == 9) {
             e.preventDefault();
