@@ -399,7 +399,7 @@ class AppListModel
     #[Textarea(
         label: '搜索区顶部代码',
         tabIndex: 'operate',
-        attrs: ['style' => 'width:700px; height:120px;']
+        attrs: ['style' => 'width:700px; height:120px;','yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'smarty']
     )]
     public string $searchTop = '';
 
@@ -409,7 +409,7 @@ class AppListModel
     #[Textarea(
         label: '标题代码',
         tabIndex: 'other',
-        attrs: ['style' => 'width:700px; height:60px;']
+        attrs: ['style' => 'width:700px; height:60px;','yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'smarty']
     )]
     public string $caption = '';
 
@@ -440,20 +440,22 @@ class AppListModel
     #[Textarea(
         label: '分栏右侧',
         tabIndex: 'other',
+        attrs:['yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'smarty']
     )]
     public string $viewTabRight = '';
 
     #[Textarea(
         label: '页面head区域模板',
         tabIndex: 'other',
-        prompt: '可放置脚本样式等引用'
+        prompt: '可放置脚本样式等引用',attrs:['yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'smarty']
     )]
     public string $headTemplate = '';
 
     #[Textarea(
         label: '页面底部区域模板',
         tabIndex: 'other',
-        prompt: '可放置底部脚本，或其他版权等信息'
+        prompt: '可放置底部脚本，或其他版权等信息',
+        attrs:['yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'smarty']
     )]
     public string $footTemplate = '';
 
@@ -461,14 +463,16 @@ class AppListModel
     #[Textarea(
         label: '提示信息',
         tabIndex: 'other',
-        prompt: '在底部的提示说明帮助'
+        prompt: '在底部的提示说明帮助',
+        attrs:['yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'smarty']
     )]
     public string $information = '';
 
     #[Textarea(
         label: '警告提示',
         tabIndex: 'other',
-        prompt: '在底部的警告提示说明帮助'
+        prompt: '在底部的警告提示说明帮助',
+        attrs:['yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'smarty']
     )]
     public string $attention = '';
 

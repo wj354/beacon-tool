@@ -128,7 +128,8 @@ class AppSearchModel
     #[Textarea(
         label: 'SQL查询代码',
         tabIndex: 'base',
-        prompt: '如 (模糊查找) `name` like concat(\'%\',?,\'%\') 或者 type=? 或者 datetime > ?'
+        prompt: '如 (模糊查找) `name` like concat(\'%\',?,\'%\') 或者 type=? 或者 datetime > ?',
+        attrs:['yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'sql']
     )]
     public string $tbWhere = '';
 
@@ -188,7 +189,7 @@ class AppSearchModel
     #[Text(label: '控件CSS类名', tabIndex: 'extend', prompt: '默认系统会指定为 "form-inp 控件类型"')]
     public string $attrClass = '';
 
-    #[Textarea(label: '内联style样式', tabIndex: 'extend', prompt: '控件的内联样式')]
+    #[Textarea(label: '内联style样式', tabIndex: 'extend', prompt: '控件的内联样式',attrs:['yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'css'])]
     public string $attrStyle = '';
 
     #[Text(label: '输入框内提示文本(placeholder)', tabIndex: 'extend', prompt: '直接在输入框内的提示文本')]

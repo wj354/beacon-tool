@@ -282,35 +282,40 @@ class AppFormModel
     #[Textarea(
         label: '表单头',
         prompt: '不填写默认使用标题',
-        tabIndex: 'extend'
+        tabIndex: 'extend',
+        attrs:['yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'smarty']
     )]
     public string $caption = '';
 
     #[Textarea(
         label: '头部说明(介绍)',
         prompt: '在表单头部的说明文本',
-        tabIndex: 'extend'
+        tabIndex: 'extend',
+        attrs:['yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'smarty']
     )]
     public string $description = '';
 
     #[Textarea(
         label: '提示信息(提示)',
         prompt: '在底部的提示说明帮助',
-        tabIndex: 'extend'
+        tabIndex: 'extend',
+        attrs:['yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'smarty']
     )]
     public string $information = '';
 
     #[Textarea(
         label: '警告提示(警告)',
         prompt: '在底部的警告提示说明帮助',
-        tabIndex: 'extend'
+        tabIndex: 'extend',
+        attrs:['yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'smarty']
     )]
     public string $attention = '';
 
     #[Textarea(
         label: 'HEAD区',
         prompt: 'HTML 头部区，可放入JS CSS 等资源',
-        tabIndex: 'extend'
+        tabIndex: 'extend',
+        attrs:['yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'smarty']
     )]
     public string $head = '';
 
@@ -318,7 +323,7 @@ class AppFormModel
         label: '脚本代码',
         prompt: '需要在页面中执行的JS代码',
         tabIndex: 'extend',
-        attrs: ['style' => 'width:600px; height:200px;']
+        attrs: ['style' => 'width:600px; height:200px;','yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'js']
     )]
     public string $script = '';
 

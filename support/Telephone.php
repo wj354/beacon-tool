@@ -10,7 +10,6 @@ use beacon\widget\Container;
 use beacon\widget\Number;
 use beacon\widget\Select;
 
-#[Support(name: '电话号码 Telephone', types: ['varchar(200)'])]
 #[Form(title: '电话号码设置', template: 'form/field_support.tpl')]
 class Telephone
 {

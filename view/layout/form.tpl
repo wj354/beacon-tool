@@ -5,8 +5,10 @@
     <title>{block name='title'}{/block}</title>
     <link type="text/css" rel="stylesheet" href="/yeeui/css/yeeui.css"/>
     <link type="text/css" rel="stylesheet" href="/icofont/icofont.css"/>
+    <link type="text/css" rel="stylesheet" href="{url ctl='Res' f="prism.css"}"/>
     <script src="/yeeui/third/jquery-3.3.1.min.js"></script>
     <script src="/yeeui/yee.js"></script>
+    <script src="{url ctl='Res' f="yee-code-editor.js"}"></script>
     {block name='header'}{/block}
 </head>
 <body>

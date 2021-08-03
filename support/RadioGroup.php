@@ -32,6 +32,7 @@ class RadioGroup
         prompt: 'as value 是值，as text 是文本',
         attrs: [
             'placeholder' => '如：select id as value,name as text from @pf_table',
+            'yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'sql'
         ]
     )]
     public string $optionSql = '';

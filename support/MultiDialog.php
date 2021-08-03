@@ -83,7 +83,8 @@ class MultiDialog
 
     #[Textarea(label: 'SQL查询语句',
         attrs: [
-            'placeholder' => '如：select name from table where id=?'
+            'placeholder' => '如：select name from table where id=?',
+            'yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'sql'
         ],
         prompt: '使用查询的第1个字段作为值的文本',
     )]

@@ -42,11 +42,11 @@ class AppFieldModel
     #[Button(
         label: '翻译',
         attrs: [
-        'href' => '~/translate/index',
-        'yee-module' => 'ajax',
-        'on-before' => 'data.param[\'text\']=$(\'#label\').val()||\'\';',
-        'on-success' => 'if(ret){$(\'#name\').val(ret.camel2);}',
-    ],
+            'href' => '~/translate/index',
+            'yee-module' => 'ajax',
+            'on-before' => 'data.param[\'text\']=$(\'#label\').val()||\'\';',
+            'on-success' => 'if(ret){$(\'#name\').val(ret.camel2);}',
+        ],
         viewMerge: -1,
         tabIndex: 'base',
     )]
@@ -78,14 +78,14 @@ class AppFieldModel
         attrs: ['style' => 'min-width:170px;display:inline-block;'],
         optionFunc: [self::class, 'typeOptions'],
         dynamic: [
-        [
-            'eq' => 'Hidden',
-            'show' => 'hidden',
-        ],
-        [
-            'neq' => 'Hidden',
-            'hide' => 'hidden',
-        ]],
+            [
+                'eq' => 'Hidden',
+                'show' => 'hidden',
+            ],
+            [
+                'neq' => 'Hidden',
+                'hide' => 'hidden',
+            ]],
         tabIndex: 'base'
     )]
     public string $type = 'Text';
@@ -138,20 +138,20 @@ class AppFieldModel
     #[Select(
         label: '默认值',
         options: [
-        ['value' => 'null', 'text' => 'NULL'],
-        ['value' => 'empty', 'text' => '空字符串'],
-        ['value' => 'value', 'text' => '值'],
-    ],
+            ['value' => 'null', 'text' => 'NULL'],
+            ['value' => 'empty', 'text' => '空字符串'],
+            ['value' => 'value', 'text' => '值'],
+        ],
         dynamic: [
-        [
-            'eq' => 'value',
-            'show' => ['dbDefValue'],
+            [
+                'eq' => 'value',
+                'show' => ['dbDefValue'],
+            ],
+            [
+                'neq' => 'value',
+                'hide' => ['dbDefValue'],
+            ],
         ],
-        [
-            'neq' => 'value',
-            'hide' => ['dbDefValue'],
-        ],
-    ],
         tabIndex: 'base',
     )]
     public string $dbDefType = 'null';
@@ -209,10 +209,10 @@ class AppFieldModel
     #[RadioGroup(
         label: '合并字段',
         options: [
-        ['value' => 0, 'text' => '不合并'],
-        ['value' => 1, 'text' => '向下合并'],
-        ['value' => -1, 'text' => '向上合并']
-    ],
+            ['value' => 0, 'text' => '不合并'],
+            ['value' => 1, 'text' => '向下合并'],
+            ['value' => -1, 'text' => '向上合并']
+        ],
         tabIndex: 'base',
     )]
     public int $viewMerge = 0;
@@ -257,7 +257,7 @@ class AppFieldModel
     #[Text(label: '控件CSS类名', tabIndex: 'extend', prompt: '默认系统会指定为 "form-inp 控件类型"')]
     public string $attrClass = '';
 
-    #[Textarea(label: '内联style样式', tabIndex: 'extend', prompt: '控件的内联样式')]
+    #[Textarea(label: '内联style样式', tabIndex: 'extend', prompt: '控件的内联样式',attrs:['yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'css'])]
     public string $attrStyle = '';
 
     #[Text(label: '输入框内提示文本(placeholder)', tabIndex: 'extend', prompt: '直接在输入框内的提示文本')]
@@ -311,9 +311,9 @@ class AppFieldModel
         label: '验证数值的函数',
         tabIndex: 'valid',
         attrs: [
-        'style' => 'width:260px;',
-        'placeholder' => '如:\\lib\\MyClass::MyFunc'
-    ],
+            'style' => 'width:260px;',
+            'placeholder' => '如:\\lib\\MyClass::MyFunc'
+        ],
         validRule: ['regex' => ['^\w+(\\\\\w+)*::\w+$', '格式不正确']]
     )]
     public string $validFunc = '';
@@ -326,89 +326,11 @@ class AppFieldModel
     )]
     public ?int $formId = null;
 
+
     public static function typeOptions(): array
     {
-        $data = [
-            'Text' => ['text' => '文本框 Text', 'data-types' => ['varchar(200)', 'text']],
-            'Hidden' => ['text' => '隐藏域 Hidden', 'data-types' => ['int(11)', 'tinyint(4)', 'varchar(200)', 'float(18,2)', 'decimal(18,2)', 'double(18,2)', 'text', 'longtext', 'json'], 'data-default' => 'int'],
-            'Check' => ['text' => '是否 Check', 'data-types' => ['tinyint(1)']],
-            'Integer' => ['text' => '整数 Integer', 'data-types' => ['int(11)']],
-            'Number' => ['text' => '小数 Number', 'data-types' => ['decimal(18,2)', 'float(18,2)', 'double(18,2)']],
-            'Password' => ['text' => '密码框 Password', 'data-types' => ['varchar(200)']],
-            'Color' => ['text' => '颜色选择 Color', 'data-types' => ['varchar(200)']],
-            'Date' => ['text' => '日期格式 Date', 'data-types' => ['date', 'datetime', 'int(11)']],
-            'Datetime' => ['text' => '时间格式 Datetime', 'data-types' => ['datetime', 'int(11)']],
-            'Select' => ['text' => '下拉框 Select', 'data-types' => ['int(11)', 'varchar(100)','decimal(18,2)'], 'data-default' => 'int'],
-            'DelaySelect' => ['text' => '异步下拉 DelaySelect', 'data-types' => ['int(11)', 'varchar(100)','decimal(18,2)'], 'data-default' => 'int'],
-            'RadioGroup' => ['text' => '单选组 RadioGroup', 'data-types' => ['int(11)', 'varchar(100)','decimal(18,2)'], 'data-default' => 'int'],
-            'CheckGroup' => ['text' => '多选组 CheckGroup', 'data-types' => ['varchar(200)', 'int(11)', 'text', 'longtext', 'json'], 'data-default' => 'json'],
-            'Remote' => ['text' => '远程验证输入框 Remote', 'data-types' => ['varchar(200)', 'text']],
-            'Linkage' => ['text' => '联动下拉 Linkage', 'data-types' => ['varchar(200)', 'text', 'json'], 'data-default' => 'json'],
-            'Textarea' => ['text' => '备注型 Textarea', 'data-types' => ['text', 'varchar(200)', 'longtext'], 'data-default' => 'text'],
-            'UpFile' => ['text' => '文件上传 UpFile', 'data-types' => ['varchar(200)', 'text', 'json']],
-            'UpImage' => ['text' => '图片上传 UpImage', 'data-types' => ['varchar(300)', 'text', 'json']],
-            'XhEditor' => ['text' => 'Xh编辑器 XhEditor', 'data-types' => ['text', 'longtext']],
-            'Tinymce' => ['text' => 'tiny编辑器 Tinymce', 'data-types' => ['text', 'longtext']],
-            'SelectDialog' => ['text' => '选择对话框 SelectDialog', 'data-types' => ['int(11)', 'varchar(200)', 'json','decimal(18,2)'], 'data-default' => 'int'],
-            'MultiDialog' => ['text' => '多选对话框 MultiDialog', 'data-types' => ['text', 'varchar(200)', 'json']],
-            'Line' => ['text' => '分割行 Line', 'data-types' => ['none']],
-            'Label' => ['text' => '标签 Label', 'data-types' => ['none']],
-            'Button' => ['text' => '按钮 Button', 'data-types' => ['none']],
-            'Container' => ['text' => '多行容器 Container', 'data-types' => ['text', 'json']],
-            'Single' => ['text' => '单行容器 Single', 'data-types' => ['text', 'json']],
-            'Transfer' => ['text' => '穿梭框 Transfer', 'data-types' => ['int(11)', 'tinyint(4)', 'varchar(200)', 'float(18,2)', 'decimal(18,2)', 'double(18,2)', 'text', 'longtext', 'json']],
-        ];
-        $paths = [];
-        $paths[] = Util::path(TOOL_DIR, 'support');
-        //扫描wj008目录,插件会装到这里
-        $tempPath = Util::path(TOOL_DIR, '../../', 'wj008');
-        if (is_dir($tempPath)) {
-            $directory = new \RecursiveDirectoryIterator($tempPath, \RecursiveDirectoryIterator::SKIP_DOTS);
-            foreach ($directory as $dir) {
-                if ($dir->isDir()) {
-                    $baseName = $dir->getBasename();
-                    if ($baseName == 'beacon' || $baseName == 'sdopx' || $baseName == 'install') {
-                        continue;
-                    }
-                    $temp = Util::path($dir->getPathname(), 'tool/support');
-                    if (is_dir($temp)) {
-                        $paths[] = $temp;
-                    }
-                }
-            }
-        }
-        foreach ($paths as $path) {
-            if (is_dir($path)) {
-                $directory = new \RecursiveDirectoryIterator($path, \RecursiveDirectoryIterator::SKIP_DOTS);
-                $iterator = new \RecursiveIteratorIterator($directory, \RecursiveIteratorIterator::SELF_FIRST);
-                /**@var \SplFileInfo $fileInfo */
-                foreach ($iterator as $fileInfo) {
-                    if ($fileInfo->isFile() && $fileInfo->getExtension() == 'php') {
-                        $name = $fileInfo->getBasename('.php');
-                        if (isset($data[$name])) {
-                            continue;
-                        }
-                        try {
-                            $class = 'tool\\support\\' . $name;
-                            $refClass = new \ReflectionClass($class);
-                            $temp = $refClass->getAttributes(Support::class);
-                            if (isset($temp[0])) {
-                                /**@var Support $supper */
-                                $supper = $temp[0]->newInstance();
-                                $data[$name] = ['text' => $supper->name, 'data-types' => $supper->types];
-                            }
-                        } catch (\ReflectionException) {
-                            continue;
-                        }
-                    }
-                }
-            }
-        }
-        foreach ($data as $key => &$opt) {
-            $opt['value'] = $key;
-        }
-        $data = array_values($data);
-        return $data;
+        Support::loadOtherType();
+        return Support::getTypeOption();
     }
 
     /**
@@ -430,7 +352,7 @@ class AppFieldModel
      * @return array
      * @throws DBException
      */
-    public static function nameValidFunc(string $value):array
+    public static function nameValidFunc(string $value): array
     {
         $id = Request::param('id:i', 0);
         $formId = Request::param('formId:i', 0);

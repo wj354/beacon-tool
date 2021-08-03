@@ -69,7 +69,7 @@ class ListFieldPlugin
 
     #[Textarea(
         label: '值',
-        attrs: ['style' => 'width: 450px; height:60px;', 'placeholder' => '值变量修饰']
+        attrs: ['style' => 'width: 450px; height:68px;', 'placeholder' => '值变量修饰','yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'smarty']
     )]
     public string $code = '';
 }

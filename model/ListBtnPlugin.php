@@ -13,8 +13,9 @@ class ListBtnPlugin
     #[Textarea(
         label: '模板代码',
         attrs: [
-            'style' => 'width:700px; height:64px;',
-            'spellcheck' => 'false'
+            'style' => 'width:700px; height:100px;',
+            'spellcheck' => 'false',
+            'yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'smarty'
         ]
     )]
     public string $code = '';

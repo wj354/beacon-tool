@@ -46,7 +46,7 @@ class ListTabPlugin
 
     #[Textarea(
         label: '代码',
-        attrs: ['style' => 'width:500px; height:20px;margin-top: 2px;'],
+        attrs: ['style' => 'width:500px; height:20px;margin-top: 2px;','yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'smarty'],
         viewMerge: -1
     )]
     public string $code = '';
