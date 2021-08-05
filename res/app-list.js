@@ -107,6 +107,9 @@ $(function () {
             if (fixedVal == '') {
                 thFixed.val('_' + val);
             }
+            if (oldVal != valBox.val()) {
+                valBox.triggerHandler('change');
+            }
         }
     });
     $('#fields').on('click', 'a.order-btn', function (ev) {
