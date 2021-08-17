@@ -11,17 +11,20 @@
     {block name='header'}{/block}
 </head>
 <body>
-
-<div class="yee-wrap">
-    {block name='list-header'}{/block}
-    {block name='list-tab'}{/block}
-    {block name='list-attention'}{/block}
-    {block name='list-search'}{/block}
-    <div class="yee-list">
-        {block name='list-table'}{/block}
-        {block name='list-pagebar'}{/block}
+<div class="yee-wrapper">
+    <div class="yee-wrap">
+        {block name='list-header'}{/block}
+        {block name='list-tab'}{/block}
+        {block name='list-attention'}{/block}
+        <div class="yee-list-main">
+            {block name='list-search'}{/block}
+            <div class="yee-list">
+                {block name='list-table'}{/block}
+                {block name='list-pagebar'}{/block}
+            </div>
+            {block name='list-information'}{/block}
+        </div>
     </div>
-    {block name='list-information'}{/block}
 </div>
 {block name='footer'}{/block}
 </body>

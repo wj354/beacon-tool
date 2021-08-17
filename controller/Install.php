@@ -114,7 +114,6 @@ class Install extends Controller
     private function execFile(string $file, string $charset)
     {
         #写入配置文件
-        $file = Util::path(TOOL_DIR, $file);
         if (file_exists($file)) {
             $data = file_get_contents($file);
             $data = str_replace('@@charset', $charset, $data);
@@ -160,8 +159,10 @@ class Install extends Controller
                 #写入配置文件
                 if (!file_exists($cfgFile)) {
                     file_put_contents($cfgFile, $code);
-                    $this->execFile('data/tool.sql', $values['db_charset']);
-                    $this->execFile('data/web.sql', $values['db_charset']);
+                    $toolFile = Util::path(TOOL_DIR, 'data/tool.sql');
+                    $this->execFile($toolFile, $values['db_charset']);
+                    $webFile = Util::path(ROOT_DIR, 'data/web.sql');
+                    $this->execFile($webFile, $values['db_charset']);
                 }
                 file_put_contents($insFile, TOOL_VERSION);
             } catch (DBException $exception) {

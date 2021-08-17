@@ -12,16 +12,14 @@
     {block name='header'}{/block}
 </head>
 <body>
-
+<div class="yee-wrapper">
 <div class="yee-form-header">
     {block name='form-header'}{/block}
 </div>
-
 <div class="yee-wrap">
     {block name='form-content'}{/block}
 </div>
-
 {block name='footer'}{/block}
-
+</div>
 </body>
 </html>
