@@ -175,10 +175,11 @@ $(function () {
         var formId = $(':input[name=formId]').val();
         var choice = inp.val() || '';
         var url = Yee.url(aBtn.attr('href'), {choice: choice, formId: formId});
-        Yee.dialog(url, '选择字段', {
+        Yee.dialog(url, {
+            title: '选择字段',
             width: 600,
             height: 800
-        }, window, aBtn);
+        }, aBtn);
         return false;
     });
 
