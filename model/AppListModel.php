@@ -90,15 +90,15 @@ class AppListModel
         after: '勾选可固定列',
         tabIndex: 'base',
         dynamic: [
-        [
-            'eq' => 1,
-            'show' => 'leftFixed,rightFixed',
+            [
+                'eq' => 1,
+                'show' => 'leftFixed,rightFixed',
+            ],
+            [
+                'neq' => 1,
+                'hide' => 'leftFixed,rightFixed',
+            ],
         ],
-        [
-            'neq' => 1,
-            'hide' => 'leftFixed,rightFixed',
-        ],
-    ],
     )]
     public bool $fixed = false;
 
@@ -233,13 +233,13 @@ class AppListModel
         label: '选择',
         viewMerge: -1,
         attrs: [
-        'yee-module' => 'dialog',
-        'data-width' => 600,
-        'data-height' => 800,
-        'data-carry' => 'formId,tbField,tbAlias',
-        'on-success' => "$('#tbField').val(ret);",
-        'href' => '~/AppList/db_field'
-    ],
+            'yee-module' => 'dialog',
+            'data-width' => 600,
+            'data-height' => 800,
+            'data-carry' => 'formId,tbField,tbAlias',
+            'on-success' => "$('#tbField').val(ret);",
+            'href' => '~/AppList/db_field'
+        ],
         tabIndex: 'data'
     )]
     public string $button2 = '';
@@ -399,7 +399,7 @@ class AppListModel
     #[Textarea(
         label: '搜索区顶部代码',
         tabIndex: 'operate',
-        attrs: ['style' => 'width:700px; height:120px;','yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'smarty']
+        attrs: ['style' => 'width:700px; height:120px;', 'yee-module' => 'code-editor', 'class' => 'form-inp textarea code-editor', 'data-lang' => 'smarty']
     )]
     public string $searchTop = '';
 
@@ -409,7 +409,7 @@ class AppListModel
     #[Textarea(
         label: '标题代码',
         tabIndex: 'other',
-        attrs: ['style' => 'width:700px; height:60px;','yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'smarty']
+        attrs: ['style' => 'width:700px; height:60px;', 'yee-module' => 'code-editor', 'class' => 'form-inp textarea code-editor', 'data-lang' => 'smarty']
     )]
     public string $caption = '';
 
@@ -420,11 +420,11 @@ class AppListModel
         dynamic: [
             [
                 'eq' => 1,
-                'show' => 'viewTabs,viewTabRight',
+                'show' => 'viewTabs,viewTabRight,viewTabCode',
             ],
             [
                 'neq' => 1,
-                'hide' => 'viewTabs,viewTabRight',
+                'hide' => 'viewTabs,viewTabRight,viewTabCode',
             ],
         ]
     )]
@@ -437,17 +437,25 @@ class AppListModel
     )]
     public array $viewTabs = [];
 
+
+    #[Textarea(
+        label: '分栏左侧',
+        tabIndex: 'other',
+        attrs: ['yee-module' => 'code-editor', 'class' => 'form-inp textarea code-editor', 'data-lang' => 'smarty']
+    )]
+    public string $viewTabCode = '';
+
     #[Textarea(
         label: '分栏右侧',
         tabIndex: 'other',
-        attrs:['yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'smarty']
+        attrs: ['yee-module' => 'code-editor', 'class' => 'form-inp textarea code-editor', 'data-lang' => 'smarty']
     )]
     public string $viewTabRight = '';
 
     #[Textarea(
         label: '页面head区域模板',
         tabIndex: 'other',
-        prompt: '可放置脚本样式等引用',attrs:['yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'smarty']
+        prompt: '可放置脚本样式等引用', attrs: ['yee-module' => 'code-editor', 'class' => 'form-inp textarea code-editor', 'data-lang' => 'smarty']
     )]
     public string $headTemplate = '';
 
@@ -455,7 +463,7 @@ class AppListModel
         label: '页面底部区域模板',
         tabIndex: 'other',
         prompt: '可放置底部脚本，或其他版权等信息',
-        attrs:['yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'smarty']
+        attrs: ['yee-module' => 'code-editor', 'class' => 'form-inp textarea code-editor', 'data-lang' => 'smarty']
     )]
     public string $footTemplate = '';
 
@@ -464,7 +472,7 @@ class AppListModel
         label: '提示信息',
         tabIndex: 'other',
         prompt: '在底部的提示说明帮助',
-        attrs:['yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'smarty']
+        attrs: ['yee-module' => 'code-editor', 'class' => 'form-inp textarea code-editor', 'data-lang' => 'smarty']
     )]
     public string $information = '';
 
@@ -472,7 +480,7 @@ class AppListModel
         label: '警告提示',
         tabIndex: 'other',
         prompt: '在底部的警告提示说明帮助',
-        attrs:['yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'smarty']
+        attrs: ['yee-module' => 'code-editor', 'class' => 'form-inp textarea code-editor', 'data-lang' => 'smarty']
     )]
     public string $attention = '';
 

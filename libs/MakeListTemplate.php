@@ -75,28 +75,43 @@ class MakeListTemplate
             return;
         }
         $tabItems = Helper::convertArray($this->list['viewTabs'], []);
-        $this->out[] = '';
-        $this->out[] = "{block name='list-tab'}";
-        $this->out[] = '<div class="yee-tab">';
-        $this->out[] = '<ul yee-module="list-tab">';
-        foreach ($tabItems as $idx => $item) {
-            if ($item['useCode']) {
-                $this->out[] = $item['code'];
-            } else {
-                $item['url'] = Helper::tplUrl($item['url']);
-                $this->out[] = "<li{if \$this->get('tabIndex:i',0)=={$idx}} class=\"curr\"{/if}>";
-                $this->out[] = "<a href=\"{$item['url']}\" data-tab-index='{$idx}'>" . htmlspecialchars($item['name']) . "</a>";
-                $this->out[] = "</li>";
+        if (count($tabItems) > 0) {
+            $this->out[] = '';
+            $this->out[] = "{block name='list-tab'}";
+            $this->out[] = '<div class="yee-tab">';
+            $this->out[] = '<ul yee-module="list-tab">';
+            foreach ($tabItems as $idx => $item) {
+                if ($item['useCode']) {
+                    $this->out[] = $item['code'];
+                } else {
+                    $item['url'] = Helper::tplUrl($item['url']);
+                    $this->out[] = "<li{if \$this->get('tabIndex:i',0)=={$idx}} class=\"curr\"{/if}>";
+                    $this->out[] = "<a href=\"{$item['url']}\" data-tab-index='{$idx}'>" . htmlspecialchars($item['name']) . "</a>";
+                    $this->out[] = "</li>";
+                }
             }
+            $this->out[] = '</ul>';
+            $this->createTabRight();
+            $this->out[] = '</div>';
+            $this->out[] = "{/block}";
+        } else if (!empty($this->list['viewTabCode'])) {
+            $this->out[] = '';
+            $this->out[] = "{block name='list-tab'}";
+            $this->out[] = '<div class="yee-tab">';
+            $this->out[] = $this->list['viewTabCode'];
+            $this->createTabRight();
+            $this->out[] = '</div>';
+            $this->out[] = "{/block}";
         }
-        $this->out[] = '</ul>';
+    }
+
+    private function createTabRight()
+    {
         if (!empty($this->list['viewTabRight'])) {
             $this->out[] = '<div  class="yee-tab-right">';
             $this->out[] = $this->list['viewTabRight'];
             $this->out[] = '</div>';
         }
-        $this->out[] = '</div>';
-        $this->out[] = "{/block}";
     }
 
     private function createListHeader()

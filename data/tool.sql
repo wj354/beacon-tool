@@ -163,6 +163,7 @@ CREATE TABLE `@pf_tool_list` (
   `renderMode` varchar(255) DEFAULT NULL,
   `selectStyle` varchar(255) DEFAULT NULL,
   `selectValue` varchar(255) DEFAULT NULL,
+  `viewTabCode` text,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=@@charset ROW_FORMAT=DYNAMIC COMMENT='TOOL列表数据';
 
