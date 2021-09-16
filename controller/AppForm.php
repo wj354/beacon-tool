@@ -285,6 +285,9 @@ class AppForm extends AppBase
         $this->appId = intval($row['appId']);
         $form = Form::create(AppFormModel::class, 'edit');
         if ($this->isGet()) {
+            if (intval($row['extMode']) == 4) {
+                $row['tbNameEx'] = $row['tbName'];
+            }
             $form->setData($row);
             $this->displayForm($form);
             return;
@@ -306,14 +309,14 @@ class AppForm extends AppBase
         $input['tbEngine'] = empty($row['tbEngine']) ? 'InnoDB' : $row['tbEngine'];
         if ($input['extMode'] == 4) {
             $input['tbCreate'] = 0;
-            $input['tbName'] = $input['tbNameEx'];
+            unset($input['tbName']);
         }
         unset($input['tbNameEx']);
-        $tbName = '@pf_' . $input['tbName'];
-        $oldName = '@pf_' . $row['tbName'];
-        $oldTitle = $row['title'];
-        $newTitle = empty($input['title']) ? '' : $input['title'];
         if ($input['tbCreate'] == 1) {
+            $tbName = '@pf_' . $input['tbName'];
+            $oldName = '@pf_' . $row['tbName'];
+            $oldTitle = $row['title'];
+            $newTitle = empty($input['title']) ? '' : $input['title'];
             try {
                 //如果新表不存在
                 if (!$db->existsTable($tbName)) {
