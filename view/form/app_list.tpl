@@ -51,7 +51,7 @@
                 <div class="submit-cell">
                     {$form->fetchHideBox()}
                     <input type="submit" class="form-btn red" value="提交">
-                    <input type="hidden" name="__BACK__" value="{url act='index'}">
+                    <input type="hidden" name="__BACK__" value="{url act='index' appId=$this->appId}">
                     <a href="javascript:history.back();" class="form-btn back">返回</a>
                 </div>
             </div>
