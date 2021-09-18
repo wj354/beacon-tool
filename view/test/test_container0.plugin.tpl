@@ -15,8 +15,6 @@
 
 {*用于创建多行插件容器中每行的数据hook函数模板 form 插件的表单 index 每项的索引*}
 {hook fn='item' field=null form=null index='@@index@@'}
-    <div class="container-item">
-
         <div class="yee-container-title">
             <label class="inline-label" style="text-align: left;">&nbsp;&nbsp; 第 <span name="index" class="red2" style="font-size: 18px;"></span>项&nbsp;&nbsp;&nbsp;</label>
             {if !$field->offEdit}
@@ -30,5 +28,4 @@
                 {field_row field=$child}
             {/foreach}
         </div>
-    </div>
 {/hook}

@@ -15,7 +15,6 @@
 
 {*用于创建多行插件容器中每行的数据hook函数模板 form 插件的表单 index 每项的索引*}
 {hook fn='item' field=null form=null index='@@index@@'}
-    <div class="container-item">
         {foreach from=$form->getViewFields() item='child'}
             <div class="yee-row-inline" id="row_{$child->boxId}">
                 <label class="inline-label">{$child->label}：</label>
@@ -29,5 +28,4 @@
                 {if $field->sortBtn}<a href="javascript:;" name="upsort" class="yee-btn"><i class="icofont-long-arrow-up"></i>上移</a><a href="javascript:;" name="dnsort" class="yee-btn"><i class="icofont-long-arrow-down"></i>下移</a>{/if}
             </div>
         {/if}
-    </div>
 {/hook}
