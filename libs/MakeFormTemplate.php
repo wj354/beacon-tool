@@ -314,16 +314,29 @@ class MakeFormTemplate
         $name = var_export($field['name'], true);
         //容器
         if ($field['type'] == 'Container' || $field['type'] == 'Single') {
+            if ($this->form['makeStatic'] == 2) {
+                $this->out[] = '{if !$form->getField(' . $name . ')->close}';
+            }
             $this->out[] = '{input field=$form->getField(' . $name . ')}';
+            if ($this->form['makeStatic'] == 2) {
+                $this->out[] = '{/if}';
+            }
             return;
         }
+
         if ($field['type'] == 'Line') {
+            if ($this->form['makeStatic'] == 2) {
+                $this->out[] = '{if !$form->getField(' . $name . ')->close}';
+            }
             $this->out[] = '<div class="yee-line">';
             $this->out[] = '<label class="line-label">' . htmlspecialchars($field['label']) . '</label>';
             if (!empty($field['prompt'])) {
                 $this->out[] = '<span style="margin-left: 15px;" class="yee-field-prompt">' . $field['prompt'] . '</span>';
             }
             $this->out[] = '</div>';
+            if ($this->form['makeStatic'] == 2) {
+                $this->out[] = '{/if}';
+            }
             return;
         }
 
