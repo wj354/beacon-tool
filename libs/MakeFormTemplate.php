@@ -501,7 +501,7 @@ class MakeFormTemplate
         $this->out[] = "{hook fn='item' field=null form=null index='@@index@@'}";
         if ($plugStyle == 0) {
             //默认模式
-            $this->out[] = '<div class="container-item">';
+            //$this->out[] = '<div class="container-item">';
             $this->out[] = '<div class="yee-container-title">';
             $this->out[] = '<label class="inline-label" style="text-align: left;">&nbsp;&nbsp;  第 <span name="index" class="red2" style="font-size: 18px;"></span>项&nbsp;&nbsp;&nbsp;</label>';
             $this->out[] = '{if !$field->offEdit}';
@@ -519,9 +519,10 @@ class MakeFormTemplate
                 $this->out[] = "{/foreach}";
             }
             $this->out[] = '</div>';
-            $this->out[] = '</div>';
+            //$this->out[] = '</div>';
+
         } elseif ($plugStyle == 1) {
-            $this->out[] = '<div class="container-item">';
+            //$this->out[] = '<div class="container-item">';
             if ($this->form['makeStatic']) {
                 foreach ($this->getViewFields() as $field) {
                     $this->out[] = '<div class="yee-row-inline" id="row_{$form->getField(' . var_export($field['name'], true) . ')->boxId}">';
@@ -549,10 +550,10 @@ class MakeFormTemplate
             $this->out[] = '{if $field->insertBtn}<a href="javascript:;" name="insert" class="yee-btn"><i class="icofont-puzzle"></i>插入</a>{/if}';
             $this->out[] = '{if $field->sortBtn}<a href="javascript:;" name="upsort" class="yee-btn"><i class="icofont-long-arrow-up"></i>上移</a><a href="javascript:;" name="dnsort" class="yee-btn"><i class="icofont-long-arrow-down"></i>下移</a>{/if}';
             $this->out[] = '</div>{/if}';
-            $this->out[] = '</div>';
+            //$this->out[] = '</div>';
 
         } else if ($plugStyle == 2) {
-            $this->out[] = '<div class="container-item">';
+            //$this->out[] = '<div class="container-item">';
             if ($this->form['makeStatic']) {
                 foreach ($this->getViewFields() as $field) {
                     $this->out[] = '<div class="yee-row-inline" id="row_{$form->getField(' . var_export($field['name'], true) . ')->boxId}">';
@@ -575,7 +576,7 @@ class MakeFormTemplate
             $this->out[] = '{if $field->insertBtn}<a href="javascript:;" name="insert" class="yee-btn"><i class="icofont-puzzle"></i>插入</a>{/if}';
             $this->out[] = '{if $field->sortBtn}<a href="javascript:;" name="upsort" class="yee-btn"><i class="icofont-long-arrow-up"></i>上移</a><a href="javascript:;" name="dnsort" class="yee-btn"><i class="icofont-long-arrow-down"></i>下移</a>{/if}';
             $this->out[] = '</div>{/if}';
-            $this->out[] = '</div>';
+            //$this->out[] = '</div>';
         } else if ($plugStyle == 3) {
             $this->out[] = '<td align="center"><span name="index"></span></td>';
             foreach ($this->getViewFields() as $field) {
