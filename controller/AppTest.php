@@ -134,11 +134,9 @@ class AppTest extends AppBase
             if ($frow) {
                 $maker = new MakeFormTemplate(intval($frow['id']), true);
                 $code = $maker->getCode();
-                Logger::log($code);
                 return 'string:' . $code;
             }
         }
-        Logger::log('xxxxxxxxxxxxxxxxx');
         if ($field instanceof Container) {
             return 'test/test_container' . $plugStyle . '.plugin.tpl';
         } else {
