@@ -259,11 +259,15 @@ class AppFieldModel
     #[Textarea(label: '内联style样式', tabIndex: 'extend', prompt: '控件的内联样式',attrs:['yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'css'])]
     public string $attrStyle = '';
 
-    #[Textarea(label: '标题样式', tabIndex: 'extend', prompt: '标题内联样式',attrs:['yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'css'])]
+
+    #[Textarea(label: '容器style样式', tabIndex: 'extend', prompt: '容器内联样式',attrs:['yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'css'])]
+    public string $warpStyle = '';
+
+    #[Textarea(label: '标题style样式', tabIndex: 'extend', prompt: '标题内联样式',attrs:['yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'css'])]
     public string $labelStyle = '';
 
-    #[Textarea(label: '容器样式', tabIndex: 'extend', prompt: '容器内联样式',attrs:['yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'css'])]
-    public string $warpStyle = '';
+    #[Textarea(label: '单元格style样式', tabIndex: 'extend', prompt: '单元格内联样式',attrs:['yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'css'])]
+    public string $cellStyle = '';
 
     #[Text(label: '输入框内提示文本(placeholder)', tabIndex: 'extend', prompt: '直接在输入框内的提示文本')]
     public string $attrPlaceholder = '';
