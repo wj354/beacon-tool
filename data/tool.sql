@@ -60,6 +60,9 @@ CREATE TABLE `@pf_tool_field` (
   `validDisabled` tinyint(1) DEFAULT NULL,
   `star` tinyint(4) DEFAULT NULL,
   `validFunc` varchar(255) DEFAULT NULL,
+  `warpStyle` text,
+  `labelStyle` text,
+  `cellStyle` text,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=@@charset ROW_FORMAT=DYNAMIC COMMENT='TOOL字段数据';
 

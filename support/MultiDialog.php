@@ -6,6 +6,7 @@ namespace tool\support;
 
 use beacon\core\Field;
 use beacon\core\Form;
+use beacon\widget\Check;
 use beacon\widget\Integer;
 use beacon\widget\Select;
 use beacon\widget\Text;
@@ -108,12 +109,12 @@ class MultiDialog
     )]
     public string $btnText = '';
 
-    #[Text(
+    #[Check(
         label: '清除按钮',
         after: '勾选显示清除按钮',
         viewMerge: -1
     )]
-    public int $clearBtn = 0;
+    public bool $clearBtn = false;
 
 
     public function export(): array

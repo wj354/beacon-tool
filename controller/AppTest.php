@@ -12,6 +12,7 @@ use beacon\core\Method;
 use beacon\widget\Container;
 use beacon\widget\Single;
 use tool\libs\Helper;
+use tool\libs\MakeFormTemplate;
 use tool\model\TestContainer;
 use tool\model\TestSingle;
 
@@ -45,6 +46,26 @@ class AppTest extends AppBase
                 }
             }
             return $this->_form;
+        }
+    }
+
+    #[Method(act: 'form', method: Method::GET | Method::POST)]
+    public function testForm()
+    {
+        $formRow = $this->getFormRow();
+        $form = $this->getForm($formRow);
+        if ($this->isGet()) {
+            $this->assign('formRow', $formRow);
+            $this->assign('form', $form);
+            if ($formRow['extMode'] != 1) {
+                $formId = intval($formRow['id']);
+                $maker = new MakeFormTemplate($formId, true);
+                $code = $maker->getCode();
+                $this->view()->disposable=true;
+                $this->display('string:' . $code);
+            } else {
+                $this->display('test/test.form.tpl');
+            }
         }
     }
 
@@ -98,27 +119,30 @@ class AppTest extends AppBase
         } else {
             $form = Form::create($className, 'add');
         }
-
         foreach ($form->getViewFields() as $field) {
-            if ($field instanceof Container) {
-                $field->template = 'test/test_container' . $plugStyle . '.plugin.tpl';
-                Logger::log($field->template);
-            } else if ($field instanceof Single) {
-                $field->template = 'test/test_single.plugin.tpl';
+            if ($field instanceof Container||$field instanceof Single) {
+                $field->template = $this->getPluginTemplate($field,$plugStyle);
             }
         }
         return $form;
     }
 
-    #[Method(act: 'form', method: Method::GET | Method::POST)]
-    public function testForm()
+    private function getPluginTemplate(Container|Single $field, int $plugStyle)
     {
-        $formRow = $this->getFormRow();
-        $form = $this->getForm($formRow);
-        if ($this->isGet()) {
-            $this->assign('formRow', $formRow);
-            $this->assign('form', $form);
-            $this->display('test/test.form.tpl');
+        if (preg_match('@^(.*)\\\zero\\\plugin\\\(.*)Plugin@', $field->itemClass, $temp)) {
+            $frow = DB::getRow('select id from @pf_tool_form where extMode=1 and namespace=? and `key`=?', [$temp[1], $temp[2]]);
+            if ($frow) {
+                $maker = new MakeFormTemplate(intval($frow['id']), true);
+                $code = $maker->getCode();
+                Logger::log($code);
+                return 'string:' . $code;
+            }
+        }
+        Logger::log('xxxxxxxxxxxxxxxxx');
+        if ($field instanceof Container) {
+            return 'test/test_container' . $plugStyle . '.plugin.tpl';
+        } else {
+            return 'test/test_single.plugin.tpl';
         }
     }
 }

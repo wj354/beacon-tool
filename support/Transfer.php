@@ -5,6 +5,7 @@ namespace tool\support;
 
 
 use beacon\core\Form;
+use beacon\widget\Check;
 use beacon\widget\Integer;
 use beacon\widget\Select;
 use beacon\widget\Text;
@@ -43,6 +44,13 @@ class Transfer
     public int $height = 0;
 
 
+    #[Check(
+        label: '清除按钮',
+        after: '勾选显示清除按钮',
+        viewMerge: -1
+    )]
+    public bool $search = true;
+
     public function export(): array
     {
         return [
@@ -51,6 +59,7 @@ class Transfer
             'caption' => $this->caption,
             'width' => $this->width,
             'height' => $this->height,
+            'search' => $this->search,
         ];
     }
 

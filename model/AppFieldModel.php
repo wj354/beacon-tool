@@ -3,12 +3,10 @@
 
 namespace tool\model;
 
-use beacon\core\App;
 use beacon\core\DB;
 use beacon\core\DBException;
 use beacon\core\Form;
 use beacon\core\Request;
-use beacon\core\Util;
 use beacon\widget\Button;
 use beacon\widget\Check;
 use beacon\widget\Container;
@@ -254,11 +252,18 @@ class AppFieldModel
     )]
     public string $customLine = '';
 
+
     #[Text(label: '控件CSS类名', tabIndex: 'extend', prompt: '默认系统会指定为 "form-inp 控件类型"')]
     public string $attrClass = '';
 
     #[Textarea(label: '内联style样式', tabIndex: 'extend', prompt: '控件的内联样式',attrs:['yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'css'])]
     public string $attrStyle = '';
+
+    #[Textarea(label: '标题样式', tabIndex: 'extend', prompt: '标题内联样式',attrs:['yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'css'])]
+    public string $labelStyle = '';
+
+    #[Textarea(label: '容器样式', tabIndex: 'extend', prompt: '容器内联样式',attrs:['yee-module'=>'code-editor','class'=>'form-inp textarea code-editor','data-lang'=>'css'])]
+    public string $warpStyle = '';
 
     #[Text(label: '输入框内提示文本(placeholder)', tabIndex: 'extend', prompt: '直接在输入框内的提示文本')]
     public string $attrPlaceholder = '';

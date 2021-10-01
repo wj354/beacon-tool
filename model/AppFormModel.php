@@ -5,7 +5,6 @@ namespace tool\model;
 
 use beacon\core\DB;
 use beacon\core\DBException;
-use beacon\core\Field;
 use beacon\core\Form;
 use beacon\core\Request;
 use beacon\widget\Button;
@@ -122,6 +121,7 @@ class AppFormModel
         ['value' => 0, 'text' => '稀疏布局'],
         ['value' => 1, 'text' => '单行布局'],
         ['value' => 2, 'text' => '紧凑布局'],
+            ['value' =>3, 'text' => '表格布局'],
     ],
         tabIndex: 'base'
     )]

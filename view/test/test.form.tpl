@@ -10,13 +10,13 @@
     <div class="yee-title">{$form->title}</div>
 {/block}
 
-{block name='form-information'}{if $formRow['information'] }
-    <div class='yee-information'>{$formRow['information']}</div>{/if}{/block}
-{block name='form-attention'}{if $formRow['attention'] }
-    <div class='yee-attention'>{$formRow['attention']}</div>{/if}{/block}
+{block name='form-information'}{if !empty($formRow['information'])}<div class='yee-information'>{$formRow['information']}</div>{/if}{/block}
+{block name='form-attention'}{if !empty($formRow['attention'])}<div class='yee-attention'>{$formRow['attention']}</div>{/if}{/block}
+
+
 
 {block name='form-content'}
-    <form method="post" yee-module="validate ajax">
+    <form method="post" yee-module="validate{if $formRow['useAjax']==1} ajax{/if}" {if $formRow['validateMode']!=0}data-mode="{$formRow['validateMode']}"{/if}>
         {if $formRow['viewUseTab']}
             <div class="yee-tab">
                 <ul yee-module="form-tab">
@@ -28,7 +28,6 @@
         {/if}
 
         <div class="yee-panel">
-
             {if $formRow['viewUseTab']}
                 {foreach from=$formRow['viewTabs'] item=tab}
                     <div class="panel-content{if $tab.first==false} none{/if}" name="{$tab.key}">
@@ -50,7 +49,6 @@
                     {/foreach}
                 </div>
             {/if}
-
             <div class="yee-submit">
                 <label class="submit-label"></label>
                 <div class="submit-cell">

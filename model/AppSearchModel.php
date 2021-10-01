@@ -4,7 +4,10 @@
 namespace tool\model;
 
 
+use beacon\core\DB;
+use beacon\core\DBException;
 use beacon\core\Form;
+use beacon\core\Request;
 use beacon\widget\Button;
 use beacon\widget\Check;
 use beacon\widget\Container;
@@ -16,9 +19,6 @@ use beacon\widget\Select;
 use beacon\widget\Single;
 use beacon\widget\Text;
 use beacon\widget\Textarea;
-use beacon\core\DBException;
-use beacon\core\DB;
-use beacon\core\Request;
 
 #[Form(title: '搜索字段管理', table: '@pf_tool_search', template: 'form/app_search.tpl')]
 class AppSearchModel
@@ -85,8 +85,8 @@ class AppSearchModel
         label: '值类型 [var-type]',
         options: [
         ['value' => 'string', 'text' => 'string'],
-        ['value' => 'integer', 'text' => 'integer'],
-        ['value' => 'boolean', 'text' => 'boolean'],
+        ['value' => 'int', 'text' => 'int'],
+        ['value' => 'bool', 'text' => 'bool'],
         ['value' => 'float', 'text' => 'float'],
         ['value' => 'array', 'text' => 'array'],
     ],

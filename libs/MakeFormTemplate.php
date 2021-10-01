@@ -20,7 +20,7 @@ class MakeFormTemplate
      * @throws \beacon\core\DBException
      * @throws \Exception
      */
-    public function __construct(int $formId = 0)
+    public function __construct(int $formId = 0, bool $isTest = false)
     {
         $this->form = DB::getRow('select * from @pf_tool_form where id=?', $formId);
         if ($this->form == null) {
@@ -45,6 +45,9 @@ class MakeFormTemplate
             $temp[] = intval($btn);
         }
         $this->form['viewBtns'] = $temp;
+        if ($isTest) {
+            $this->form['baseLayout'] = '';
+        }
         $this->createTemplate();
     }
 
@@ -81,150 +84,26 @@ class MakeFormTemplate
         }
     }
 
-    private function createHeader()
+    private function createPluginSingle()
     {
-        if (!empty($this->form['head'])) {
-            $this->out[] = '';
-            $this->out[] = "{block name='header'}";
-            $this->out[] = "{literal left='<{' right='}>'}";
-            $this->out[] = $this->form['head'];
-            $this->out[] = "{/literal}";
-            $this->out[] = "{/block}";
-        }
-    }
-
-    private function createFormHeader()
-    {
-        $this->out[] = '';
-        $this->out[] = "{block name='form-header'}";
-        if (in_array(1, $this->form['viewBtns'])) {
-            $this->out[] = '    <a class="yee-back" href="javascript:history.back();"><i class="icofont-reply"></i></a>';
-        } else {
-            $this->out[] = '    <a class="yee-setting" href="javascript:;"><i class="icofont-ruler-pencil"></i></a>';
-        }
-        $this->out[] = '    <div class="yee-title">{$form->title}</div>';
-        $this->out[] = "{/block}";
-    }
-
-    private function createFormContent()
-    {
-        $this->out[] = '';
-        $this->out[] = "{block name='form-content'}";
-        $out = [];
-        $out[] = '    <form method="post" yee-module="validate';
-        if ($this->form['useAjax']) {
-            $out[] = ' ajax';
-        }
-        $out[] = '"';
-        if ($this->form['validateMode']) {
-            $out[] = ' data-mode="' . $this->form['validateMode'] . '"';
-        }
-        $out[] = '>';
-        $this->out[] = join('', $out);
-
-        $this->createFormTab();
-        $this->out[] = '        <div class="yee-panel">';
-        $this->createFormCaption();
-        if ($this->form['viewUseTab']) {
-            $tabs = Helper::convertArray($this->form['viewTabs'], []);
-            $first = true;
-            foreach ($tabs as $tab) {
-                $tab['first'] = $first;
-                $first = false;
-                $this->createPanelContent($tab);
-            }
-        } else {
-            $this->createPanelContent();
-        }
-        $this->createSubmit();
-        $this->out[] = '        </div>';
-        $this->out[] = '    </form>';
-        $this->out[] = "{/block}";
-    }
-
-    private function createFooter()
-    {
-        if (!empty($this->form['script'])) {
-            $this->out[] = '';
-            $this->out[] = "{block name='footer'}";
-            $this->out[] = "{literal left='<{' right='}>'}";
-            $this->out[] = $this->form['script'];
-            $this->out[] = "{/literal}";
-            $this->out[] = "{/block}";
-        }
-    }
-
-    private function createFormTab()
-    {
-        /**
-         * <div class="yee-tab">
-         * <ul yee-module="form-tab">
-         * <li data-bind-name="base" class="curr"><a href="javascript:void(0);">基本配置</a></li>
-         * <li data-bind-name="extend"><a href="javascript:void(0);">扩展配置</a></li>
-         * </ul>
-         * </div>
-         */
-        if (!$this->form['viewUseTab']) {
-            return;
-        }
-        $this->out[] = '';
-        $this->out[] = '<div class="yee-tab">';
-        $this->out[] = '<ul yee-module="form-tab">';
-        $tabs = Helper::convertArray($this->form['viewTabs'], []);
-        $first = true;
-        foreach ($tabs as $tab) {
-            $this->out[] = '<li data-bind-name="' . $tab['key'] . '"' . ($first ? ' class="curr"' : '') . '><a href="javascript:void(0);">' . $tab['value'] . '</a></li>';
-            $first = false;
-        }
-        $this->out[] = '</ul>';
-        $this->out[] = '</div>';
-    }
-
-    private function createFormCaption()
-    {
-        if ($this->form['viewUseTab']) {
-            return;
-        }
-        /**
-         *  <div class="panel-caption">
-         * <i class="icofont-pencil-alt-3"></i>
-         * <h3>{if $form->isAdd()}新增网站应用{else}编辑网站应用{/if}</h3>
-         * </div>
-         */
-        $this->form['caption'] = empty($this->form['caption']) ? '{if $form->isAdd()}新增{else}编辑{/if}' . $this->form['title'] : $this->form['caption'];
-        $this->out[] = '';
-        $this->out[] = '            <div class="panel-caption">';
-        $this->out[] = '                <i class="icofont-pencil-alt-3"></i>';
-        $this->out[] = '                <h3>' . $this->form['caption'] . '</h3>';
-        $this->out[] = '            </div>';
-    }
-
-    private function createPanelContent($tab = null)
-    {
-        //如果生成静态
-        if ($tab) {
-            if ($tab['first']) {
-                $this->out[] = '            <div class="panel-content" name="' . $tab['key'] . '">';
-            } else {
-                $this->out[] = '            <div class="panel-content none" name="' . $tab['key'] . '">';
-            }
-        } else {
-            $this->out[] = '            <div class="panel-content">';
+        $this->out[] = '{*用于创建单一插件容器集合的hook函数模板*}';
+        if ($this->form['useWrap'] == 1) {
+            $this->out[] = '<div class="yee-row" id="row_{$field->boxId}">';
+            $this->out[] = '<label class="row-label">{if $field->star}<em></em>{/if}{$field->label}：</label>';
+            $this->out[] = '<div class="row-cell">';
         }
 
         if ($this->form['makeStatic']) {
-            $this->createPanelField($tab);
-            $this->out[] = '            </div>';
-            return;
-        }
-        if ($tab) {
-            $this->out[] = "{foreach from=\$form->getViewFields(" . var_export($tab['key'], true) . ") item='field'}";
+            $this->createPanelField();
         } else {
-            $this->out[] = "{foreach from=\$form->getViewFields() item='field'}";
+            $this->out[] = "{foreach from=\$form->getViewFields() item='child'}";
+            $this->out[] = "{field_row field=\$child}";
+            $this->out[] = "{/foreach}";
         }
-        $this->out[] = '{field_row field=$field}';
-        $this->out[] = ' {/foreach}';
-        $this->out[] = '            </div>';
+        if ($this->form['useWrap'] == 1) {
+            $this->out[] = "</div>";
+            $this->out[] = "</div>";
+        }
     }
 
     private function createPanelField($tab = null)
@@ -323,15 +202,14 @@ class MakeFormTemplate
             }
             return;
         }
-
+        //标题行
         if ($field['type'] == 'Line') {
             if ($this->form['makeStatic'] == 2) {
                 $this->out[] = '{if !$form->getField(' . $name . ')->close}';
             }
-            $this->out[] = '<div class="yee-line">';
-            $this->out[] = '<label class="line-label">' . htmlspecialchars($field['label']) . '</label>';
+            $this->out[] = '<div class="yee-line"' . (empty($field['warpStyle']) ? '' : ' style="' . $field['warpStyle'] . '"') . '>' . htmlspecialchars($field['label']) . '</label>';
             if (!empty($field['prompt'])) {
-                $this->out[] = '<span style="margin-left: 15px;" class="yee-field-prompt">' . $field['prompt'] . '</span>';
+                $this->out[] = '<span style="margin-left: 15px;' . (empty($field['cellStyle']) ? '' : $field['cellStyle']) . '" class="yee-field-prompt">' . $field['prompt'] . '</span>';
             }
             $this->out[] = '</div>';
             if ($this->form['makeStatic'] == 2) {
@@ -343,20 +221,10 @@ class MakeFormTemplate
         if ($this->form['makeStatic'] == 2) {
             $this->out[] = '{if !$form->getField(' . $name . ')->close}';
         }
-
-        if ($this->form['extMode'] == 1) {
-            $this->out[] = '                <div class="yee-row" id="row_{$form->getField(' . $name . ')->boxId}">';
-        } else {
-            $this->out[] = '                <div class="yee-row" id="row_' . $field['boxId'] . '">';
-        }
-
-        if ($field['star'] == 1) {
-            $this->out[] = '                    <label class="row-label"><em></em>' . htmlspecialchars($field['label']) . '：</label>';
-        } else {
-            $this->out[] = '                    <label class="row-label">' . htmlspecialchars($field['label']) . '：</label>';
-        }
-
-        $this->out[] = '                    <div class="row-cell">';
+        //行
+        $this->out[] = '                <div class="yee-row"' . ($this->form['extMode'] == 1 ? ' id="row_{$form->getField(' . $name . ')->boxId}"' : ' id="row_' . $field['boxId'] . '"') . (empty($field['warpStyle']) ? '' : ' style="' . $field['warpStyle'] . '"') . '>';
+        $this->out[] = '                    <label class="row-label"' . (empty($field['labelStyle']) ? '' : ' style="' . $field['labelStyle'] . '"') . '>' . ($field['star'] == 1 ? '<em></em>' : '') . htmlspecialchars($field['label']) . '：</label>';
+        $this->out[] = '                    <div class="row-cell"' . (empty($field['cellStyle']) ? '' : ' style="' . $field['cellStyle'] . '"') . '>';
         if (!empty($field['prev'])) {
             $this->createFieldInline($field['prev']);
         }
@@ -366,16 +234,8 @@ class MakeFormTemplate
         }
         $out = [];
         if (!empty($field['validRule']) || !empty($field['validGroup'])) {
-            $out[] = '                        <span id="';
-            if ($this->form['extMode'] == 1) {
-                $out[] = '{$form->getField(' . $name . ')->boxId}';
-            } else {
-                $out[] = htmlspecialchars($field['boxId']);
-            }
-            $out[] = '-validation"></span>';
-            $this->out[] = join('', $out);
+            $this->out[] = '                        <span id="' . ($this->form['extMode'] == 1 ? '{$form->getField(' . $name . ')->boxId}' : htmlspecialchars($field['boxId'])) . '-validation"></span>';
         }
-
         if (!empty($field['prompt'])) {
             $this->out[] = '                    <p class="yee-field-prompt">' . $field['prompt'] . '</p>';
         }
@@ -401,16 +261,13 @@ class MakeFormTemplate
                 $this->out[] = '<span class="yee-field-prompt">' . $field['prompt'] . '</p>';
             }
         } else {
-            if ($this->form['extMode'] == 1) {
-                $this->out[] = '                        <div class="yee-row-inline" id="row_{$form->getField(' . $name . ')->boxId}">';
-            } else {
-                $this->out[] = '                        <div class="yee-row-inline" id="row_' . $field['boxId'] . '">';
-            }
+            $this->out[] ='                        <div class="yee-row-inline"'.($this->form['extMode'] == 1?' id="row_{$form->getField(' . $name . ')->boxId}"':'id="row_' . $field['boxId'] . '"').(empty($field['warpStyle']) ? '' : ' style="' . $field['warpStyle'] . '"') . '>';
+            $tpCode = '                            <label class="inline-label"'.(empty($field['labelStyle']) ? '' : ' style="' . $field['labelStyle'] . '"').'>';
             if (isset($field['label'][0]) && $field['label'][0] != '!') {
                 if ($field['star'] == 1) {
-                    $this->out[] = '                            <label class="inline-label"><em></em>' . htmlspecialchars($field['label']) . '：</label>';
+                    $this->out[] = $tpCode . '<em></em>' . htmlspecialchars($field['label']) . '：</label>';
                 } else {
-                    $this->out[] = '                            <label class="inline-label">' . htmlspecialchars($field['label']) . '：</label>';
+                    $this->out[] = $tpCode . '' . htmlspecialchars($field['label']) . '：</label>';
                 }
             }
             $code = [];
@@ -431,76 +288,34 @@ class MakeFormTemplate
         }
     }
 
-    private function createSubmit()
-    {
-        $this->out[] = '';
-        $this->out[] = '            <div class="yee-submit">';
-        $this->out[] = '                <label class="submit-label"></label>';
-        $this->out[] = '                <div class="submit-cell">';
-        $this->out[] = '                    {$form->fetchHideBox()}';
-        $this->out[] = '                    <input type="submit" class="form-btn red" value="提交">';
-        if (in_array(1, $this->form['viewBtns'])) {
-            $this->out[] = '                    <input type="hidden" name="__BACK__" value="{$this->referrer()}">';
-            $this->out[] = '                    <a href="javascript:history.back();" class="form-btn back">返回</a>';
-        }
-        if (in_array(2, $this->form['viewBtns'])) {
-            $this->out[] = '                    <a href="javascript:;" onclick="Yee.closeDialog()" class="form-btn back">取消</a>';
-        }
-        if (in_array(3, $this->form['viewBtns'])) {
-            $this->out[] = '                    <input type="reset" class="form-btn" value="重置">';
-        }
-        $this->out[] = '                </div>';
-        $this->out[] = '            </div>';
-    }
-
-    //插件单个
-    private function createPluginSingle()
-    {
-        $this->out[] = '{*用于创建单一插件容器集合的hook函数模板*}';
-        if ($this->form['useWrap'] == 1) {
-            $this->out[] = '<div class="yee-row" id="row_{$field->boxId}">';
-            $this->out[] = '<label class="row-label">{if $field->star}<em></em>{/if}{$field->label}：</label>';
-            $this->out[] = '<div class="row-cell">';
-        }
-
-        if ($this->form['makeStatic']) {
-            $this->createPanelField();
-        } else {
-            $this->out[] = "{foreach from=\$form->getViewFields() item='child'}";
-            $this->out[] = "{field_row field=\$child}";
-            $this->out[] = "{/foreach}";
-        }
-        if ($this->form['useWrap'] == 1) {
-            $this->out[] = "</div>";
-            $this->out[] = "</div>";
-        }
-    }
-
-    //批量插件
     private function createPluginMultiple()
     {
         $plugStyle = intval($this->form['plugStyle']);
         $this->out[] = '{*用于创建多行插件容器集合的hook函数模板 lastIndex 最后行的索引，body 已有item的模板渲染数据，source 用于js动态创建的模板数据base64  *}';
-        $this->out[] = "{hook fn='wrap' field=null  body=null}";
+        if ($plugStyle == 3) {
+            $this->out[] = "{hook fn='table_wrap' field=null  body=null}";
+        }else{
+            $this->out[] = "{hook fn='wrap' field=null  body=null}";
+        }
         if ($this->form['useWrap']) {
-            $this->out[] = '<div class="yee-row" id="row_{$field->boxId}">';
-            $this->out[] = '<label class="row-label">{if $field->star}<em></em>{/if}{$field->label}：</label>';
-            $this->out[] = '<div class="row-cell">';
+            $this->out[] = '<div class="yee-row" id="row_{$field->boxId}"{if !empty($field->warpStyle)} style="{$field->warpStyle}"{/if}>';
+            $this->out[] = '<label class="row-label"{if !empty($field->labelStyle)} style="{$field->labelStyle}"{/if}>{if $field->star}<em></em>{/if}{$field->label}：</label>';
+            $this->out[] = '<div class="row-cell"{if !empty($field->cellStyle)} style="{$field->cellStyle}"{/if}>';
         }
         if ($plugStyle == 3) {
-            $this->out[] = '<table class="yee-show-table" style="margin-top:0px;max-width: 1000px;">';
-            $this->out[] = '<thead><tr>';
-            $this->out[] = '<th width="5%" align="center">序号</th>';
-            $this->out[] = '<div style="display: block;">{$body}</div>';
+            $this->out[] = '<table class="yee-show-table" style="margin-top:0px;max-width: 1200px;">';
+            $this->out[] = '<thead>'.PHP_EOL.'<tr>';
+            $this->out[] = '<th width="60" align="center">序号</th>';
             foreach ($this->getViewFields() as $field) {
-                $this->out[] = '<th align="center">' . $field['name'] . '</th>';
+                $this->out[] = '<th align="center"'.(empty($field['labelStyle']) ? '' : ' style="' . $field['labelStyle'] . '"').'>' . $field['label'] . '</th>';
             }
-            $this->out[] = '<th width="180" align="center">操作</th></tr></thead>';
+            $this->out[] = '<th width="180" align="center">操作</th></tr>'.PHP_EOL.'</thead>';
             $this->out[] = '{$body}';
             $this->out[] = '</table>';
         } else {
             $this->out[] = '<div style="display: block;">{$body}</div>';
         }
+
         $this->out[] = '<div style="display: block;">';
         $this->out[] = '{if !$field->offEdit}<a href="javascript:;" name="add" class="yee-btn"><i class="icofont-plus-circle"></i>新增行</a>{/if}';
         $this->out[] = '{if $field->prompt}<span class="yee-field-prompt">{$field->prompt}</span>{/if} <span id="{$field->boxId}-validation"></span>';
@@ -591,9 +406,10 @@ class MakeFormTemplate
             $this->out[] = '</div>{/if}';
             //$this->out[] = '</div>';
         } else if ($plugStyle == 3) {
+
             $this->out[] = '<td align="center"><span name="index"></span></td>';
             foreach ($this->getViewFields() as $field) {
-                $this->out[] = '<td><div style="width: auto;display: flex">{input field=$form->getField(' . var_export($field['name'], true) . ')}</div></td>';
+                $this->out[] = '<td'.(empty($field['cellStyle']) ? '' : ' style="' . $field['cellStyle'] . '"').'><div style="width: auto;display: flex">{input field=$form->getField(' . var_export($field['name'], true) . ')}</div></td>';
             }
             $this->out[] = '<td align="left">';
             $this->out[] = '{if !$field->offEdit}';
@@ -606,10 +422,182 @@ class MakeFormTemplate
         $this->out[] = "{/hook}";
     }
 
-
-    public function getCode(): string
+    private function createHeader()
     {
-        return join("\n", $this->out);
+        if (!empty($this->form['head'])) {
+            $this->out[] = '';
+            $this->out[] = "{block name='header'}";
+            $this->out[] = "{literal left='<{' right='}>'}";
+            $this->out[] = $this->form['head'];
+            $this->out[] = "{/literal}";
+            $this->out[] = "{/block}";
+        }
+    }
+
+    private function createFormHeader()
+    {
+        $this->out[] = '';
+        $this->out[] = "{block name='form-header'}";
+        if (in_array(1, $this->form['viewBtns'])) {
+            $this->out[] = '    <a class="yee-back" href="javascript:history.back();"><i class="icofont-reply"></i></a>';
+        } else {
+            $this->out[] = '    <a class="yee-setting" href="javascript:;"><i class="icofont-ruler-pencil"></i></a>';
+        }
+        $this->out[] = '    <div class="yee-title">{$form->title}</div>';
+        $this->out[] = "{/block}";
+    }
+
+    private function createFormContent()
+    {
+        $this->out[] = '';
+        $this->out[] = "{block name='form-content'}";
+        $out = [];
+        $out[] = '    <form method="post" yee-module="validate';
+        if ($this->form['useAjax']) {
+            $out[] = ' ajax';
+        }
+        $out[] = '"';
+        if ($this->form['validateMode']) {
+            $out[] = ' data-mode="' . $this->form['validateMode'] . '"';
+        }
+        $out[] = '>';
+        $this->out[] = join('', $out);
+
+        $this->createFormTab();
+        $this->out[] = '        <div class="yee-panel">';
+        $this->createFormCaption();
+        if ($this->form['viewUseTab']) {
+            $tabs = Helper::convertArray($this->form['viewTabs'], []);
+            $first = true;
+            foreach ($tabs as $tab) {
+                $tab['first'] = $first;
+                $first = false;
+                $this->createPanelContent($tab);
+            }
+        } else {
+            $this->createPanelContent();
+        }
+        $this->createSubmit();
+        $this->out[] = '        </div>';
+        $this->out[] = '    </form>';
+        $this->out[] = "{/block}";
+    }
+
+    private function createFormTab()
+    {
+        /**
+         * <div class="yee-tab">
+         * <ul yee-module="form-tab">
+         * <li data-bind-name="base" class="curr"><a href="javascript:void(0);">基本配置</a></li>
+         * <li data-bind-name="extend"><a href="javascript:void(0);">扩展配置</a></li>
+         * </ul>
+         * </div>
+         */
+        if (!$this->form['viewUseTab']) {
+            return;
+        }
+        $this->out[] = '';
+        $this->out[] = '<div class="yee-tab">';
+        $this->out[] = '<ul yee-module="form-tab">';
+        $tabs = Helper::convertArray($this->form['viewTabs'], []);
+        $first = true;
+        foreach ($tabs as $tab) {
+            $this->out[] = '<li data-bind-name="' . $tab['key'] . '"' . ($first ? ' class="curr"' : '') . '><a href="javascript:void(0);">' . $tab['value'] . '</a></li>';
+            $first = false;
+        }
+        $this->out[] = '</ul>';
+        $this->out[] = '</div>';
+    }
+
+    private function createFormCaption()
+    {
+        if ($this->form['viewUseTab']) {
+            return;
+        }
+        /**
+         *  <div class="panel-caption">
+         * <i class="icofont-pencil-alt-3"></i>
+         * <h3>{if $form->isAdd()}新增网站应用{else}编辑网站应用{/if}</h3>
+         * </div>
+         */
+        $this->form['caption'] = empty($this->form['caption']) ? '{if $form->isAdd()}新增{else}编辑{/if}' . $this->form['title'] : $this->form['caption'];
+        $this->out[] = '';
+        $this->out[] = '            <div class="panel-caption">';
+        $this->out[] = '                <i class="icofont-pencil-alt-3"></i>';
+        $this->out[] = '                <h3>' . $this->form['caption'] . '</h3>';
+        $this->out[] = '            </div>';
+    }
+
+    private function createPanelContent($tab = null)
+    {
+        //如果生成静态
+        if ($tab) {
+            if ($tab['first']) {
+                $this->out[] = '            <div class="panel-content" name="' . $tab['key'] . '">';
+            } else {
+                $this->out[] = '            <div class="panel-content none" name="' . $tab['key'] . '">';
+            }
+        } else {
+            $this->out[] = '            <div class="panel-content">';
+        }
+
+        if ($this->form['makeStatic']) {
+            $this->createPanelField($tab);
+            $this->out[] = '            </div>';
+            return;
+        }
+        if ($tab) {
+            $this->out[] = "{foreach from=\$form->getViewFields(" . var_export($tab['key'], true) . ") item='field'}";
+        } else {
+            $this->out[] = "{foreach from=\$form->getViewFields() item='field'}";
+        }
+        $this->out[] = '{field_row field=$field}';
+        $this->out[] = ' {/foreach}';
+        $this->out[] = '            </div>';
+    }
+
+    //插件单个
+
+    private function createSubmit()
+    {
+        $this->out[] = '';
+        $this->out[] = '            <div class="yee-submit">';
+        $this->out[] = '                <label class="submit-label"></label>';
+        $this->out[] = '                <div class="submit-cell">';
+        $this->out[] = '                    {$form->fetchHideBox()}';
+        $this->out[] = '                    <input type="submit" class="form-btn red" value="提交">';
+        if (in_array(1, $this->form['viewBtns'])) {
+            $this->out[] = '                    <input type="hidden" name="__BACK__" value="{$this->referrer()}">';
+            $this->out[] = '                    <a href="javascript:history.back();" class="form-btn back">返回</a>';
+        }
+        if (in_array(2, $this->form['viewBtns'])) {
+            $this->out[] = '                    <a href="javascript:;" onclick="Yee.closeDialog()" class="form-btn back">取消</a>';
+        }
+        if (in_array(3, $this->form['viewBtns'])) {
+            $this->out[] = '                    <input type="reset" class="form-btn" value="重置">';
+        }
+        $this->out[] = '                </div>';
+        $this->out[] = '            </div>';
+    }
+
+    //批量插件
+
+    private function createFooter()
+    {
+        if (!empty($this->form['script'])) {
+            $this->out[] = '';
+            $this->out[] = "{block name='footer'}";
+            $this->out[] = "{literal left='<{' right='}>'}";
+            $this->out[] = $this->form['script'];
+            $this->out[] = "{/literal}";
+            $this->out[] = "{/block}";
+        }
+    }
+
+    public static function make(int $formId = 0)
+    {
+        $maker = new static($formId);
+        $maker->makeFile();
     }
 
     public function makeFile()
@@ -628,10 +616,9 @@ class MakeFormTemplate
         }
     }
 
-    public static function make(int $formId = 0)
+    public function getCode(): string
     {
-        $maker = new static($formId);
-        $maker->makeFile();
+        return join("\n", $this->out);
     }
 
 
