@@ -45,9 +45,8 @@ class Transfer
 
 
     #[Check(
-        label: '清除按钮',
-        after: '勾选显示清除按钮',
-        viewMerge: -1
+        label: '显示搜索框',
+        after: '勾选显示搜索框',
     )]
     public bool $search = true;
 
