@@ -22,6 +22,7 @@ class Support
         'Color' => ['text' => '颜色选择 Color', 'data-types' => ['varchar(200)']],
         'Date' => ['text' => '日期格式 Date', 'data-types' => ['date', 'datetime', 'int(11)']],
         'Datetime' => ['text' => '时间格式 Datetime', 'data-types' => ['datetime', 'int(11)']],
+        'Time' => ['text' => '时间 Time', 'data-types' => ['time', 'varchar(200)']],
         'Select' => ['text' => '下拉框 Select', 'data-types' => ['int(11)', 'varchar(100)', 'decimal(18,2)'], 'data-default' => 'int'],
         'DelaySelect' => ['text' => '异步下拉 DelaySelect', 'data-types' => ['int(11)', 'varchar(100)', 'decimal(18,2)'], 'data-default' => 'int'],
         'RadioGroup' => ['text' => '单选组 RadioGroup', 'data-types' => ['int(11)', 'varchar(100)', 'decimal(18,2)'], 'data-default' => 'int'],

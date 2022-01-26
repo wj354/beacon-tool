@@ -61,11 +61,14 @@ class AppTest extends AppBase
                 $formId = intval($formRow['id']);
                 $maker = new MakeFormTemplate($formId, true);
                 $code = $maker->getCode();
-                $this->view()->disposable=true;
+                $this->view()->disposable = true;
                 $this->display('string:' . $code);
             } else {
                 $this->display('test/test.form.tpl');
             }
+        } else {
+            $input = $this->completeForm($form);
+            return $input;
         }
     }
 
