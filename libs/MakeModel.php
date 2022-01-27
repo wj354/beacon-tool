@@ -272,7 +272,9 @@ class MakeModel
                 if (is_string($item)) {
                     $names[] = $item;
                 } else if (is_array($item) && isset($item['field'])) {
-                    $names[] = $item['field'];
+                    $key=$item['field'];
+                    $type=$item['type'];
+                    $names[$key] = $type;
                 }
             }
             $field['names'] = $names;
