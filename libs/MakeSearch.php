@@ -411,7 +411,7 @@ class MakeSearch
 
     public function makeFile()
     {
-        if (intval($this->list['withSearch']) != 1 && count($this->fields) > 0) {
+        if (intval($this->list['withSearch']) != 1 || $this->fields == null || count($this->fields) == 0) {
             return;
         }
         $rootDir = ROOT_DIR;
