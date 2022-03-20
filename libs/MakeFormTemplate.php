@@ -438,14 +438,13 @@ class MakeFormTemplate
     {
         $this->out[] = '';
         $this->out[] = "{block name='form-header'}";
-        if (in_array(1, $this->form['viewBtns'])) {
-            $this->out[] = '    <a class="yee-back" href="javascript:history.back();"><i class="icofont-reply"></i></a>';
-        } else {
-            $this->out[] = '    <a class="yee-setting" href="javascript:;"><i class="icofont-ruler-pencil"></i></a>';
-        }
         $this->out[] = '    <div class="yee-title">{$form->title}</div>';
+        if (in_array(1, $this->form['viewBtns'])) {
+            $this->out[] = '    <div class="yee-toolbar"><a href="javascript:history.back();" class="refresh-btn"><i class="icofont-reply"></i>返回</a></div>';
+        }
         $this->out[] = "{/block}";
     }
+
 
     private function createFormContent()
     {
