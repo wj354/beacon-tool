@@ -31,7 +31,7 @@ class Index extends Base
 
         $selector = new DBSelector('@pf_tool_app');
         $selector->search("`name` LIKE CONCAT('%',?,'%')", $name);
-        $selector->sort($sort);
+        $selector->sort($sort,['id','name']);
         $data = $selector->pageData();
         $data['list'] = $this->hookData($data['list'], 'hook/index.tpl');
         $this->success('获取数据成功', $data);
@@ -48,7 +48,7 @@ class Index extends Base
         $sort = $this->get('sort', 'id-desc');
         $selector = new DBSelector('@pf_tool_app');
         $selector->search("`name` LIKE CONCAT('%',?,'%')", $name);
-        $selector->sort($sort);
+        $selector->sort($sort,['id','name']);
         $data = $selector->pageData();
         $data['list'] = $this->hookData($data['list'], 'hook/index.tpl');
         $this->success('获取数据成功', $data);

@@ -67,7 +67,7 @@ class AppList extends AppBase
             $selector->where("appId=?", $this->appId);
         }
         $sort = $this->get('sort:s', 'updateTime-desc');
-        $selector->sort($sort);
+        $selector->sort($sort,['id','key','updateTime']);
         $data = $selector->pageData();
         foreach ($data['list'] as &$datum) {
             $datum['formKey'] = $this->getFormKey($datum['formId']);

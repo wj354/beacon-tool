@@ -41,7 +41,7 @@ class AppForm extends AppBase
             $selector->where("appId=?", $this->appId);
         }
         $sort = $this->get('sort:s', 'updateTime-desc');
-        $selector->sort($sort);
+        $selector->sort($sort,['id','key','updateTime']);
         $data = $selector->pageData();
         foreach ($data['list'] as &$datum) {
             $datum['appName'] = DB::getOne('select name from @pf_tool_app where id=?', $datum['appId']);

@@ -80,7 +80,7 @@ class AppSearch extends AppBase
         $selector->search("(`name` LIKE CONCAT('%',?,'%') or `label` LIKE CONCAT('%',?,'%'))", $name);
         $selector->search('tabIndex=?', $this->get('tabIndex', ''));
         $sort = $this->get('sort:s', 'sort-asc');
-        $selector->sort($sort);
+        $selector->sort($sort,['id','name','sort']);
         $data['pageInfo'] = ['recordsCount' => $selector->getCount()];
         $data['list'] = $selector->getList();
         $data['list'] = $this->hookData($data['list'], 'hook/app_search.tpl');
@@ -286,7 +286,7 @@ class AppSearch extends AppBase
         $selector->where('formId=?', $formId);
         $selector->search("(`name` LIKE CONCAT('%',?,'%'))", $name);
         $sort = $this->get('sort:s', 'sort-asc');
-        $selector->sort($sort);
+        $selector->sort($sort,['id','name','sort']);
         $data = [];
         $data['pageInfo'] = ['recordsCount' => $selector->getCount()];
         $data['list'] = $selector->getList();
