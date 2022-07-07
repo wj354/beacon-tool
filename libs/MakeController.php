@@ -220,7 +220,8 @@ class MakeController
         }
         if (count($sortItem)) {
             $this->out[] = '        $sort = $this->param(\'sort:s\');';
-            $this->out[] = '        $selector->sort($sort);';
+            $this->out[] = '        $sortLimit='. Helper::var($sortItem, true).';';
+            $this->out[] = '        $selector->sort($sort,$sortLimit);';
         }
         $tbOrder = isset($zero['tbOrder']) ? trim($zero['tbOrder']) : null;
         if (!empty($tbOrder)) {
