@@ -69,6 +69,7 @@ Yee.define('code-editor', 'textarea', function (element) {
     } else {
         setInterval(update, 50);
     }
+
     let rander = this.rander = function () {
         let val = qel[0].value;
         val = val.replace(/&/g, "&amp;")

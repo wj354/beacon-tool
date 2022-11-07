@@ -1,10 +1,8 @@
 <?php
-
-
 namespace tool\controller;
 
-
 use beacon\core\Logger;
+use beacon\core\Mysql;
 use tool\libs\Helper;
 use tool\libs\MakeModel;
 use tool\libs\ToolDB;
@@ -41,7 +39,7 @@ class AppForm extends AppBase
             $selector->where("appId=?", $this->appId);
         }
         $sort = $this->get('sort:s', 'updateTime-desc');
-        $selector->sort($sort,['id','key','updateTime']);
+        $selector->sort($sort, ['id', 'key', 'updateTime']);
         $data = $selector->pageData();
         foreach ($data['list'] as &$datum) {
             $datum['appName'] = DB::getOne('select name from @pf_tool_app where id=?', $datum['appId']);
@@ -327,7 +325,7 @@ class AppForm extends AppBase
                         #存在旧表,把旧表改名成新表
                         $db->exec('ALTER TABLE ' . $oldName . ' RENAME TO ' . $tbName . ';');
                         if ($oldTitle != $newTitle) {
-                            $db->execute('ALTER TABLE ' . $tbName . ' COMMENT ?', $newTitle);
+                            $db->execute('ALTER TABLE ' . $tbName . ' COMMENT '. Mysql::escape($newTitle));
                         }
                     } else {
                         #不存在旧表，创建新表
@@ -338,10 +336,11 @@ class AppForm extends AppBase
                         }
                     }
                 } else if ($oldTitle != $newTitle) {
-                    $db->execute('ALTER TABLE ' . $tbName . ' COMMENT ?', $newTitle);
+                    $db->execute('ALTER TABLE ' . $tbName . ' COMMENT ' . Mysql::escape($newTitle));
                 }
             } catch (\Exception $e) {
-                $this->error(['tbName' => '创建数据库表失败']);
+                Logger::error($e);
+                $this->error(['tbName' => '编辑数据库表失败']);
             }
         }
         DB::update('@pf_tool_form', $input, $id);
