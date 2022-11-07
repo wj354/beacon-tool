@@ -177,8 +177,8 @@ class AppList extends AppBase
             if ($copyId) {
                 $row = DB::getItem('@pf_tool_list', $copyId);
                 $row['formId'] = '';
-                $row['title'] = '';
-                $row['key'] = '';
+                $row['title'] = $row['title'] . ' 副本';
+                $row['key'] = $row['key'] . 'Copy';
                 $form->setData($row);
             } elseif (!empty($import)) {
                 $data = $this->getImport($import);

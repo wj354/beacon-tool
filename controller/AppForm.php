@@ -63,9 +63,9 @@ class AppForm extends AppBase
                 if (!$row) {
                     $this->error('表单信息不存在');
                 }
-                unset($row['title']);
-                unset($row['key']);
-                unset($row['tbName']);
+                $row['title'] = $row['title'] . ' 副本';
+                $row['key'] = $row['key'] . 'Copy';
+                $row['tbName'] = $row['tbName'] . '_copy';
                 $form->setData($row);
             } elseif (!empty($import)) {
                 $data = $this->getImport($import);
