@@ -101,7 +101,7 @@ class SelectDialog extends Form
         $field['dataClearBtn'] = $extend['dataClearBtn'];
         $field['dataUrl'] = Helper::convertUrl($extend['dataUrl']);
 
-        $type = isset($extend['type']) ? intval($extend['type']) : 'sql';
+        $type = isset($extend['type']) ? $extend['type'] : '';
         $extend['sql'] = trim($extend['sql']);
         if ($type == 'sql' && !empty($extend['sql'])) {
             if (preg_match('/^@pf_(\w+)$/', $extend['sql'])) {
