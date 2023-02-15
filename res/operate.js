@@ -52,8 +52,13 @@ $(function () {
             moduleInp.filter(':checked').each(function (_, el) {
                 module.push($(el).val());
             });
-            var text = textInp.val() || '';
             var url = urlInp.val() || '';
+            var text = textInp.val() || '';
+            if (text == '内置按钮') {
+                dialog.success(url);
+                dialog.close();
+                return;
+            }
             var css = cssInp.val() || '';
             var icon = iconInp.val() || '';
             var style = styleInp.val() || '';
@@ -147,10 +152,10 @@ $(function () {
                     sValueInp.val('{$rs.id}');
                     sTextInp.val('{$rs.name}');
                     break;
-                case 'allow':
+                case 'toggle':
                     //<a href="{url act='toggleAllow' id=$rs.id}" yee-module="ajax"  class="yee-btn">{if $rs.allow}<i class="icofont-not-allowed"></i>禁用{else}<i class="icofont-verification-check"></i>审核{/if}</a>
-                    textInp.val('{if $rs.allow}<i class="icofont-not-allowed"></i>禁用{else}<i class="icofont-verification-check"></i>审核{/if}');
-                    urlInp.val("{url act='toggleAllow' id=$rs.id}");
+                    textInp.val('{if $rs.allow}<i class="icofont-not-allowed"></i>禁用{else}<i class="icofont-verification-check"></i>启用{/if}');
+                    urlInp.val("{url act='toggle' id=$rs.id}");
                     cssInp.val("yee-btn");
                     moduleInp.eq(0).prop('checked', true);
                     iconInp.val("");
@@ -167,30 +172,30 @@ $(function () {
                     confirmInp.val('确定要删除该数据了吗？');
                     successInp.val("$('#list').emit('reload');");
                     break;
-                case 'allowChoice':
+                case 'batchEnable':
                     //<a href="{url act='allowChoice'}" yee-module="ajax choice" class="yee-btn red-bd reload"><i class="icofont-verification-check"></i>审核所选</a>
-                    textInp.val('审核所选');
-                    urlInp.val("{url act='allowChoice'}");
+                    textInp.val('启用所选');
+                    urlInp.val("{url act='batchEnable'}");
                     cssInp.val("yee-btn");
                     moduleInp.eq(0).prop('checked', true);
                     moduleInp.eq(3).prop('checked', true);
                     iconInp.val("icofont-verification-check");
                     successInp.val("$('#list').emit('reload');");
                     break;
-                case 'revokeChoice':
+                case 'batchDisable':
                     //<a href="{url act='revokeChoice'}" yee-module="ajax choice" class="yee-btn red-bd reload"><i class="icofont-not-allowed"></i>禁用所选</a>
                     textInp.val('禁用所选');
-                    urlInp.val("{url act='revokeChoice'}");
+                    urlInp.val("{url act='batchDisable'}");
                     cssInp.val("yee-btn");
                     moduleInp.eq(0).prop('checked', true);
                     moduleInp.eq(3).prop('checked', true);
                     iconInp.val("icofont-not-allowed");
                     successInp.val("$('#list').emit('reload');");
                     break;
-                case 'deleteChoice':
+                case 'batchDelete':
                     //<a href="{url act='revokeChoice'}" yee-module="ajax choice" class="yee-btn red-bd reload"><i class="icofont-not-allowed"></i>禁用所选</a>
                     textInp.val('删除所选');
-                    urlInp.val("{url act='deleteChoice'}");
+                    urlInp.val("{url act='batchDelete'}");
                     cssInp.val("yee-btn red-bd");
                     moduleInp.eq(0).prop('checked', true);
                     moduleInp.eq(3).prop('checked', true);
@@ -199,7 +204,36 @@ $(function () {
                     confirmInp.val('确定要删除所选数据了吗？');
                     successInp.val("$('#list').emit('reload');");
                     break;
+                case 'listBtn':
+                    //<a href="{url act='revokeChoice'}" yee-module="ajax choice" class="yee-btn red-bd reload"><i class="icofont-not-allowed"></i>禁用所选</a>
+                    textInp.val('内置按钮');
+                    urlInp.val("{$this->listBtn($rs)}");
+                    cssInp.val('');
+                    iconInp.val('');
+                    confirmInp.val('');
+                    successInp.val('');
+                    break;
+                case 'topBtn':
+                    //<a href="{url act='revokeChoice'}" yee-module="ajax choice" class="yee-btn red-bd reload"><i class="icofont-not-allowed"></i>禁用所选</a>
+                    textInp.val('内置按钮');
+                    urlInp.val("{$this->topBtn()}");
+                    cssInp.val('');
+                    iconInp.val("");
+                    confirmInp.val('');
+                    successInp.val('');
+                    break;
+                case 'optBtn':
+                    //<a href="{url act='revokeChoice'}" yee-module="ajax choice" class="yee-btn red-bd reload"><i class="icofont-not-allowed"></i>禁用所选</a>
+                    textInp.val('内置按钮');
+                    urlInp.val("{$this->optBtn()}");
+                    cssInp.val('');
+                    iconInp.val("");
+                    confirmInp.val('');
+                    successInp.val('');
+                    break;
                 default:
+
+
                     break;
             }
             changeModule();

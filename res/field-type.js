@@ -4,7 +4,6 @@ $(function () {
     var typeCache = {};
 
     var dbTypeBox = $('#dbType');
-
     var old_type_val = $(':input[name=type]:checked').val() || '';
 
     //设置类型
@@ -60,10 +59,12 @@ $(function () {
         }
     });
 
-    $(':input[name=type]').on('click', function () {
+    $(':input[name=type]').on('click', function (ev) {
+
         var that = $(this);
         var type_options = that.data('types');
         var val = that.val();
+        var change = old_type_val != val;
         if (type_options) {
             cacheOption = {};
             var option = [];
@@ -83,7 +84,6 @@ $(function () {
                     option.push(opt);
                 }
             });
-
             if (option.length == 0) {
                 option.push({value: 'none'});
             }
@@ -112,7 +112,6 @@ $(function () {
             })();
             //更新
             if (dbType == null || dbType == '' || (old_type_val != val && dbType != defItem.value)) {
-                dbTypeBox.data('value', defItem.value);
                 dbTypeBox.val(defItem.value);
                 setType(defItem);
                 if (defItem.len) {
@@ -140,8 +139,7 @@ $(function () {
             updateOption(dbTypeBox, [], null);
         }
 
-        if (old_type_val != val) {
-
+        if (change) {
             var extendLayout = $('#single-extend');
             var url = extendLayout.data('url') || '/tool/app_field/support';
             var inputs = extendLayout.find(':input');

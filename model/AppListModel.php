@@ -275,13 +275,17 @@ class AppListModel
         tabIndex: 'operate',
         options: [
             ['value' => 'add', 'text' => '添加 add'],
-            ['value' => 'sort', 'text' => '排序 sort'],
-            ['value' => 'toggleAllow', 'text' => '审核/禁用 toggleAllow'],
             ['value' => 'edit', 'text' => '编辑 edit'],
             ['value' => 'delete', 'text' => '删除 delete'],
-            ['value' => 'deleteChoice', 'text' => '删除所选 deleteChoice'],
-            ['value' => 'allowChoice', 'text' => '审核所选 allowChoice'],
-            ['value' => 'revokeChoice', 'text' => '禁用所选 revokeChoice'],
+            ['value' => 'sort', 'text' => '排序 sort'],
+
+            ['value' => 'enable', 'text' => '启用 enable'],
+            ['value' => 'disable', 'text' => '禁用 disable'],
+
+            ['value' => 'toggle', 'text' => '启用/禁用 toggle'],
+            ['value' => 'batchDelete', 'text' => '批量删除 batchDelete'],
+            ['value' => 'batchEnable', 'text' => '批量启用 batchEnable'],
+            ['value' => 'batchDisable', 'text' => '批量禁用 batchDisable'],
         ]
     )]
     public array $actions = [];

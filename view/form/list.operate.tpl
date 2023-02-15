@@ -19,19 +19,24 @@
             <select class="form-inp" id="quick" style="vertical-align: top">
                 <option value="">快捷设置</option>
                 {if $this->get('type')=='add'}
+                    <option value="topBtn">内置按钮</option>
                     <option value="add">新增</option>
                 {/if}
                 {if $this->get('type')=='list'}
+                    <option value="listBtn">内置按钮</option>
                     <option value="add2">新增子项</option>
                     <option value="edit">编辑</option>
                     <option value="choice">选中</option>
-                    <option value="allow">审核/禁用</option>
+                    <option value="toggle">启用/禁用</option>
+                    <option value="enable">启用</option>
+                    <option value="disable">禁用</option>
                     <option value="delete">删除</option>
                 {/if}
                 {if $this->get('type')=='select'}
-                    <option value="allowChoice">选择审核</option>
-                    <option value="revokeChoice">选择禁用</option>
-                    <option value="deleteChoice">选择删除</option>
+                    <option value="optBtn">内置按钮</option>
+                    <option value="batchEnable">选择启用</option>
+                    <option value="batchDisable">选择禁用</option>
+                    <option value="batchDelete">选择删除</option>
                 {/if}
             </select>
         </div>
@@ -45,7 +50,7 @@
     <div class="yee-row">
         <label class="row-label" style="width:70px">CSS类:</label>
         <div class="row-cell">
-            <input class="form-inp mf navy" id="class" value="yee-btn"/> &nbsp; ICON:<input id="icon" class="form-inp mf navy"  yee-module="select-dialog" type="hidden" data-width="860" data-url="{url act='icon'}" data-mode="2"/>
+            <input class="form-inp mf navy" id="class" value="yee-btn"/> &nbsp; ICON:<input id="icon" class="form-inp mf navy" yee-module="select-dialog" type="hidden" data-width="860" data-url="{url act='icon'}" data-mode="2"/>
         </div>
     </div>
     <div class="yee-row">

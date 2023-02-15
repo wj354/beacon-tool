@@ -85,7 +85,7 @@ $(function () {
             if (val == 'cover' || val == 'img' || val == 'images' || val == 'photo') {
                 valBox.val(oldVal + '<img src="{$rs.' + val + '}" height="40"/>');
             } else if (val == 'allow') {
-                valBox.val(oldVal + '{if $rs.allow}<span class="green">正常</span>{else}<span class="gray">禁用</span>{/if}');
+                valBox.val(oldVal + '{if $rs.allow}<span class="green">启用</span>{else}<span class="gray">禁用</span>{/if}');
             } else if (val == 'lock') {
                 valBox.val(oldVal + '{if $rs.lock}<span class="gray">锁定</span>{else}<span class="green">正常</span>{/if}');
             } else if (val == 'sort') {
@@ -201,7 +201,7 @@ $(function () {
                         }
                     }
                 }
-            } else if (value == 'edit' || value == 'delete' || value == 'toggleAllow') {
+            } else if (value == 'edit' || value == 'delete' || value == 'toggle') {
                 var has = false;
                 $('#listButtons :input[name*="[code]"]').each(function (_, el) {
                     var code = $(el).val() || '';
@@ -222,12 +222,12 @@ $(function () {
                                 item.find(':input[name*="[code]"]').val('<a href="{url act=\'delete\' id=$rs.id}" yee-module="confirm ajax" data-confirm="确定要删除该数据了吗？" class="yee-btn red-bd" on-success="$(\'#list\').emit(\'reload\');"><i class="icofont-bin"></i>删除</a>');
                             }
                             if (value == 'toggleAllow') {
-                                item.find(':input[name*="[code]"]').val('<a href="{url act=\'toggleAllow\' id=$rs.id}" yee-module="ajax"  class="yee-btn" on-success="$(\'#list\').emit(\'reload\');">{if $rs.allow}<i class="icofont-not-allowed"></i>禁用{else}<i class="icofont-verification-check"></i>审核{/if}</a>');
+                                item.find(':input[name*="[code]"]').val('<a href="{url act=\'toggle\' id=$rs.id}" yee-module="ajax"  class="yee-btn" on-success="$(\'#list\').emit(\'reload\');">{if $rs.allow}<i class="icofont-not-allowed"></i>禁用{else}<i class="icofont-verification-check"></i>启用{/if}</a>');
                             }
                         }
                     }
                 }
-            } else if (value == 'deleteChoice' || value == 'allowChoice' || value == 'revokeChoice') {
+            } else if (value == 'batchDelete' || value == 'batchEnable' || value == 'batchDisable') {
                 $('#useSelect').prop('checked', true);
                 var has = false;
                 $('#selectButtons :input[name*="[code]"]').each(function (_, el) {
@@ -242,14 +242,14 @@ $(function () {
                     if (obj) {
                         var item = obj.addItem();
                         if (item) {
-                            if (value == 'deleteChoice') {
-                                item.find(':input[name*="[code]"]').val('<a href="{url act=\'deleteChoice\'}" yee-module="confirm ajax choice" data-confirm="确定要删除所选数据了吗？" class="yee-btn red-bd" on-success="$(\'#list\').emit(\'reload\');"><i class="icofont-bin"></i>删除所选</a>');
+                            if (value == 'batchDelete') {
+                                item.find(':input[name*="[code]"]').val('<a href="{url act=\'batchDelete\'}" yee-module="confirm ajax choice" data-confirm="确定要删除所选数据了吗？" class="yee-btn red-bd" on-success="$(\'#list\').emit(\'reload\');"><i class="icofont-bin"></i>删除所选</a>');
                             }
-                            if (value == 'allowChoice') {
-                                item.find(':input[name*="[code]"]').val('<a href="{url act=\'allowChoice\'}" yee-module="ajax choice" class="yee-btn" on-success="$(\'#list\').emit(\'reload\');"><i class="icofont-verification-check"></i>审核所选</a>');
+                            if (value == 'batchEnable') {
+                                item.find(':input[name*="[code]"]').val('<a href="{url act=\'batchEnable\'}" yee-module="ajax choice" class="yee-btn" on-success="$(\'#list\').emit(\'reload\');"><i class="icofont-verification-check"></i>启用所选</a>');
                             }
-                            if (value == 'revokeChoice') {
-                                item.find(':input[name*="[code]"]').val('<a href="{url act=\'revokeChoice\'}" yee-module="ajax choice" class="yee-btn" on-success="$(\'#list\').emit(\'reload\');"><i class="icofont-not-allowed"></i>禁用所选</a>');
+                            if (value == 'batchDisable') {
+                                item.find(':input[name*="[code]"]').val('<a href="{url act=\'batchDisable\'}" yee-module="ajax choice" class="yee-btn" on-success="$(\'#list\').emit(\'reload\');"><i class="icofont-not-allowed"></i>禁用所选</a>');
                             }
                         }
                     }

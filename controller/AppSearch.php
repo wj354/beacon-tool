@@ -330,6 +330,7 @@ class AppSearch extends AppBase
 
             switch ($field['dbType']) {
                 case 'int':
+                case 'tinyint':
                     $input['varType'] = 'int';
                     break;
                 case 'decimal':
@@ -360,14 +361,13 @@ class AppSearch extends AppBase
                 $input['after'] = '';
                 $input['default'] = '';
                 if ($input['name'] == 'allow') {
-                    $extend['options'] = [['value' => 1, 'text' => '正常'], ['value' => 0, 'text' => '禁用']];
+                    $extend['options'] = [['value' => 1, 'text' => '启用'], ['value' => 0, 'text' => '禁用']];
                 }
                 if ($input['name'] == 'lock') {
                     $extend['options'] = [['value' => 1, 'text' => '锁定'], ['value' => 0, 'text' => '正常']];
                 }
                 $input['extend'] = $extend;
             }
-
             DB::insert('@pf_tool_search', $input);
         }
         MakeSearch::make($this->listId);
