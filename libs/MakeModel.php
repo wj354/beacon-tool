@@ -335,6 +335,8 @@ class MakeModel
         if (empty($field['varType']) && !empty($dbType)) {
             switch ($dbType) {
                 case 'int':
+                case 'smallint':
+                case 'bigint':
                     $field['varType'] = 'int';
                     break;
                 case 'tinyint':

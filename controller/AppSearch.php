@@ -327,10 +327,11 @@ class AppSearch extends AppBase
             }
             $input['tabIndex'] = 'base';
             $input['varType'] = 'string';
-
             switch ($field['dbType']) {
                 case 'int':
                 case 'tinyint':
+                case 'smallint':
+                case 'bigint':
                     $input['varType'] = 'int';
                     break;
                 case 'decimal':

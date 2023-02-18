@@ -66,7 +66,7 @@ class AppField extends AppBase
         $selector->where('formId=?', $this->formId);
         $selector->search("(`name` LIKE CONCAT('%',?,'%') or `label` LIKE CONCAT('%',?,'%'))", $this->get('name'));
         $sort = $this->get('sort:s', 'sort-asc');
-        $selector->sort($sort,['id','name','sort']);
+        $selector->sort($sort, ['id', 'name', 'sort']);
         $data = [];
         $data['pageInfo'] = ['recordsCount' => $selector->getCount()];
         $data['list'] = $selector->getList();
@@ -181,7 +181,7 @@ class AppField extends AppBase
         if ($input['dbDefType'] == 'empty') {
             $def = '';
         } else if ($input['dbDefType'] == 'value') {
-            if ($input['dbType'] == 'int' || $input['dbType'] == 'tinyint') {
+            if ($input['dbType'] == 'int' || $input['dbType'] == 'tinyint' || $input['dbType'] == 'smallint' || $input['dbType'] == 'bigint') {
                 $def = intval($input['dbDefValue']);
             } else {
                 $def = $input['dbDefValue'];

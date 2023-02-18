@@ -14,9 +14,9 @@ class Support
 
     public static array $typeMap = [
         'Text' => ['text' => '文本框 Text', 'data-types' => ['varchar(200)', 'text']],
-        'Hidden' => ['text' => '隐藏域 Hidden', 'data-types' => ['int(11)', 'tinyint(4)', 'varchar(200)', 'float(18,2)', 'decimal(18,2)', 'double(18,2)', 'text', 'longtext', 'json'], 'data-default' => 'int'],
+        'Hidden' => ['text' => '隐藏域 Hidden', 'data-types' => ['int(11)', 'tinyint(4)', 'smallint(6)', 'bigint(20)', 'varchar(200)', 'float(18,2)', 'decimal(18,2)', 'double(18,2)', 'text', 'longtext', 'json'], 'data-default' => 'int'],
         'Check' => ['text' => '是否 Check', 'data-types' => ['tinyint(1)']],
-        'Integer' => ['text' => '整数 Integer', 'data-types' => ['int(11)']],
+        'Integer' => ['text' => '整数 Integer', 'data-types' => ['int(11)', 'smallint(6)', 'bigint(20)']],
         'Number' => ['text' => '小数 Number', 'data-types' => ['decimal(18,2)', 'float(18,2)', 'double(18,2)']],
         'Password' => ['text' => '密码框 Password', 'data-types' => ['varchar(200)']],
         'Color' => ['text' => '颜色选择 Color', 'data-types' => ['varchar(200)']],
