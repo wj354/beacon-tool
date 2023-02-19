@@ -29,7 +29,7 @@ class Support
         'CheckGroup' => ['text' => '多选组 CheckGroup', 'data-types' => ['varchar(200)', 'int(11)', 'text', 'longtext', 'json'], 'data-default' => 'json'],
         'Remote' => ['text' => '远程验证输入框 Remote', 'data-types' => ['varchar(200)', 'text']],
         'Linkage' => ['text' => '联动下拉 Linkage', 'data-types' => ['varchar(200)', 'text', 'json'], 'data-default' => 'json'],
-        'Textarea' => ['text' => '备注型 Textarea', 'data-types' => ['text', 'varchar(200)', 'longtext'], 'data-default' => 'text'],
+        'Textarea' => ['text' => '备注型 Textarea', 'data-types' => ['text', 'varchar(200)', 'longtext','json'], 'data-default' => 'text'],
         'UpFile' => ['text' => '文件上传 UpFile', 'data-types' => ['varchar(200)', 'text', 'json']],
         'UpImage' => ['text' => '图片上传 UpImage', 'data-types' => ['varchar(300)', 'text', 'json']],
         'XhEditor' => ['text' => 'Xh编辑器 XhEditor', 'data-types' => ['text', 'longtext']],

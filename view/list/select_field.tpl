@@ -45,7 +45,7 @@
         <thead>
         <tr>
             <th width="40" data-order="id">ID</th>
-            <th width="180" align="left" data-order="name">数据库字段</th>
+            <th width="15%" style="min-width: 180px;max-width: 300px;" align="left" data-order="name">数据库字段</th>
             <th align="left">字段名称</th>
             <th width="180">字段类型</th>
             <th width="180">DB字段</th>
